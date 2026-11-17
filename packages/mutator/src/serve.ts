@@ -23,7 +23,13 @@ export async function assertPortFree(url: string): Promise<void> {
 }
 
 /** Start the configured serve command in `dir` and wait for HTTP 200 on `url`. */
-export async function serve(opts: { dir: string; serveCmd: string; url: string; logFile: string; timeoutMs?: number }): Promise<Server> {
+export async function serve(opts: {
+  dir: string;
+  serveCmd: string;
+  url: string;
+  logFile: string;
+  timeoutMs?: number;
+}): Promise<Server> {
   await assertPortFree(opts.url);
   const child = startShell(opts.serveCmd, opts.dir, opts.logFile);
   let exited: number | null = null;
@@ -49,5 +55,7 @@ export async function serve(opts: { dir: string; serveCmd: string; url: string; 
     await new Promise((r) => setTimeout(r, 300));
   }
   await stop();
-  throw new Error(`${opts.url} did not return HTTP 200 within ${opts.timeoutMs ?? 30_000} ms; see ${opts.logFile}`);
+  throw new Error(
+    `${opts.url} did not return HTTP 200 within ${opts.timeoutMs ?? 30_000} ms; see ${opts.logFile}`,
+  );
 }

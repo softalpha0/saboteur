@@ -10,7 +10,9 @@ export type Classification = {
 };
 
 /** Verdict rules from docs/01-PRD.md §8. */
-export function classifyMutant(run: Pick<SuiteRun, 'exitCode' | 'members' | 'totals' | 'killed' | 'planValid'>): Classification {
+export function classifyMutant(
+  run: Pick<SuiteRun, 'exitCode' | 'members' | 'totals' | 'killed' | 'planValid'>,
+): Classification {
   const caughtBy = run.members
     .filter((m) => m.status === 'failed')
     .map((m) => ({ file: m.file, message: m.failure?.message, stepIndex: m.failure?.stepIndex }));
@@ -25,14 +27,30 @@ export function classifyMutant(run: Pick<SuiteRun, 'exitCode' | 'members' | 'tot
     };
   }
 
-  if (run.killed) return { verdict: 'error', reason: 'Saboteur hard timeout hit; Kane was stopped', caughtBy, retry: false };
+  if (run.killed)
+    return {
+      verdict: 'error',
+      reason: 'Saboteur hard timeout hit; Kane was stopped',
+      caughtBy,
+      retry: false,
+    };
 
   switch (run.exitCode) {
     case 0:
-      return { verdict: 'survived', reason: 'every test passed on the bugged build', caughtBy: [], retry: false };
+      return {
+        verdict: 'survived',
+        reason: 'every test passed on the bugged build',
+        caughtBy: [],
+        retry: false,
+      };
     case 1:
       if (caughtBy.length > 0) {
-        return { verdict: 'killed', reason: `${caughtBy.length} test(s) failed on the bugged build`, caughtBy, retry: false };
+        return {
+          verdict: 'killed',
+          reason: `${caughtBy.length} test(s) failed on the bugged build`,
+          caughtBy,
+          retry: false,
+        };
       }
       return {
         verdict: 'error',
@@ -41,10 +59,20 @@ export function classifyMutant(run: Pick<SuiteRun, 'exitCode' | 'members' | 'tot
         retry: true,
       };
     case 2:
-      return { verdict: 'error', reason: 'Kane exit 2: usage, invalid plan or auth error; nothing ran', caughtBy, retry: false };
+      return {
+        verdict: 'error',
+        reason: 'Kane exit 2: usage, invalid plan or auth error; nothing ran',
+        caughtBy,
+        retry: false,
+      };
     case 3:
       return { verdict: 'error', reason: 'Kane exit 3: cancelled or timed out', caughtBy, retry: false };
     default:
-      return { verdict: 'error', reason: `unexpected Kane exit code ${run.exitCode}`, caughtBy, retry: false };
+      return {
+        verdict: 'error',
+        reason: `unexpected Kane exit code ${run.exitCode}`,
+        caughtBy,
+        retry: false,
+      };
   }
 }

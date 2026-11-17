@@ -21,7 +21,9 @@ function readPrompt(name: string): string {
 
 /** {{key}} substitution. Values are inserted verbatim (a function replacer, so "$" in values is safe). */
 export function fill(template: string, values: Record<string, string>): string {
-  return template.replace(/\{\{(\w+)\}\}/g, (whole, key: string) => (key in values ? (values[key] as string) : whole));
+  return template.replace(/\{\{(\w+)\}\}/g, (whole, key: string) =>
+    key in values ? (values[key] as string) : whole,
+  );
 }
 
 export function systemPrompt(appUrl: string): string {
@@ -46,5 +48,8 @@ export function firstPrompt(input: FirstPromptInput): string {
 
 /** Retry prompt. `kaneText` is Kane's own words (or the local validator's list); never rewritten here. */
 export function retryPrompt(problem: Problem, testBody: string, kaneText: string): string {
-  return fill(readPrompt(`write-test.retry-${problem}.md`), { testBody: testBody.trim(), kaneText: kaneText.trim() });
+  return fill(readPrompt(`write-test.retry-${problem}.md`), {
+    testBody: testBody.trim(),
+    kaneText: kaneText.trim(),
+  });
 }

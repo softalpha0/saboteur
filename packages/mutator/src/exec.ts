@@ -12,18 +12,33 @@ export function envWithBin(dir: string, extra: NodeJS.ProcessEnv = {}): NodeJS.P
 }
 
 /** Run a configured shell command (build/serve from saboteur.config.json). */
-export function startShell(command: string, cwd: string, logFile: string, env?: NodeJS.ProcessEnv): ChildProcess {
+export function startShell(
+  command: string,
+  cwd: string,
+  logFile: string,
+  env?: NodeJS.ProcessEnv,
+): ChildProcess {
   fs.mkdirSync(path.dirname(logFile), { recursive: true });
   const log = fs.createWriteStream(logFile, { flags: 'a' });
   log.write(`$ ${command}  (in ${cwd})\n`);
-  const child = spawn(command, { cwd, shell: true, env: env ?? envWithBin(cwd), stdio: ['ignore', 'pipe', 'pipe'] });
+  const child = spawn(command, {
+    cwd,
+    shell: true,
+    env: env ?? envWithBin(cwd),
+    stdio: ['ignore', 'pipe', 'pipe'],
+  });
   child.stdout?.pipe(log, { end: false });
   child.stderr?.pipe(log, { end: false });
   child.on('close', () => log.end());
   return child;
 }
 
-export function runShell(command: string, cwd: string, logFile: string, timeoutMs = 5 * 60_000): Promise<ExecResult> {
+export function runShell(
+  command: string,
+  cwd: string,
+  logFile: string,
+  timeoutMs = 5 * 60_000,
+): Promise<ExecResult> {
   return new Promise((resolve) => {
     let output = '';
     const child = startShell(command, cwd, logFile);
@@ -46,7 +61,12 @@ export function runShell(command: string, cwd: string, logFile: string, timeoutM
 }
 
 /** Run a program directly (no shell), e.g. git. */
-export function runFile(file: string, args: string[], cwd: string, env?: NodeJS.ProcessEnv): Promise<ExecResult> {
+export function runFile(
+  file: string,
+  args: string[],
+  cwd: string,
+  env?: NodeJS.ProcessEnv,
+): Promise<ExecResult> {
   return new Promise((resolve) => {
     let output = '';
     const child = spawn(file, args, { cwd, env: env ?? process.env, stdio: ['ignore', 'pipe', 'pipe'] });

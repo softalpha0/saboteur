@@ -3,7 +3,15 @@ import os from 'node:os';
 import path from 'node:path';
 import type Anthropic from '@anthropic-ai/sdk';
 import { describe, expect, it } from 'vitest';
-import { TestWriter, fill, firstPrompt, modelFromEnv, parseAnswer, retryPrompt, validateTest } from '../src/index.ts';
+import {
+  TestWriter,
+  fill,
+  firstPrompt,
+  modelFromEnv,
+  parseAnswer,
+  retryPrompt,
+  validateTest,
+} from '../src/index.ts';
 
 const GOOD = `FILE: discount_save10_total_test.md
 \`\`\`markdown
@@ -45,22 +53,33 @@ describe('validateTest (06 §5)', () => {
     expect(v(GOOD.replace('discount_save10_total_test.md', 'Discount-Test.md'))[0]).toMatch(/must match/);
   });
   it('2: rejects unknown frontmatter keys', () => {
-    expect(v(GOOD.replace('max_steps: 30', 'max_steps: 30\nusername: x')).join()).toMatch(/not allowed: username/);
+    expect(v(GOOD.replace('max_steps: 30', 'max_steps: 30\nusername: x')).join()).toMatch(
+      /not allowed: username/,
+    );
   });
   it('3: rejects fewer than 2 or more than 6 steps, and empty steps', () => {
     const one = GOOD.replace(/## Fill the cart[\s\S]*?(?=## Apply)/, '');
     expect(v(one).join()).toMatch(/2 to 6/);
     const many = GOOD.replace(/\n```$/, `${'\n\n## Extra\nVerify the page shows Total.'.repeat(5)}\n\`\`\``);
     expect(v(many).join()).toMatch(/found 7/);
-    expect(v(GOOD.replace('Open the cart page and apply the discount code SAVE10.\nVerify the Total shows $53.98.', '')).join()).toMatch(
-      /Empty step body/,
-    );
+    expect(
+      v(
+        GOOD.replace(
+          'Open the cart page and apply the discount code SAVE10.\nVerify the Total shows $53.98.',
+          '',
+        ),
+      ).join(),
+    ).toMatch(/Empty step body/);
   });
   it('4: rejects @import', () => {
-    expect(v(GOOD.replace('Open the home page', '@import helpers/login.md\nOpen the home page')).join()).toMatch(/@import/);
+    expect(
+      v(GOOD.replace('Open the home page', '@import helpers/login.md\nOpen the home page')).join(),
+    ).toMatch(/@import/);
   });
   it('5: rejects a last step with no check word', () => {
-    expect(v(GOOD.replace('Verify the Total shows $53.98.', 'The total is lower.')).join()).toMatch(/no check/);
+    expect(v(GOOD.replace('Verify the Total shows $53.98.', 'The total is lower.')).join()).toMatch(
+      /no check/,
+    );
   });
   it('6: rejects a name that already exists in the tests dir', () => {
     const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'saboteur-agent-'));
@@ -113,7 +132,11 @@ describe('TestWriter (stub client, no network)', () => {
       },
     } as unknown as Anthropic;
     expect(() => modelFromEnv({})).toThrow(/ANTHROPIC_MODEL/);
-    const w = new TestWriter({ appUrl: 'http://localhost:4173', client: stub, model: modelFromEnv({ ANTHROPIC_MODEL: 'test-model' }) });
+    const w = new TestWriter({
+      appUrl: 'http://localhost:4173',
+      client: stub,
+      model: modelFromEnv({ ANTHROPIC_MODEL: 'test-model' }),
+    });
     const first = await w.first({
       mutant: { id: 'M03', title: 't', userImpact: 'u', category: 'maths' },
       diff: 'd',

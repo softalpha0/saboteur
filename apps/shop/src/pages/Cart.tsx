@@ -62,7 +62,11 @@ export function Cart() {
                 </td>
                 <td>{formatMoney(lineTotal(line))}</td>
                 <td>
-                  <button type="button" onClick={() => cart.remove(line.slug)} aria-label={`Remove ${p.name}`}>
+                  <button
+                    type="button"
+                    onClick={() => cart.remove(line.slug)}
+                    aria-label={`Remove ${p.name}`}
+                  >
                     Remove
                   </button>
                 </td>

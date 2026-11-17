@@ -4,8 +4,22 @@ import { formatMoney } from '../src/lib/money';
 import { isValidEmail } from '../src/lib/validate';
 
 // The "Worked examples" table in apps/shop/ROUTES.md. If this fails, the app and ROUTES.md disagree.
-const cases: { cart: CartLine[]; code: string | null; sub: string; disc: number; ship: string; total: string }[] = [
-  { cart: [{ slug: 'canvas-tote', qty: 1 }], code: null, sub: '$24.99', disc: 0, ship: '$5.00', total: '$29.99' },
+const cases: {
+  cart: CartLine[];
+  code: string | null;
+  sub: string;
+  disc: number;
+  ship: string;
+  total: string;
+}[] = [
+  {
+    cart: [{ slug: 'canvas-tote', qty: 1 }],
+    code: null,
+    sub: '$24.99',
+    disc: 0,
+    ship: '$5.00',
+    total: '$29.99',
+  },
   {
     cart: [
       { slug: 'canvas-tote', qty: 1 },
@@ -39,7 +53,14 @@ const cases: { cart: CartLine[]; code: string | null; sub: string; disc: number;
     ship: 'Free',
     total: '$53.98',
   },
-  { cart: [{ slug: 'canvas-tote', qty: 2 }], code: null, sub: '$49.98', disc: 0, ship: '$5.00', total: '$54.98' },
+  {
+    cart: [{ slug: 'canvas-tote', qty: 2 }],
+    code: null,
+    sub: '$49.98',
+    disc: 0,
+    ship: '$5.00',
+    total: '$54.98',
+  },
 ];
 
 describe('ROUTES.md worked examples', () => {

@@ -113,7 +113,8 @@ export async function runTestFile(opts: RunTestFileOptions): Promise<TestFileRun
     shareUrl: d.shareUrl,
     links: d.links,
     cliVersion: d.cliVersion,
-    failureText: d.failureText ?? (proc.exitCode !== 0 && proc.exitCode !== 1 ? proc.stderrTail.trim() : undefined),
+    failureText:
+      d.failureText ?? (proc.exitCode !== 0 && proc.exitCode !== 1 ? proc.stderrTail.trim() : undefined),
     failureStepIndex: d.failureStepIndex,
     summaryText: d.summaryText,
     evidencePacks: newEvidencePacks(opts.cwd, started),
@@ -126,7 +127,12 @@ export async function runTestFile(opts: RunTestFileOptions): Promise<TestFileRun
 export type PlainResult = { exitCode: number; output: string };
 
 /** Runs a plain (non-NDJSON) Kane command such as `--version` or `balance`. */
-export async function runPlain(args: string[], cwd: string, logDir: string, label: string): Promise<PlainResult> {
+export async function runPlain(
+  args: string[],
+  cwd: string,
+  logDir: string,
+  label: string,
+): Promise<PlainResult> {
   const proc = await spawnKane({ args, cwd, logDir, label, hardTimeoutMs: 60_000 });
   const raw = fs.existsSync(proc.rawLogPath) ? fs.readFileSync(proc.rawLogPath, 'utf8') : '';
   return { exitCode: proc.exitCode, output: `${raw}${proc.stderrTail}`.trim() };
@@ -144,6 +150,7 @@ export async function balance(cwd: string, logDir: string): Promise<PlainResult 
 
 /** First number in Kane's balance output (e.g. "Credits: 9,812.5"). Undefined when there is none. */
 export function parseCredits(output: string): number | undefined {
+  // biome-ignore lint/suspicious/noControlCharactersInRegex: strips ANSI colour codes
   const m = output.replace(/\u001b\[[0-9;]*m/g, '').match(/(\d[\d,]*(?:\.\d+)?)/);
   if (!m?.[1]) return undefined;
   const n = Number(m[1].replace(/,/g, ''));

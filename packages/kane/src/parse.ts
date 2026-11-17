@@ -71,7 +71,8 @@ export function digestTestrun(events: KaneEvent[]): TestrunDigest {
         const members = Array.isArray(e.members) ? (e.members as Record<string, unknown>[]) : [];
         for (const m of members) {
           const f = m.failure;
-          if (f) d.planFailures.push(`${str(m.path) ?? '?'}: ${typeof f === 'string' ? f : JSON.stringify(f)}`);
+          if (f)
+            d.planFailures.push(`${str(m.path) ?? '?'}: ${typeof f === 'string' ? f : JSON.stringify(f)}`);
         }
         break;
       }
@@ -146,7 +147,8 @@ export function digestTestmd(events: KaneEvent[]): TestmdDigest {
 
   for (const e of events) {
     const f = e.failure as { message?: unknown; step_index?: unknown } | undefined;
-    if (f && str(f.message)) lastFailure = { message: str(f.message) as string, stepIndex: num(f.step_index) };
+    if (f && str(f.message))
+      lastFailure = { message: str(f.message) as string, stepIndex: num(f.step_index) };
 
     if (e.type === 'stream_start') d.cliVersion = str(e.cli_version) ?? d.cliVersion;
     if (e.type === 'run_end') {

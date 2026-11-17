@@ -30,7 +30,14 @@ createRoot(root).render(
             <Route path="/order/:id" element={<OrderConfirmed />} />
             <Route path="/login" element={<Login />} />
             <Route path="/account" element={<Account />} />
-            <Route path="*" element={<main><h1>Page not found</h1></main>} />
+            <Route
+              path="*"
+              element={
+                <main>
+                  <h1>Page not found</h1>
+                </main>
+              }
+            />
           </Routes>
         </CartProvider>
       </AuthProvider>

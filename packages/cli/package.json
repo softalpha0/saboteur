@@ -1,0 +1,17 @@
+{
+  "name": "@saboteur/cli",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "main": "src/index.ts",
+  "bin": { "saboteur": "src/index.ts" },
+  "scripts": { "typecheck": "tsc -p tsconfig.json" },
+  "dependencies": {
+    "@saboteur/agent": "workspace:*",
+    "@saboteur/kane": "workspace:*",
+    "@saboteur/mutator": "workspace:*",
+    "@saboteur/report": "workspace:*",
+    "commander": "12.1.0",
+    "picocolors": "1.1.1"
+  }
+}

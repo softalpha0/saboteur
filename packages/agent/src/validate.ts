@@ -50,7 +50,8 @@ export function steps(body: string): Step[] {
 export function validateTest(answer: ParsedAnswer, testsDir?: string): string[] {
   const problems: string[] = [];
   if (!answer.fileName) problems.push('No "FILE: <name>_test.md" line.');
-  else if (!NAME.test(answer.fileName)) problems.push(`File name "${answer.fileName}" must match ${NAME.source}.`);
+  else if (!NAME.test(answer.fileName))
+    problems.push(`File name "${answer.fileName}" must match ${NAME.source}.`);
   if (!answer.body) {
     problems.push('No ```markdown fenced block with the file contents.');
     return problems;
@@ -58,7 +59,10 @@ export function validateTest(answer: ParsedAnswer, testsDir?: string): string[] 
 
   const { keys } = splitFrontmatter(answer.body);
   const unknown = keys.filter((k) => !(ALLOWED_KEYS as readonly string[]).includes(k));
-  if (unknown.length) problems.push(`Frontmatter keys not allowed: ${unknown.join(', ')}. Allowed: ${ALLOWED_KEYS.join(', ')}.`);
+  if (unknown.length)
+    problems.push(
+      `Frontmatter keys not allowed: ${unknown.join(', ')}. Allowed: ${ALLOWED_KEYS.join(', ')}.`,
+    );
 
   const st = steps(answer.body);
   if (st.length < 2 || st.length > 6) problems.push(`Needs 2 to 6 "## " steps, found ${st.length}.`);

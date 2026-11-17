@@ -55,7 +55,11 @@ describe('digestTestrun', () => {
   it('ignores unknown event types and reports invalid plans', () => {
     const d = digestTestrun([
       { type: 'something_new', foo: 1 },
-      { type: 'testrun_plan', valid: false, members: [{ path: 'x_test.md', failure: 'unknown config key: auth' }] },
+      {
+        type: 'testrun_plan',
+        valid: false,
+        members: [{ path: 'x_test.md', failure: 'unknown config key: auth' }],
+      },
     ]);
     expect(d.planValid).toBe(false);
     expect(d.planFailures).toEqual(['x_test.md: unknown config key: auth']);
@@ -91,7 +95,9 @@ describe('digestTestmd', () => {
 });
 
 describe('classifyMutant (PRD §8)', () => {
-  const base = (over: Partial<SuiteRun>): Pick<SuiteRun, 'exitCode' | 'members' | 'totals' | 'killed' | 'planValid'> => ({
+  const base = (
+    over: Partial<SuiteRun>,
+  ): Pick<SuiteRun, 'exitCode' | 'members' | 'totals' | 'killed' | 'planValid'> => ({
     exitCode: 0,
     members: [],
     killed: false,
@@ -109,7 +115,9 @@ describe('classifyMutant (PRD §8)', () => {
   it('exit 1 + failed member => killed, with the failure message', () => {
     const c = classifyMutant(base({ exitCode: 1, members: [member('passed'), member('failed')] }));
     expect(c.verdict).toBe('killed');
-    expect(c.caughtBy).toEqual([{ file: 'failed_test.md', message: 'Final verification failed: x', stepIndex: undefined }]);
+    expect(c.caughtBy).toEqual([
+      { file: 'failed_test.md', message: 'Final verification failed: x', stepIndex: undefined },
+    ]);
   });
   it('exit 0 => survived', () => {
     expect(classifyMutant(base({ exitCode: 0, members: [member('passed')] })).verdict).toBe('survived');
@@ -125,7 +133,9 @@ describe('classifyMutant (PRD §8)', () => {
   });
   it('authored > 0 => invalid, even when a test failed', () => {
     const t = { tests: 1, passed: 0, failed: 1, broken: 0, skipped: 0, authored: 1 };
-    expect(classifyMutant(base({ exitCode: 1, members: [member('failed')], totals: t })).verdict).toBe('invalid');
+    expect(classifyMutant(base({ exitCode: 1, members: [member('failed')], totals: t })).verdict).toBe(
+      'invalid',
+    );
     expect(classifyMutant(base({ exitCode: 1, members: [member('failed', true)] })).verdict).toBe('invalid');
   });
   it('hard timeout => error', () => {
@@ -182,15 +192,29 @@ describe('spawn wrapper (stand-in binary, no credits)', () => {
     process.env.KANE_CLI_BIN = fixture('fake-kane.mjs');
     process.env.FAKE_KANE_FIXTURE = fixture('testmd-failed.ndjson');
     process.env.FAKE_KANE_EXIT = '1';
-    const run = await runTestFile({ file: 'x_test.md', noHeal: false, cwd: tmp, logDir: path.join(tmp, 'logs'), label: 'a1' });
+    const run = await runTestFile({
+      file: 'x_test.md',
+      noHeal: false,
+      cwd: tmp,
+      logDir: path.join(tmp, 'logs'),
+      label: 'a1',
+    });
     expect(run.exitCode).toBe(1);
     expect(run.failureText).toContain('$53.98');
-    expect(fs.readFileSync(run.progressLogPath, 'utf8')).toContain('argv: testmd run x_test.md --agent --headless\n');
+    expect(fs.readFileSync(run.progressLogPath, 'utf8')).toContain(
+      'argv: testmd run x_test.md --agent --headless\n',
+    );
   });
 
   it('missing binary => exit 2 with an install hint', async () => {
     process.env.KANE_CLI_BIN = path.join(tmp, 'does-not-exist-kane');
-    const run = await runTestFile({ file: 'x_test.md', noHeal: true, cwd: tmp, logDir: path.join(tmp, 'logs'), label: 'm' });
+    const run = await runTestFile({
+      file: 'x_test.md',
+      noHeal: true,
+      cwd: tmp,
+      logDir: path.join(tmp, 'logs'),
+      label: 'm',
+    });
     expect(run.exitCode).toBe(2);
   });
 });

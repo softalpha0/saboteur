@@ -9,7 +9,10 @@ export type WriterReply = ParsedAnswer & { raw: string; prompt: string; model: s
 /** Model comes from ANTHROPIC_MODEL. Saboteur never hard-codes a model id. */
 export function modelFromEnv(env: NodeJS.ProcessEnv = process.env): string {
   const model = env.ANTHROPIC_MODEL?.trim();
-  if (!model) throw new Error('ANTHROPIC_MODEL is not set. Put a Claude model id you have access to in .env (see .env.example).');
+  if (!model)
+    throw new Error(
+      'ANTHROPIC_MODEL is not set. Put a Claude model id you have access to in .env (see .env.example).',
+    );
   return model;
 }
 
@@ -28,6 +31,10 @@ export class TestWriter {
     this.client = opts.client ?? new Anthropic();
     this.model = opts.model ?? modelFromEnv();
     this.system = systemPrompt(opts.appUrl);
+  }
+
+  get modelId(): string {
+    return this.model;
   }
 
   get systemText(): string {

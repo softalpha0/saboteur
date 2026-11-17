@@ -70,9 +70,11 @@ export async function prepare(opts: PrepareOptions): Promise<{ dir: string }> {
     if (!opts.manifest) throw new Error('prepare: a mutant needs its manifest');
     const patch = patchPath(opts.manifest, opts.mutant);
     const check = await gitOutsideRepo(['apply', '--check', patch], dir);
-    if (check.code !== 0) throw new PrepareError('patch', `${opts.mutant.id}: patch does not apply`, check.output);
+    if (check.code !== 0)
+      throw new PrepareError('patch', `${opts.mutant.id}: patch does not apply`, check.output);
     const applied = await gitOutsideRepo(['apply', patch], dir);
-    if (applied.code !== 0) throw new PrepareError('patch', `${opts.mutant.id}: git apply failed`, applied.output);
+    if (applied.code !== 0)
+      throw new PrepareError('patch', `${opts.mutant.id}: git apply failed`, applied.output);
   }
 
   const built = await runShell(opts.buildCmd, dir, opts.logFile);

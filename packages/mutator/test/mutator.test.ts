@@ -43,7 +43,14 @@ describe('prepare + serve (real vite build, no Kane)', () => {
     const clean = await prepare({ appDir, buildCmd: 'vite build', workRoot, logFile: log });
     const cleanJs = bundle(clean.dir);
     for (const mutant of manifest.mutants) {
-      const { dir } = await prepare({ appDir, buildCmd: 'vite build', workRoot, manifest, mutant, logFile: log });
+      const { dir } = await prepare({
+        appDir,
+        buildCmd: 'vite build',
+        workRoot,
+        manifest,
+        mutant,
+        logFile: log,
+      });
       expect(bundle(dir), `${mutant.id} produced the same bundle as clean`).not.toBe(cleanJs);
       await cleanup(dir);
     }
