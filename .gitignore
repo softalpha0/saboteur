@@ -10,3 +10,6 @@ reports/*
 !reports/.gitkeep
 *.log
 .DS_Store
+
+# Per-run logs; copy a showcase run to evidence/showcase/ to commit it
+evidence/runs/
