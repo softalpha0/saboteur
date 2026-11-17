@@ -1,0 +1,11 @@
+{
+  "name": "@saboteur/agent",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "main": "src/index.ts",
+  "scripts": { "typecheck": "tsc -p tsconfig.json" },
+  "dependencies": {
+    "@anthropic-ai/sdk": "1.8.0"
+  }
+}

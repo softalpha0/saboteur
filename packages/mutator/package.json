@@ -1,0 +1,11 @@
+{
+  "name": "@saboteur/mutator",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "main": "src/index.ts",
+  "scripts": { "typecheck": "tsc -p tsconfig.json" },
+  "dependencies": {
+    "tree-kill": "1.2.2"
+  }
+}
