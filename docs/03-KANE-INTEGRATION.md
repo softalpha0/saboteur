@@ -13,6 +13,8 @@ Sources (read 2026-11-17, Kane CLI **0.10.3**, released 2026-11-07 per CHANGELOG
 - Auth + CI: `docs/user-guide/authentication.md`, `docs/user-guide/cicd.md`
 - Agents: `docs/user-guide/agents.md`, https://www.testmuai.com/kane-cli/agents.md
 
+Checked 2026-11-18 against the real `kane-cli --help` of **0.10.5**: every flag below exists. Extras we use: `testrun run --dry-run` (plan + preflight only; `saboteur doctor` runs it). `whoami` takes no `--username/--access-key`, so with basic auth `doctor` checks sign-in with `balance` (exit 2 = not signed in).
+
 ## 1. Setup (once, hour 1)
 
 ```bash

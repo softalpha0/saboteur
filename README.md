@@ -49,7 +49,9 @@ Judges: you already have Kane CLI access. This path needs **no Anthropic key**.
 ```bash
 git clone https://github.com/softalpha0/saboteur && cd saboteur
 pnpm i
-npm i -g @testmuai/kane-cli && kane-cli login
+npm i -g @testmuai/kane-cli
+kane-cli login                 # then: kane-cli config project
+pnpm saboteur doctor --replay  # Kane signed in, credits, Chrome, patches apply, app builds
 pnpm saboteur run --replay     # uses the Claude-written tests we committed; Kane still proves them
 ```
 
@@ -104,9 +106,22 @@ TypeScript · Node 20 · pnpm workspaces · Vite + React (demo shop) · **Kane C
 
 Your own app: edit `saboteur.config.json` (build/serve commands, URL, tests dir, bug patches). See [`docs/05-MUTATIONS.md`](docs/05-MUTATIONS.md).
 
+### Commands
+
+| Command | What it does |
+|---|---|
+| `pnpm saboteur doctor [--replay]` | Kane installed and signed in, credits above `minCredits`, Chrome, suite found, Kane preflight (`testrun --dry-run`), every patch applies, app builds, port free, Claude key (live mode only) |
+| `pnpm saboteur baseline` | Builds the clean app, runs every `_test.md` with healing on. Must exit 0. New tests get recorded here |
+| `pnpm saboteur attack [--only M03] [--with-generated]` | For each bug: copy the app, `git apply`, build, serve on :4173, `kane-cli testrun run ... --no-adaptive-heal`, classify |
+| `pnpm saboteur fill [--only M03]` | For each survivor of the last attack: Claude writes one `_test.md`, Kane must pass it on the clean build and fail it on the bugged build (max 3 tries) |
+| `pnpm saboteur run [--replay] [--only ...]` | doctor, baseline, attack with the starter suite (before score), re-attack survivors with generated tests already in the repo, fill what still slips through (skipped with `--replay`), re-attack, write the report (after score) |
+| `pnpm saboteur report` | Re-render `reports/latest/report.md` from `report.json` |
+
+Logs for every run: `evidence/runs/<run-id>/` (Kane NDJSON, Kane stderr, build and serve logs, one `fill-<bug>.md` transcript per survivor).
+
 ## Testing
 
-`pnpm test` (Vitest: Kane NDJSON parser, verdict rules, `_test.md` validator, report) · `pnpm biome check` · `pnpm -r typecheck`. Kane-backed checks: [`docs/09-TESTING.md`](docs/09-TESTING.md).
+`pnpm test` (Vitest: Kane NDJSON parser, verdict rules, `_test.md` validator, prompts, report, every patch applies and builds, and the fill loop and `run --replay` end to end against real builds of the shop with a scripted stand-in for `kane-cli`, so CI spends no credits) · `pnpm biome check` · `pnpm -r typecheck`. Kane-backed checks: [`docs/09-TESTING.md`](docs/09-TESTING.md).
 
 ## Project layout
 
@@ -126,7 +141,7 @@ evidence/             real run results and links
 ## Known limitations
 
 - Bugs run one at a time on a fixed port (4173), so a full attack takes a while. _TODO: real timing._
-- The demo catalog is hand-written for the demo shop; AI-proposed bugs for your own app are experimental.
+- The demo catalog is hand-written for the demo shop. `mutate --ai` (Claude proposes bugs for your own app) is not built yet.
 - Kane runs cost credits; replays of recorded tests are much cheaper than authoring runs.
 
 ## Build log

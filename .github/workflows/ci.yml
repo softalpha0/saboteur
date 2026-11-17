@@ -1,0 +1,27 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+# Lint, typecheck and unit/integration tests. No Kane credits are spent here: the Kane wrapper is
+# tested with a scripted stand-in binary (see packages/kane/test/fixtures/README.md).
+jobs:
+  check:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm biome check .
+      - run: pnpm -r typecheck
+      - run: pnpm test
