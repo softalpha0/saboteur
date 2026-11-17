@@ -1,0 +1,13 @@
+diff --git a/src/pages/OrderConfirmed.tsx b/src/pages/OrderConfirmed.tsx
+index 151585a..d7a90e2 100644
+--- a/src/pages/OrderConfirmed.tsx
++++ b/src/pages/OrderConfirmed.tsx
+@@ -19,7 +19,7 @@ export function OrderConfirmed() {
+   return (
+     <main className="confirmed">
+       <h1>Thank you for your order</h1>
+-      <p className="order-number">Order number: {order.id}</p>
++      <p className="order-number">Order number: {''}</p>
+       <ul>
+         {order.lines.map((l) => (
+           <li key={l.slug}>

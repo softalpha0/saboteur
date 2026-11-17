@@ -1,0 +1,5 @@
+{"type":"stream_start","cli_version":"0.10.5"}
+{"step":1,"status":"running","remark":"Opening home page"}
+{"type":"run_end","status":"passed","summary":"Added the Canvas Tote and the Linen Apron to the cart.","one_liner":"Added two items","reason":"objective complete","duration":14,"credits_consumed":3.5}
+{"type":"run_end","status":"failed","summary":"Applied SAVE10; the total shown was $59.38.","one_liner":"Total mismatch","reason":"Final verification failed: \"the order total shows $53.98\"","duration":11,"credits_consumed":2.1,"failure":{"message":"Final verification failed: \"the order total shows $53.98\"","step_index":2}}
+{"type":"test_md_done","overall_status":"failed","duration_s":27,"session_id":"tm-1","share_url":"https://example.invalid/share/tm-1"}

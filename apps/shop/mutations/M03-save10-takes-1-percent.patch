@@ -1,0 +1,11 @@
+diff --git a/src/lib/discount.ts b/src/lib/discount.ts
+index 4898229..ebaf7f6 100644
+--- a/src/lib/discount.ts
++++ b/src/lib/discount.ts
+@@ -1,5 +1,5 @@
+ const CODES: Record<string, number> = {
+-  SAVE10: 10,
++  SAVE10: 1,
+ };
+ 
+ export function discountPercent(code: string | null): number | null {

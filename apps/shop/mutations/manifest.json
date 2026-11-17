@@ -1,0 +1,86 @@
+{
+  "version": 1,
+  "app": "apps/shop",
+  "mutants": [
+    {
+      "id": "M01",
+      "title": "Cart total skips the last item",
+      "category": "maths",
+      "patch": "M01-cart-total-skips-last-item.patch",
+      "userImpact": "Customer is charged less than the items in the cart: the last line item is left out of the subtotal and total",
+      "where": "src/lib/cart.ts"
+    },
+    {
+      "id": "M02",
+      "title": "\"+\" quantity button does nothing",
+      "category": "interaction",
+      "patch": "M02-qty-plus-noop.patch",
+      "userImpact": "Customer cannot increase the quantity of an item with the + button",
+      "where": "src/components/QtyStepper.tsx"
+    },
+    {
+      "id": "M03",
+      "title": "Code SAVE10 takes 1% off instead of 10%",
+      "category": "maths",
+      "patch": "M03-save10-takes-1-percent.patch",
+      "userImpact": "Customer gets a much smaller discount than SAVE10 promises",
+      "where": "src/lib/discount.ts"
+    },
+    {
+      "id": "M04",
+      "title": "Shipping fee not added on orders under $50",
+      "category": "maths",
+      "patch": "M04-no-shipping-under-50.patch",
+      "userImpact": "Shop loses the $5.00 shipping fee on small orders; total is $5.00 too low",
+      "where": "src/lib/cart.ts"
+    },
+    {
+      "id": "M05",
+      "title": "Checkout accepts an email without a domain (a@)",
+      "category": "validation",
+      "patch": "M05-email-without-domain-accepted.patch",
+      "userImpact": "Orders are placed with an email address nobody can reply to",
+      "where": "src/lib/validate.ts"
+    },
+    {
+      "id": "M06",
+      "title": "\"Remove\" deletes the first item, not the clicked one",
+      "category": "state",
+      "patch": "M06-remove-deletes-first-item.patch",
+      "userImpact": "Customer clicks Remove on one item and a different item disappears",
+      "where": "src/state/cart.tsx"
+    },
+    {
+      "id": "M07",
+      "title": "Out-of-stock product can still be added to cart",
+      "category": "state",
+      "patch": "M07-out-of-stock-can-be-added.patch",
+      "userImpact": "Customer can order the Wool Beanie, which is out of stock",
+      "where": "src/pages/Product.tsx"
+    },
+    {
+      "id": "M08",
+      "title": "Order confirmation shows a blank order number",
+      "category": "display",
+      "patch": "M08-blank-order-number.patch",
+      "userImpact": "Customer has no order number to quote to support",
+      "where": "src/pages/OrderConfirmed.tsx"
+    },
+    {
+      "id": "M09",
+      "title": "Login redirects to Home instead of Account",
+      "category": "navigation",
+      "patch": "M09-login-redirects-home.patch",
+      "userImpact": "After signing in the customer lands on the home page, not My account",
+      "where": "src/pages/Login.tsx"
+    },
+    {
+      "id": "M10",
+      "title": "Cart empties on page refresh (state not saved)",
+      "category": "persistence",
+      "patch": "M10-cart-lost-on-refresh.patch",
+      "userImpact": "Customer loses everything in the cart when the page reloads",
+      "where": "src/state/cart.tsx"
+    }
+  ]
+}

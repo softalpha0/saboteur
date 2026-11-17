@@ -1,0 +1,13 @@
+diff --git a/src/pages/Product.tsx b/src/pages/Product.tsx
+index 8d13aac..853ca0b 100644
+--- a/src/pages/Product.tsx
++++ b/src/pages/Product.tsx
+@@ -30,7 +30,7 @@ export function Product() {
+       <QtyStepper value={qty} onChange={setQty} label={product.name} />
+       <button
+         type="button"
+-        disabled={!product.inStock}
++        disabled={false}
+         onClick={() => {
+           add(product.slug, qty);
+           setAdded(true);

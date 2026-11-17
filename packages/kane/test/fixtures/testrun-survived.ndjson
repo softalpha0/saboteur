@@ -1,0 +1,6 @@
+{"type":"stream_start","cli_version":"0.10.5"}
+{"type":"testrun_plan","valid":true,"parallel":1,"members":[{"path":"tests/kane/starter/login_test.md","tags":["starter"]}]}
+{"type":"testrun_start","execution_id":"exec-456","members":1,"parallel":1}
+{"type":"testrun_member_end","path":"/abs/repo/tests/kane/starter/login_test.md","test_id":"login-1","status":"passed","duration_s":9,"session_id":"s9","log_path":"/x/events.ndjson"}
+{"type":"testrun_summary","totals":{"tests":1,"passed":1,"failed":0,"broken":0,"skipped":0,"authored":0},"duration_s":9,"cancelled":false,"execution":{"id":"exec-456","status":"passed"}}
+{"type":"testrun_done","execution_id":"exec-456","overall_status":"passed"}

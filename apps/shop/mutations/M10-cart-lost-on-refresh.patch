@@ -1,0 +1,13 @@
+diff --git a/src/state/cart.tsx b/src/state/cart.tsx
+index ba15605..c69c32a 100644
+--- a/src/state/cart.tsx
++++ b/src/state/cart.tsx
+@@ -17,7 +17,7 @@ type CartApi = CartState & {
+ const CartContext = createContext<CartApi | null>(null);
+ 
+ export function CartProvider({ children }: { children: ReactNode }) {
+-  const [state, setState] = useState<CartState>(() => load<CartState>(KEY, { lines: [], code: null }));
++  const [state, setState] = useState<CartState>(() => ({ lines: [], code: null }));
+ 
+   useEffect(() => {
+     save(KEY, state);

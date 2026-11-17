@@ -1,0 +1,10 @@
+diff --git a/src/lib/validate.ts b/src/lib/validate.ts
+index 3a7b3db..cdfb863 100644
+--- a/src/lib/validate.ts
++++ b/src/lib/validate.ts
+@@ -1,4 +1,4 @@
+-const EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
++const EMAIL = /^[^\s@]+@/;
+ 
+ export function isValidEmail(value: string): boolean {
+   return EMAIL.test(value.trim());

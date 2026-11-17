@@ -1,0 +1,13 @@
+diff --git a/src/pages/Login.tsx b/src/pages/Login.tsx
+index 585578f..4fbfb62 100644
+--- a/src/pages/Login.tsx
++++ b/src/pages/Login.tsx
+@@ -12,7 +12,7 @@ export function Login() {
+   function submit(e: FormEvent) {
+     e.preventDefault();
+     if (auth.signIn(email, password)) {
+-      navigate('/account');
++      navigate('/');
+     } else {
+       setError('Email or password is incorrect');
+     }

@@ -1,0 +1,13 @@
+diff --git a/src/lib/cart.ts b/src/lib/cart.ts
+index 7e943c2..e2d8d44 100644
+--- a/src/lib/cart.ts
++++ b/src/lib/cart.ts
+@@ -22,7 +22,7 @@ export function lineTotal(line: CartLine): number {
+ 
+ export function subtotal(lines: CartLine[]): number {
+   let sum = 0;
+-  for (let i = 0; i < lines.length; i++) {
++  for (let i = 0; i < lines.length - 1; i++) {
+     const line = lines[i];
+     if (line) sum += lineTotal(line);
+   }

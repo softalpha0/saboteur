@@ -1,0 +1,11 @@
+{"type":"stream_start","cli_version":"0.10.5","v":1,"ts":"2026-11-18T09:00:00.000Z"}
+{"type":"testrun_plan","valid":true,"parallel":1,"members":[{"path":"tests/kane/starter/browse_add_to_cart_test.md","test_id":"browse-1","tags":["starter"]},{"path":"tests/kane/starter/cart_shows_item_test.md","test_id":"cart-1","tags":["starter"]}],"v":1}
+{"type":"testrun_start","execution_id":"exec-123","members":2,"parallel":1,"v":1}
+{"type":"testrun_member_start","path":"tests/kane/starter/browse_add_to_cart_test.md","session_id":"s1","log_path":"/home/dev/.testmuai/kaneai/sessions/s1/events.ndjson"}
+{"type":"testrun_progress","done":0,"total":2}
+{"type":"testrun_member_end","path":"tests/kane/starter/browse_add_to_cart_test.md","test_id":"browse-1","status":"passed","duration_s":12,"session_id":"s1","log_path":"/home/dev/.testmuai/kaneai/sessions/s1/events.ndjson","v":1}
+{"type":"testrun_member_start","path":"tests\\kane\\starter\\cart_shows_item_test.md","session_id":"s2","log_path":"C:\\Users\\dev\\.testmuai\\kaneai\\sessions\\s2\\events.ndjson"}
+{"type":"testrun_member_end","path":"tests\\kane\\starter\\cart_shows_item_test.md","test_id":"cart-1","status":"failed","duration_s":19,"session_id":"s2","log_path":"C:\\Users\\dev\\.testmuai\\kaneai\\sessions\\s2\\events.ndjson","failure":{"message":"Final verification failed: \"a line item named \"Ceramic Mug\" is listed with a unit price of $14.50\"","step_index":1},"v":1}
+{"type":"warning","message":"something non-fatal"}
+{"type":"testrun_summary","totals":{"tests":2,"passed":1,"failed":1,"broken":0,"skipped":0,"authored":0},"duration_s":33,"upload":{"status":"uploaded","url":"https://example.invalid/test-manager/exec-123"},"cancelled":false,"execution":{"id":"exec-123","status":"failed"}}
+{"type":"testrun_done","execution_id":"exec-123","overall_status":"failed"}
