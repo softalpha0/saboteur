@@ -1,0 +1,138 @@
+# Saboteur
+
+**Find out which bugs your Kane tests would miss, then let Claude write the tests that catch them, proven by Kane.**
+
+[![CI](https://github.com/softalpha0/saboteur/actions/workflows/ci.yml/badge.svg)](https://github.com/softalpha0/saboteur/actions/workflows/ci.yml)
+![Verified with Kane CLI](https://img.shields.io/badge/verified%20with-Kane%20CLI-6b4fbb)
+
+▶️ **Demo video:** _TODO (YouTube link)_ · 📊 **Showcase report:** [`evidence/README.md`](evidence/README.md) · 🏁 Built for the [KaneCLI Online Hackathon](https://www.kaneclihack.sh/) (TestMu AI, Nov 2026)
+
+> Before: **_TODO_/10** planted bugs caught by the starter suite → After: **_TODO_/10**. Numbers from a real run, see evidence.
+
+---
+
+## Contents
+
+1. [The problem](#the-problem)
+2. [What it does](#what-it-does)
+3. [Try it](#try-it)
+4. [How it works](#how-it-works)
+5. [Guarantees](#guarantees)
+6. [Verified evidence](#verified-evidence)
+7. [Tech stack](#tech-stack)
+8. [Run it yourself](#run-it-yourself)
+9. [Testing](#testing)
+10. [Project layout](#project-layout)
+11. [Known limitations](#known-limitations)
+12. [Build log](#build-log)
+13. [Credits](#credits)
+
+## The problem
+
+Coding agents write our apps and our end-to-end tests now. A green suite tells you the app works today. It doesn't tell you whether those tests would notice tomorrow's bug. A browser test can click all the way through checkout and still pass when the total is wrong.
+
+## What it does
+
+1. **Plants bugs.** Ten small, realistic bugs (wrong total, dead "+" button, 1% instead of 10% discount, bad redirect…), one at a time, each as a real code patch.
+2. **Lets Kane hunt.** Runs your Kane CLI suite against each broken build in real Chrome, with healing turned off so a broken page fails instead of being worked around.
+3. **Scores the suite.** Killed = Kane caught it. Survived = it got through.
+4. **Closes the gaps.** For each survivor, Claude writes a new `_test.md`. Kane runs it twice: it must **pass on the correct app** and **fail on the bugged app**. If not, Kane's own failure message goes back to Claude for another try (max 3).
+5. **Reports.** Before/after score, per-bug table, Kane failure messages, links to every run.
+
+- **Agent used:** Claude (Anthropic API) writes and revises tests. Built with Claude Code.
+- **What Kane does:** every pass/fail verdict in Saboteur is a Kane verdict (`testrun run`, `testmd run`, `--no-adaptive-heal`).
+
+## Try it
+
+Judges: you already have Kane CLI access. This path needs **no Anthropic key**.
+
+```bash
+git clone https://github.com/softalpha0/saboteur && cd saboteur
+pnpm i
+npm i -g @testmuai/kane-cli && kane-cli login
+pnpm saboteur run --replay     # uses the Claude-written tests we committed; Kane still proves them
+```
+
+Live loop (Claude writes new tests): copy `.env.example` to `.env`, set `ANTHROPIC_API_KEY` and `ANTHROPIC_MODEL`, then `pnpm saboteur run`.
+
+## How it works
+
+```mermaid
+flowchart LR
+  A[Clean shop] -->|Kane suite must pass| B[Baseline OK]
+  B --> C{For each bug patch}
+  C -->|apply + build + serve| D[Bugged shop]
+  D -->|kane-cli testrun --no-adaptive-heal| E{Kane verdict}
+  E -->|a test failed| K[Killed]
+  E -->|all passed| S[Survived]
+  S --> F[Claude writes _test.md]
+  F -->|Kane: must PASS on clean| G{ok?}
+  G -->|no: Kane failure text| F
+  G -->|yes| H[Kane: must FAIL on bugged]
+  H -->|passed: Kane summary| F
+  H -->|failed| P[Proven test saved]
+  P --> R[Re-attack -> after score]
+```
+
+More diagrams (sequence, mutant state machine): [`docs/04-ARCHITECTURE.md`](docs/04-ARCHITECTURE.md).
+
+## Guarantees
+
+| Guarantee | How |
+|---|---|
+| A test is only added if Kane proves it | Accepted only on Kane exit 0 on clean **and** exit 1 on the bugged build |
+| No healing around bugs | Bugged builds run with `--no-adaptive-heal` |
+| The suite is valid before attacking | Baseline must pass on the clean build; any test authored during a bugged run invalidates that run |
+| Product code is never changed | Bugs are applied to a temp copy; Saboteur only writes test files |
+| Every number is traceable | Each verdict stores Kane's execution id, failure message and link |
+
+## Verified evidence
+
+See [`evidence/README.md`](evidence/README.md): per-bug Kane results, Test Manager links, closed-loop transcripts, launch posts. _TODO after showcase run._
+
+## Tech stack
+
+TypeScript · Node 20 · pnpm workspaces · Vite + React (demo shop) · **Kane CLI 0.10.x** · Anthropic SDK (Claude) · commander · Vitest · Biome
+
+## Run it yourself
+
+1. Node 20+, pnpm, Chrome on PATH.
+2. `npm i -g @testmuai/kane-cli`, then `kane-cli login` and `kane-cli config project`.
+3. `pnpm i`
+4. `pnpm saboteur doctor` (checks Kane sign-in, credits, Chrome, app build)
+5. `pnpm saboteur run` (or `--replay`)
+
+Your own app: edit `saboteur.config.json` (build/serve commands, URL, tests dir, bug patches). See [`docs/05-MUTATIONS.md`](docs/05-MUTATIONS.md).
+
+## Testing
+
+`pnpm test` (Vitest: Kane NDJSON parser, verdict rules, `_test.md` validator, report) · `pnpm biome check` · `pnpm -r typecheck`. Kane-backed checks: [`docs/09-TESTING.md`](docs/09-TESTING.md).
+
+## Project layout
+
+```
+apps/shop/            demo shop + mutations/ (bug patches) + ROUTES.md
+packages/cli          saboteur CLI
+packages/kane         the only code that calls kane-cli
+packages/agent        Claude prompts + _test.md validator
+packages/mutator      apply patch, build, serve
+packages/report       report.json + report.md
+tests/kane/starter    hand-written Kane tests
+tests/kane/generated  Claude-written, Kane-proven tests
+docs/                 PRD, rules, Kane integration, architecture, plan
+evidence/             real run results and links
+```
+
+## Known limitations
+
+- Bugs run one at a time on a fixed port (4173), so a full attack takes a while. _TODO: real timing._
+- The demo catalog is hand-written for the demo shop; AI-proposed bugs for your own app are experimental.
+- Kane runs cost credits; replays of recorded tests are much cheaper than authoring runs.
+
+## Build log
+
+[`BUILD_LOG.md`](BUILD_LOG.md)
+
+## Credits
+
+Built solo by softalpha0 for the KaneCLI Online Hackathon by [TestMu AI](https://www.testmuai.com/). Kane CLI docs: https://github.com/LambdaTest/kane-cli. MIT licence.

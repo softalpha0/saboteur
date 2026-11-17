@@ -1,0 +1,31 @@
+{
+  "name": "saboteur",
+  "private": true,
+  "version": "0.1.0",
+  "description": "Plants real bugs in your app, lets Kane CLI try to catch them, and has Claude write the Kane tests for every bug that got through.",
+  "license": "MIT",
+  "type": "module",
+  "engines": {
+    "node": ">=20"
+  },
+  "packageManager": "pnpm@10.28.0",
+  "scripts": {
+    "saboteur": "tsx packages/cli/src/index.ts",
+    "test": "vitest run",
+    "lint": "biome check .",
+    "typecheck": "pnpm -r typecheck"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "^1.9.4",
+    "@types/node": "^22.10.0",
+    "tsx": "^4.19.2",
+    "typescript": "^5.7.2",
+    "vitest": "^2.1.8"
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "@biomejs/biome",
+      "esbuild"
+    ]
+  }
+}

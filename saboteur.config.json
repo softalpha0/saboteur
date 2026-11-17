@@ -1,0 +1,13 @@
+{
+  "app": {
+    "dir": "apps/shop",
+    "build": "vite build",
+    "serve": "vite preview --port 4173 --strictPort",
+    "url": "http://localhost:4173",
+    "routes": "apps/shop/ROUTES.md"
+  },
+  "tests": { "dir": "tests/kane", "generatedDir": "tests/kane/generated" },
+  "mutations": { "manifest": "apps/shop/mutations/manifest.json" },
+  "kane": { "parallel": 1, "suiteTimeoutMin": 15, "minCredits": 200 },
+  "agent": { "maxAttempts": 3 }
+}
