@@ -17,3 +17,11 @@ export {
   validateTest,
 } from './validate.ts';
 export { TestWriter, type Turn, type WriterReply, modelFromEnv } from './writer.ts';
+export {
+  MutantProposer,
+  type ProposeInput,
+  type Proposal,
+  checkProposal,
+  parseProposals,
+  proposePrompt,
+} from './propose.ts';

@@ -1,14 +1,18 @@
 import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 import type Anthropic from '@anthropic-ai/sdk';
 import { describe, expect, it } from 'vitest';
 import {
   TestWriter,
+  checkProposal,
   fill,
   firstPrompt,
   modelFromEnv,
   parseAnswer,
+  parseProposals,
+  proposePrompt,
   retryPrompt,
   validateTest,
 } from '../src/index.ts';
@@ -150,5 +154,48 @@ describe('TestWriter (stub client, no network)', () => {
     expect(last.system).toContain('http://localhost:4173');
     expect(last.messages.map((m) => m.role)).toEqual(['user', 'assistant', 'user']);
     expect(last.messages[2]?.content).toContain('Kane said: Kane said no');
+  });
+});
+
+describe('mutate --ai proposals', () => {
+  const shop = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../../../apps/shop');
+  const good = {
+    title: 'Mug price typo',
+    category: 'display',
+    userImpact: 'Mug shows the wrong price',
+    file: 'src/data/products.ts',
+    find: 'priceCents: 1450',
+    replace: 'priceCents: 1540',
+    kaneCheck: 'Open the home page and verify the Ceramic Mug shows $15.40',
+  };
+
+  it('parseProposals keeps complete entries and reports broken ones', () => {
+    const text = `\`\`\`json\n${JSON.stringify({ mutants: [good, { title: 'x' }] })}\n\`\`\``;
+    const r = parseProposals(text);
+    expect(r.proposals).toHaveLength(1);
+    expect(r.problems[0]).toMatch(/mutant 2: missing/);
+    expect(parseProposals('not json').problems[0]).toMatch(/not valid JSON/);
+  });
+
+  it('checkProposal: exactly-once find, file inside the app, small edit', () => {
+    expect(checkProposal(good, shop)).toBeUndefined();
+    expect(checkProposal({ ...good, find: 'inStock: true' }, shop)).toMatch(/exactly once/);
+    expect(checkProposal({ ...good, file: '../package.json' }, shop)).toMatch(/inside the app/);
+    expect(checkProposal({ ...good, file: 'src/nope.ts' }, shop)).toMatch(/not found/);
+    expect(checkProposal({ ...good, replace: good.find }, shop)).toMatch(/same as find/);
+  });
+
+  it('proposePrompt includes routes, existing bugs and source files', () => {
+    const p = proposePrompt({
+      appUrl: 'http://localhost:4173',
+      routes: 'ROUTES',
+      files: [{ path: 'src/a.ts', content: 'const a = 1;' }],
+      existing: [{ id: 'M01', title: 'Total skips last', where: 'src/lib/cart.ts' }],
+      count: 3,
+    });
+    expect(p.system).toContain('http://localhost:4173');
+    expect(p.user).toContain('Propose 3 new bugs');
+    expect(p.user).toContain('- M01 Total skips last (src/lib/cart.ts)');
+    expect(p.user).toContain('--- src/a.ts ---\nconst a = 1;');
   });
 });

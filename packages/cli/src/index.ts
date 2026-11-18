@@ -3,6 +3,7 @@ import path from 'node:path';
 import { Command } from 'commander';
 import { cmdAttack, cmdBaseline, cmdDoctor, cmdFill, cmdReport, cmdRun } from './commands.ts';
 import { type Resolved, loadConfig, loadDotEnv } from './config.ts';
+import { cmdMutate } from './mutate.ts';
 import { CreditGuardError, InvalidRunError } from './pipeline.ts';
 import { ui } from './ui.ts';
 
@@ -66,6 +67,29 @@ program
   .option('--only <ids>', 'comma-separated mutant ids')
   .action((o: { replay?: boolean; only?: string }) =>
     main(() => cmdRun(cfg(), { replay: Boolean(o.replay), only: o.only })),
+  );
+
+program
+  .command('mutate')
+  .description(
+    'S4: Claude proposes new bugs for your app; kept only if they apply, build, and Kane sees them',
+  )
+  .option('--ai', 'have Claude propose bugs (the only mode; hand-written patches go in the mutations folder)')
+  .option('--count <n>', 'how many bugs to ask for', '5')
+  .option('--dry-run', 'check that proposals apply and build; no Kane runs, nothing saved')
+  .action((o: { ai?: boolean; count: string; dryRun?: boolean }) =>
+    main(async () => {
+      if (!o.ai) {
+        ui.fail(
+          'use "saboteur mutate --ai". Hand-written bugs: add a patch + manifest entry (docs/05-MUTATIONS.md).',
+        );
+        return 1;
+      }
+      const count = Number(o.count);
+      if (!Number.isInteger(count) || count < 1 || count > 20)
+        throw new Error('--count must be a whole number from 1 to 20');
+      return cmdMutate(cfg(), { count, dryRun: o.dryRun });
+    }),
   );
 
 program
