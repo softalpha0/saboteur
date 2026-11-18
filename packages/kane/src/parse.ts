@@ -170,7 +170,7 @@ export function digestTestmd(events: KaneEvent[]): TestmdDigest {
   }
 
   if (lastFailure) {
-    d.failureText = lastFailure.message;
+    d.failureText = joinKaneText(lastFailure.message, lastFailedRunEnd);
     d.failureStepIndex = lastFailure.stepIndex;
   } else if (lastFailedRunEnd) {
     d.failureText = lastFailedRunEnd;
@@ -178,4 +178,26 @@ export function digestTestmd(events: KaneEvent[]): TestmdDigest {
   if (summaries.length) d.summaryText = summaries.join('\n');
   d.links = [...links];
   return d;
+}
+
+/** Append Kane's extra text when it says something the first text does not already contain. */
+export function joinKaneText(first: string, extra: string | undefined): string {
+  if (!extra) return first;
+  const parts = extra.split(' | ').filter((p) => p && !first.includes(p));
+  return parts.length ? `${first}\n${parts.join('\n')}` : first;
+}
+
+/**
+ * Kane's own explanation of a failed member, from its session log (log_path, an events.ndjson file).
+ * Returns undefined when the log is missing or adds nothing beyond failure.message.
+ */
+export function detailFromSessionLog(events: KaneEvent[], message: string): string | undefined {
+  const d = digestTestmd(events);
+  const candidates = [d.failureText, d.summaryText].filter((t): t is string => Boolean(t));
+  const extra = candidates
+    .flatMap((t) => t.split(/\n| \| /))
+    .map((t) => t.trim())
+    .filter((t) => t && !message.includes(t));
+  const unique = [...new Set(extra)];
+  return unique.length ? unique.join('\n') : undefined;
 }

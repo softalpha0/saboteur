@@ -31,7 +31,7 @@ const label: Record<string, string> = {
 function caught(m: MutantReport): { file?: string; message?: string } {
   const r = m.after?.verdict === 'killed' ? m.after : m.before;
   const c = r.caughtBy[0];
-  return { file: c?.file, message: c?.message };
+  return { file: c?.file, message: c?.detail ? `${c.message ?? ''} ${c.detail}` : c?.message };
 }
 
 export function renderMarkdown(report: Report, reportDir: string): string {

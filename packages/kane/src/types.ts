@@ -14,7 +14,12 @@ export type MemberResult = {
   sessionId?: string;
   logPath?: string;
   authored: boolean;
-  failure?: { message: string; stepIndex?: number };
+  /**
+   * `message` is Kane's failure.message as-is. `detail` is extra Kane text about the same failure, read
+   * from the member's own session log (run_end reason / summary), because the real message can be terse
+   * (e.g. "assertion_failed: @ step 5"). Both are Kane's words; Saboteur never writes either.
+   */
+  failure?: { message: string; stepIndex?: number; detail?: string };
 };
 
 export type SuiteTotals = {
@@ -61,6 +66,21 @@ export type TestFileRun = {
   /** Kane's own summary of what happened (run_end summary / one_liner), used when a test passes on a mutant. */
   summaryText?: string;
   evidencePacks: string[];
+  rawLogPath: string;
+  progressLogPath: string;
+  stderrTail: string;
+};
+
+/** `kane-cli run` (one-shot objective). Completion is `run_end` (docs/03 §3.3). */
+export type ObjectiveRun = {
+  exitCode: number;
+  killed: boolean;
+  status?: 'passed' | 'failed';
+  summary?: string;
+  oneLiner?: string;
+  reason?: string;
+  credits?: number;
+  testUrl?: string;
   rawLogPath: string;
   progressLogPath: string;
   stderrTail: string;

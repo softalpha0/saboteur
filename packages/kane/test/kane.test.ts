@@ -11,9 +11,12 @@ import {
   classifyMutant,
   digestTestmd,
   digestTestrun,
+  enrichFailures,
+  joinKaneText,
   parseAll,
   parseCredits,
   redactArgs,
+  runObjective,
   runSuite,
   runTestFile,
 } from '../src/index.ts';
@@ -87,7 +90,8 @@ describe('digestTestmd', () => {
     const d = digestTestmd(parseAll(read('testmd-failed.ndjson')));
     expect(d.done).toBe(true);
     expect(d.overallStatus).toBe('failed');
-    expect(d.failureText).toBe('Final verification failed: "the order total shows $53.98"');
+    // failure.message first, then the failed run_end's one_liner (Kane's words, appended, never rewritten)
+    expect(d.failureText).toBe('Final verification failed: "the order total shows $53.98"\nTotal mismatch');
     expect(d.failureStepIndex).toBe(2);
     expect(d.shareUrl).toBe('https://example.invalid/share/tm-1');
     expect(d.summaryText).toContain('the total shown was $59.38');
@@ -245,5 +249,76 @@ describe('real Kane output (hour-1 spike, Kane CLI 0.10.5 on Windows)', () => {
     const c = classifyMutant({ exitCode: 1, members: d.members, totals: d.totals, killed: false });
     expect(c.verdict).toBe('killed');
     expect(c.caughtBy[0]?.file).toBe('browse_add_to_cart_test.md');
+  });
+});
+
+describe('richer failure text (Kane session log)', () => {
+  it('joinKaneText keeps the message and appends only new Kane text', () => {
+    expect(joinKaneText('assertion_failed: @ step 5', 'Badge shows 0 | assertion_failed: @ step 5')).toBe(
+      'assertion_failed: @ step 5\nBadge shows 0',
+    );
+    expect(joinKaneText('a', undefined)).toBe('a');
+  });
+
+  it('enrichFailures adds detail from the member log, never changes status or message', () => {
+    const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'saboteur-log-'));
+    const log = path.join(dir, 'events.ndjson');
+    fs.writeFileSync(
+      log,
+      `${JSON.stringify({ type: 'run_end', status: 'failed', one_liner: 'Badge mismatch', reason: 'The cart badge shows 0, expected 1' })}\n`,
+    );
+    const members = [
+      {
+        file: 'a_test.md',
+        path: 'a_test.md',
+        status: 'failed' as const,
+        durationS: 1,
+        authored: false,
+        logPath: log,
+        failure: { message: 'assertion_failed: @ step 5', stepIndex: 1 },
+      },
+      {
+        file: 'b_test.md',
+        path: 'b_test.md',
+        status: 'failed' as const,
+        durationS: 1,
+        authored: false,
+        logPath: path.join(dir, 'missing.ndjson'),
+        failure: { message: 'x' },
+      },
+    ];
+    enrichFailures(members);
+    expect(members[0]?.failure).toEqual({
+      message: 'assertion_failed: @ step 5',
+      stepIndex: 1,
+      detail: 'Badge mismatch\nThe cart badge shows 0, expected 1',
+    });
+    expect(members[0]?.status).toBe('failed');
+    expect(members[1]?.failure).toEqual({ message: 'x' });
+  });
+});
+
+describe('runObjective (kane-cli run, stand-in binary)', () => {
+  it('passes the objective, url and limits, reads run_end', async () => {
+    const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'saboteur-obj-'));
+    const fx = path.join(dir, 'run.ndjson');
+    fs.writeFileSync(
+      fx,
+      `${JSON.stringify({ type: 'run_end', status: 'passed', summary: 'Saw total $34.99', credits_consumed: 4.2 })}\n`,
+    );
+    process.env.KANE_CLI_BIN = fixture('fake-kane.mjs');
+    process.env.FAKE_KANE_FIXTURE = fx;
+    process.env.FAKE_KANE_EXIT = '0';
+    const r = await runObjective({
+      objective: 'Verify the total is wrong',
+      url: 'http://localhost:4173',
+      cwd: dir,
+      logDir: dir,
+      label: 'obj',
+    });
+    expect(r).toMatchObject({ exitCode: 0, status: 'passed', summary: 'Saw total $34.99', credits: 4.2 });
+    expect(fs.readFileSync(r.progressLogPath, 'utf8')).toContain(
+      'argv: run Verify the total is wrong --agent --headless --max-steps 40 --timeout 300 --url http://localhost:4173',
+    );
   });
 });
