@@ -42,11 +42,20 @@ export function renderMarkdown(report: Report, reportDir: string): string {
     `Run \`${report.runId}\` · mode **${report.mode}** · Kane CLI ${report.kaneCliVersion ?? 'unknown'} · app \`${report.app}\` at ${report.appUrl}`,
     '',
   );
-  lines.push(`**Before: ${scoreText(report.before)}** (starter suite, ${report.suiteBefore.length} tests)  `);
-  lines.push(
-    `**After: ${scoreText(report.after)}** (with generated tests, ${report.suiteAfter.length} tests)`,
-    '',
-  );
+  if (report.mode === 'attack-only') {
+    lines.push(
+      `**Score: ${scoreText(report.before)}** (${report.suiteBefore.length} tests). Fill the gaps, then \`saboteur run\` for a before/after score.`,
+      '',
+    );
+  } else {
+    lines.push(
+      `**Before: ${scoreText(report.before)}** (starter suite, ${report.suiteBefore.length} tests)  `,
+    );
+    lines.push(
+      `**After: ${scoreText(report.after)}** (with generated tests, ${report.suiteAfter.length} tests)`,
+      '',
+    );
+  }
   const excluded = report.after.errors + report.after.invalid + report.after.rejected;
   if (excluded > 0)
     lines.push(`${excluded} mutant(s) excluded from the score (error, invalid or rejected). See below.`, '');

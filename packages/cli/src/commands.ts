@@ -94,12 +94,17 @@ function reportFrom(
 
 function printScores(report: Report, reportsDir: string) {
   ui.title('Result');
-  console.log(
-    `  Before: ${pc.bold(scoreText(report.before))}   (starter suite, ${report.suiteBefore.length} tests)`,
-  );
-  console.log(
-    `  After:  ${pc.bold(pc.green(scoreText(report.after)))}   (with generated tests, ${report.suiteAfter.length} tests)`,
-  );
+  if (report.mode === 'attack-only') {
+    // A plain attack has one suite and one score; "after" only exists once fill has added tests.
+    console.log(`  Score: ${pc.bold(scoreText(report.before))}   (${report.suiteBefore.length} tests)`);
+  } else {
+    console.log(
+      `  Before: ${pc.bold(scoreText(report.before))}   (starter suite, ${report.suiteBefore.length} tests)`,
+    );
+    console.log(
+      `  After:  ${pc.bold(pc.green(scoreText(report.after)))}   (with generated tests, ${report.suiteAfter.length} tests)`,
+    );
+  }
   const excluded = report.after.errors + report.after.invalid + report.after.rejected;
   if (excluded)
     ui.warn(`${excluded} bug(s) excluded from the score (error/invalid/rejected); see the report`);

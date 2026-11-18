@@ -81,6 +81,11 @@ export function renderHtml(report: Report, reportDir: string): string {
 
   const b = report.before;
   const a = report.after;
+  const scoreCards =
+    report.mode === 'attack-only'
+      ? `  <div class="card"><div class="sub">Score (${report.suiteBefore.length} tests)</div><div class="big">${esc(scoreText(b))}</div><div class="bar"><div style="width:${pct(b.killed, b.survived)}%"></div></div></div>`
+      : `  <div class="card"><div class="sub">Before (starter suite, ${report.suiteBefore.length} tests)</div><div class="big">${esc(scoreText(b))}</div><div class="bar"><div style="width:${pct(b.killed, b.survived)}%"></div></div></div>
+  <div class="card"><div class="sub">After (with generated tests, ${report.suiteAfter.length} tests)</div><div class="big">${esc(scoreText(a))}</div><div class="bar"><div style="width:${pct(a.killed, a.survived)}%"></div></div></div>`;
   return `<!doctype html>
 <html lang="en">
 <head>
@@ -122,8 +127,7 @@ code { font-size: 12px; }
 <h1>Saboteur report</h1>
 <div class="meta">Run <code>${esc(report.runId)}</code> · mode ${esc(report.mode)} · Kane CLI ${esc(report.kaneCliVersion ?? 'unknown')} · ${esc(report.app)} at ${esc(report.appUrl)}</div>
 <div class="scores">
-  <div class="card"><div class="sub">Before (starter suite, ${report.suiteBefore.length} tests)</div><div class="big">${esc(scoreText(b))}</div><div class="bar"><div style="width:${pct(b.killed, b.survived)}%"></div></div></div>
-  <div class="card"><div class="sub">After (with generated tests, ${report.suiteAfter.length} tests)</div><div class="big">${esc(scoreText(a))}</div><div class="bar"><div style="width:${pct(a.killed, a.survived)}%"></div></div></div>
+${scoreCards}
   <div class="card"><div class="sub">Baseline on the clean build</div><div class="big">exit ${report.baseline.exitCode}</div><div class="sub">${report.baseline.authored} recorded during baseline${report.baseline.executionId ? ` · <code>${esc(report.baseline.executionId)}</code>` : ''}</div></div>
 </div>
 <h2>Per bug</h2>
