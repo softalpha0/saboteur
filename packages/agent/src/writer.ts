@@ -13,7 +13,18 @@ export function modelFromEnv(env: NodeJS.ProcessEnv = process.env): string {
     throw new Error(
       'ANTHROPIC_MODEL is not set. Put a Claude model id you have access to in .env (see .env.example).',
     );
+  if (/^sk[-_]/i.test(model) || model.length > 80) {
+    // Never echo it: this is almost always an API key pasted into the wrong line.
+    throw new Error(
+      'ANTHROPIC_MODEL looks like an API key, not a model id. Put the key in ANTHROPIC_API_KEY and a model id (e.g. claude-...) in ANTHROPIC_MODEL.',
+    );
+  }
   return model;
+}
+
+/** Blank out anything shaped like a secret key (sk-...) before it is printed or saved. */
+export function redactSecrets(text: string): string {
+  return text.replace(/sk-[A-Za-z0-9_-]{12,}/g, 'sk-***redacted***');
 }
 
 /**

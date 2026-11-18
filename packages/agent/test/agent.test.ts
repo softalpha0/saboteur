@@ -13,6 +13,7 @@ import {
   parseAnswer,
   parseProposals,
   proposePrompt,
+  redactSecrets,
   retryPrompt,
   validateTest,
 } from '../src/index.ts';
@@ -197,5 +198,25 @@ describe('mutate --ai proposals', () => {
     expect(p.user).toContain('Propose 3 new bugs');
     expect(p.user).toContain('- M01 Total skips last (src/lib/cart.ts)');
     expect(p.user).toContain('--- src/a.ts ---\nconst a = 1;');
+  });
+});
+
+describe('secrets', () => {
+  it('rejects an API key in ANTHROPIC_MODEL without echoing it', () => {
+    const key = 'sk-ant-api03-ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+    let msg = '';
+    try {
+      modelFromEnv({ ANTHROPIC_MODEL: key });
+    } catch (e) {
+      msg = String(e);
+    }
+    expect(msg).toMatch(/looks like an API key/);
+    expect(msg).not.toContain(key);
+  });
+  it('redactSecrets blanks key-shaped strings', () => {
+    expect(redactSecrets('404 model: sk-ant-usr-1Hcstwn_abc-DEF1234567 not found')).toBe(
+      '404 model: sk-***redacted*** not found',
+    );
+    expect(redactSecrets('claude-opus-5-5')).toBe('claude-opus-5-5');
   });
 });

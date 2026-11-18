@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 import path from 'node:path';
+import { redactSecrets } from '@saboteur/agent';
 import { Command } from 'commander';
 import { cmdAttack, cmdBaseline, cmdDoctor, cmdFill, cmdReport, cmdRun } from './commands.ts';
 import { type Resolved, loadConfig, loadDotEnv } from './config.ts';
@@ -28,8 +29,13 @@ async function main(fn: () => Promise<number>) {
     // Known, user-fixable problems print one line. SABOTEUR_DEBUG=1 shows the stack for anything else.
     const debug = Boolean(process.env.SABOTEUR_DEBUG);
     if (err instanceof CreditGuardError || err instanceof InvalidRunError || !(err instanceof Error))
-      ui.fail(String(err instanceof Error ? err.message : err));
-    else ui.fail(debug ? (err.stack ?? err.message) : `${err.message}  (set SABOTEUR_DEBUG=1 for details)`);
+      ui.fail(redactSecrets(String(err instanceof Error ? err.message : err)));
+    else
+      ui.fail(
+        redactSecrets(
+          debug ? (err.stack ?? err.message) : `${err.message}  (set SABOTEUR_DEBUG=1 for details)`,
+        ),
+      );
     process.exitCode = 1;
   }
 }

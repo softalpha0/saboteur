@@ -9,7 +9,13 @@ export function findTests(dir: string): string[] {
     for (const e of fs.readdirSync(d, { withFileTypes: true })) {
       const p = path.join(d, e.name);
       if (e.isDirectory()) {
-        if (e.name.startsWith('output-') || e.name === 'node_modules' || e.name.startsWith('.')) continue;
+        if (
+          e.name.startsWith('output-') ||
+          e.name === 'node_modules' ||
+          e.name === 'quarantine' ||
+          e.name.startsWith('.')
+        )
+          continue;
         walk(p);
       } else if (e.name.endsWith('_test.md')) {
         out.push(p);

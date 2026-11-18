@@ -38,6 +38,7 @@ describe('mutation catalog', () => {
 
   it('selectMutants filters by id and rejects unknown ids', () => {
     expect(selectMutants(manifest, 'm03,M01').map((m) => m.id)).toEqual(['M01', 'M03']);
+    expect(selectMutants(manifest, 'M01 M03 M08').map((m) => m.id)).toEqual(['M01', 'M03', 'M08']);
     expect(() => selectMutants(manifest, 'M99')).toThrow(/M99/);
   });
 
