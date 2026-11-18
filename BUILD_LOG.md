@@ -9,7 +9,7 @@ One dated line per block. Real results only: exit codes, credits used, what brok
 | 2026-11-18 00:30 | Shop M1 built per ROUTES.md; Vitest checks all 5 worked examples | Builds, typechecks | 0 | |
 | 2026-11-18 00:40 | 10 mutants (M01–M10) as patches + manifest. Each applies to a fresh copy, builds, changes the bundle. Dev-only browser sanity check (not in repo): clean build passes all 10 checks, each patch breaks its own check | OK | 0 | |
 | 2026-11-18 01:00 | packages/kane (spawn, NDJSON, verdicts), mutator, agent (prompts, validator, Claude writer), report, cli (doctor, baseline, attack, fill, run, report). 54 tests, incl. fill loop + `run --replay` end to end with a scripted Kane stand-in. Biome + typecheck clean | No real Kane run yet (no login on the build box) | 0 | Run the spike on a signed-in machine |
-| 2026-11-18 __:__ | Spike: replay fails on broken badge with `--no-adaptive-heal`? | | | |
+| 2026-11-18 01:55 | **Spike (Windows, Kane 0.10.5):** run 1 `testmd run` on clean exit 0 (recorded). Badge broken by hand (`const count = 0`). Run 2 `testmd run --no-adaptive-heal` exit 1. Run 3 `testrun run --no-adaptive-heal` exit 1, member `failed`, `failure.message: "assertion_failed: @ step 5"`, `authored: 0`. NDJSON saved to `evidence/spike/` and used as a parser fixture | **Pass**: replay re-checks assertions. Attack stays replay + `--no-adaptive-heal` | ~19 for the first three runs (10531.35 → 10512.51) | Commit the recording, baseline all 4 starter tests |
 | | Shop M1 complete, starter suite `testrun` exit 0 | | | |
 | | packages/kane + parser tests | | | |
 | | 10 mutants apply + build | | | |

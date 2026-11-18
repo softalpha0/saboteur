@@ -218,3 +218,32 @@ describe('spawn wrapper (stand-in binary, no credits)', () => {
     expect(run.exitCode).toBe(2);
   });
 });
+
+describe('real Kane output (hour-1 spike, Kane CLI 0.10.5 on Windows)', () => {
+  // evidence/spike/3-broken-testrun.ndjson: replay with --no-adaptive-heal on a build whose cart badge
+  // was broken by hand. Kane exited 1. This is the real "killed" shape.
+  const spike = path.resolve(here, '../../../evidence/spike/3-broken-testrun.ndjson');
+
+  it('parses to one failed member, no authoring, execution id from testrun_start/summary', () => {
+    const d = digestTestrun(parseAll(fs.readFileSync(spike, 'utf8')));
+    expect(d.done).toBe(true);
+    expect(d.cliVersion).toBe('0.10.5');
+    expect(d.executionId).toBe('1ebbfee0-116a-47dd-b71e-a4600c08fd88');
+    expect(d.totals).toMatchObject({ tests: 1, failed: 1, authored: 0 });
+    expect(d.members).toHaveLength(1);
+    expect(d.members[0]).toMatchObject({
+      file: 'browse_add_to_cart_test.md',
+      status: 'failed',
+      authored: false,
+      failure: { message: 'assertion_failed: @ step 5', stepIndex: 1 },
+    });
+    expect(d.members[0]?.logPath).toContain('events.ndjson');
+  });
+
+  it('classifies as killed with exit 1', () => {
+    const d = digestTestrun(parseAll(fs.readFileSync(spike, 'utf8')));
+    const c = classifyMutant({ exitCode: 1, members: d.members, totals: d.totals, killed: false });
+    expect(c.verdict).toBe('killed');
+    expect(c.caughtBy[0]?.file).toBe('browse_add_to_cart_test.md');
+  });
+});
