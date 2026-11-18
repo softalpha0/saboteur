@@ -4,9 +4,12 @@
   "version": "0.1.0",
   "type": "module",
   "main": "src/index.ts",
-  "scripts": { "typecheck": "tsc -p tsconfig.json" },
+  "scripts": {
+    "typecheck": "tsc -p tsconfig.json"
+  },
   "dependencies": {
-    "cross-spawn": "7.0.6"
+    "cross-spawn": "7.0.6",
+    "tree-kill": "1.2.2"
   },
   "devDependencies": {
     "@types/cross-spawn": "6.0.6"

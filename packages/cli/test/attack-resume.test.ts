@@ -56,7 +56,7 @@ describe('attack --resume', () => {
 
     // First attack: only M01 (killed).
     const s1 = path.join(tmp, 's1.json');
-    fs.writeFileSync(s1, JSON.stringify({ steps: [run('failed', 1)] }));
+    fs.writeFileSync(s1, JSON.stringify({ steps: [run('failed', 1), run('failed', 1)] })); // catch + confirm
     process.env.SCRIPTED_KANE = s1;
     await cmdAttack(cfg, { only: 'M01' });
     const state = JSON.parse(fs.readFileSync(path.join(tmp, '.saboteur/state/attack.json'), 'utf8'));
@@ -79,5 +79,17 @@ describe('attack --resume', () => {
         ['M02', 'survived'],
       ],
     );
+  }, 120_000);
+
+  it('a catch that does not repeat on its own is not counted (flaky), and the suite is re-run', async () => {
+    const cfg = loadConfig(path.join(tmp, 'saboteur.config.json'));
+    const s3 = path.join(tmp, 's3.json');
+    // first run: failed; confirm alone: passed; full re-run: passed => survived, not caught
+    fs.writeFileSync(s3, JSON.stringify({ steps: [run('failed', 1), run('passed', 0), run('passed', 0)] }));
+    process.env.SCRIPTED_KANE = s3;
+    await cmdAttack(cfg, { only: 'M03' });
+    const report = JSON.parse(fs.readFileSync(path.join(tmp, 'reports/latest/report.json'), 'utf8'));
+    expect(report.mutants[0]).toMatchObject({ id: 'M03', verdictBefore: 'survived' });
+    expect(report.mutants[0].before.retried).toBe(true);
   }, 120_000);
 });
