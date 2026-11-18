@@ -40,12 +40,12 @@ export function readDiff(manifest: Manifest, mutant: Mutant): string {
   return fs.readFileSync(patchPath(manifest, mutant), 'utf8');
 }
 
-/** Keep mutants whose id is in `only` (comma-separated, case-insensitive). */
+/** Keep mutants whose id is in `only` (comma- or space-separated, case-insensitive). */
 export function selectMutants(manifest: Manifest, only?: string): Mutant[] {
   if (!only) return manifest.mutants;
   const want = new Set(
     only
-      .split(',')
+      .split(/[\s,]+/) // PowerShell turns unquoted M01,M03 into "M01 M03"
       .map((s) => s.trim().toUpperCase())
       .filter(Boolean),
   );

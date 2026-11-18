@@ -14,7 +14,7 @@ One dated line per block. Real results only: exit codes, credits used, what brok
 | | Shop M1 complete, starter suite `testrun` exit 0 | | | |
 | | packages/kane + parser tests | | | |
 | | 10 mutants apply + build | | | |
-| 2026-11-18 | Baseline (Windows): 4/4 starter tests pass on clean, exec `f5fa2d5b-9183-4ad3-83e9-826d4b4d0525`. **First real attack: 0/10 caught** by the starter suite; every bug slipped (no test checks totals, +, Remove, out-of-stock, email rule, order number, redirect target or reload). ~3 min per bug with tests one at a time | Real | baseline ~3.3 (10368.44 → 10365.15); attack: balance after not yet recorded | Fill M01, M03, M08 first |
+| 2026-11-18 | Baseline (Windows): 4/4 starter tests pass on clean, exec `f5fa2d5b-9183-4ad3-83e9-826d4b4d0525`. **First real attack: 0/10 caught** by the starter suite; every bug slipped (no test checks totals, +, Remove, out-of-stock, email rule, order number, redirect target or reload). ~3 min per bug with tests one at a time | Real | baseline ~3.3 (10368.44 → 10365.15); attack ~19 for 10 bugs × 4 replays (10365.15 → 10346.11) | Fill M01, M03, M08 first |
 | | First survivor closed by fill loop | | | |
 | | `saboteur run` end to end on fresh clone | | | |
 | 2026-11-19 10:00 | Feature freeze | | | |
