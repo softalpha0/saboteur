@@ -13,8 +13,9 @@ export type Classification = {
 export function classifyMutant(
   run: Pick<SuiteRun, 'exitCode' | 'members' | 'totals' | 'killed' | 'planValid'>,
 ): Classification {
+  const infra = run.members.filter((m) => m.status === 'failed' && isInfraFailure(m.failure?.message));
   const caughtBy = run.members
-    .filter((m) => m.status === 'failed')
+    .filter((m) => m.status === 'failed' && !isInfraFailure(m.failure?.message))
     .map((m) => ({
       file: m.file,
       message: m.failure?.message,
@@ -49,6 +50,19 @@ export function classifyMutant(
         retry: false,
       };
     case 1:
+      if (infra.length > 0) {
+        // Never score a bug as caught while the browser or the machine was failing in the same run.
+        return {
+          verdict: 'error',
+          reason:
+            `Kane's browser failed, not the app: ${infra[0]?.file}: ${infra[0]?.failure?.message ?? ''}`.slice(
+              0,
+              400,
+            ),
+          caughtBy,
+          retry: true,
+        };
+      }
       if (caughtBy.length > 0) {
         return {
           verdict: 'killed',
@@ -80,4 +94,15 @@ export function classifyMutant(
         retry: false,
       };
   }
+}
+
+/**
+ * Failures that come from the test machine, not from the app under test: the browser crashed or
+ * disconnected, the disk is full, Chrome could not start. Kane can report these as `failed`.
+ */
+export function isInfraFailure(message: string | undefined): boolean {
+  if (!message) return false;
+  return /browser_disconnected|ENOSPC|No space left on device|Target (page, context or browser|closed)|chrome (failed|crashed)|ECONNREFUSED/i.test(
+    message,
+  );
 }

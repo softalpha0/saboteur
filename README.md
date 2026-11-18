@@ -148,6 +148,7 @@ evidence/             real run results and links
 - A full attack takes a while: every bug is a fresh build plus a replay of the whole suite. _TODO: real timing._
 - The demo catalog (M01 to M10) is hand-written. `mutate --ai` adds more for your own app; each kept bug costs two short Kane runs to prove it is visible.
 - Bugs run one at a time. Running several in parallel would need one port per worker, and the `_test.md` files point at one URL.
+- Kane keeps screenshots and logs for every run under `~/.testmuai/kaneai/sessions/`. After many runs this can fill a small disk; `saboteur doctor` warns under 5 GB free and stops under 2 GB. Old session folders can be deleted once their runs are reported (results are also uploaded to Test Manager).
 - Kane runs cost credits; replays of recorded tests are much cheaper than authoring runs.
 
 ## Build log

@@ -9,7 +9,7 @@ export {
   joinKaneText,
   memberFromEvent,
 } from './parse.ts';
-export { classifyMutant, type Classification } from './classify.ts';
+export { classifyMutant, isInfraFailure, type Classification } from './classify.ts';
 export { authArgs, redactArgs } from './spawn.ts';
 export {
   balance,
