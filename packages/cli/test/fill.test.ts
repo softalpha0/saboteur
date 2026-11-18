@@ -153,6 +153,17 @@ describe('fillOne (closed loop)', () => {
     expect(runs[2]).toContain('--no-adaptive-heal'); // bugged
     expect(runs[0]).toContain(path.join('tests', 'kane', 'generated', 'discount_save10_total_test.md'));
 
+    const proven = JSON.parse(fs.readFileSync(path.join(tmp, 'tests/kane/generated/proven.json'), 'utf8'));
+    expect(proven).toMatchObject([
+      {
+        file: 'discount_save10_total_test.md',
+        mutant: 'M03',
+        attempt: 2,
+        clean: { exitCode: 0 },
+        bugged: { exitCode: 1 },
+      },
+    ]);
+
     const transcript = fs.readFileSync(rec.transcript, 'utf8');
     expect(transcript).toContain(kaneMsg);
     expect(transcript).toContain('**Decision:** accepted');

@@ -11,7 +11,7 @@ import {
 } from '@saboteur/kane';
 import { type Mutant, PrepareError, cleanup, prepare, readDiff, serve } from '@saboteur/mutator';
 import type { AttackRecord, FillAttempt, FillRecord } from '@saboteur/report';
-import { type Context, setActiveServer } from './context.ts';
+import { type Context, removeCandidateFiles, setActiveServer, setPendingCandidate } from './context.ts';
 import { readTests, relPaths } from './suite.ts';
 import { attackHeader, attackRow, short, ui } from './ui.ts';
 
@@ -116,6 +116,20 @@ export async function baseline(ctx: Context, files: string[], cleanDir?: string)
     ui.info(`${m.file}: ${m.status}${m.failure ? ` - ${m.failure.message}` : ''}`);
   }
   if (!run.members.length && run.stderrTail) ui.info(short(run.stderrTail, 400));
+  const gen = run.members.filter(
+    (m) =>
+      m.status !== 'passed' &&
+      files.some((f) => path.basename(f) === m.file && f.startsWith(ctx.cfg.abs.generated)),
+  );
+  if (gen.length) {
+    ui.info('');
+    ui.info('These are generated tests. A test that fails on correct code cannot stay in the suite.');
+    ui.info(
+      'Re-run once to rule out a flaky run; if it fails again, move it to quarantine (Saboteur skips that folder):',
+    );
+    ui.info('  mkdir tests/kane/quarantine');
+    for (const m of gen) ui.info(`  git mv tests/kane/generated/${m.file} tests/kane/quarantine/${m.file}`);
+  }
   ui.dim(`log: ${path.relative(ctx.cfg.root, run.rawLogPath)}`);
   return { run, ok: false };
 }
@@ -275,9 +289,8 @@ async function provedRun(
 }
 
 function removeCandidate(file: string) {
-  fs.rmSync(file, { force: true });
-  const out = path.join(path.dirname(file), `output-${path.basename(file).replace(/\.md$/, '')}`);
-  fs.rmSync(out, { recursive: true, force: true });
+  removeCandidateFiles(file);
+  setPendingCandidate(null);
 }
 
 function fence(s: string, lang = '') {
@@ -384,6 +397,7 @@ export async function fillOne(ctx: Context, opts: FillOptions): Promise<FillReco
 
       fs.mkdirSync(ctx.cfg.abs.generated, { recursive: true });
       const file = path.join(ctx.cfg.abs.generated, reply.fileName);
+      setPendingCandidate(file);
       fs.writeFileSync(file, reply.body);
       ui.info(`attempt ${n}: ${path.relative(ctx.cfg.root, file)}`);
 
@@ -445,6 +459,17 @@ export async function fillOne(ctx: Context, opts: FillOptions): Promise<FillReco
       }
 
       attempt.decision = 'accepted';
+      setPendingCandidate(null);
+      recordProven(ctx, {
+        file: path.basename(file),
+        mutant: mutant.id,
+        runId: ctx.runId,
+        attempt: n,
+        model: writer.modelId,
+        clean: { exitCode: a.exitCode, shareUrl: a.shareUrl },
+        bugged: { exitCode: b.exitCode, shareUrl: b.shareUrl },
+        acceptedAt: new Date().toISOString(),
+      });
       record.accepted = true;
       record.testFile = path.relative(ctx.cfg.root, file).split(path.sep).join('/');
       ui.ok(`  Kane on bugged build: FAILED as it should. Proven on attempt ${n}: ${record.testFile}`);
@@ -469,4 +494,36 @@ export async function fillOne(ctx: Context, opts: FillOptions): Promise<FillReco
 function withStep(text: string | undefined, step?: number): string | undefined {
   if (!text) return text;
   return step === undefined ? text : `${text} (step index ${step})`;
+}
+
+// ---------- proven.json: which generated tests Kane actually proved ----------
+
+export type ProvenEntry = {
+  file: string;
+  mutant: string;
+  runId: string;
+  attempt: number;
+  model?: string;
+  clean: { exitCode: number; shareUrl?: string };
+  bugged: { exitCode: number; shareUrl?: string };
+  acceptedAt: string;
+};
+
+export function provenPath(generatedDir: string): string {
+  return path.join(generatedDir, 'proven.json');
+}
+
+export function loadProven(generatedDir: string): ProvenEntry[] {
+  try {
+    return JSON.parse(fs.readFileSync(provenPath(generatedDir), 'utf8')) as ProvenEntry[];
+  } catch {
+    return [];
+  }
+}
+
+function recordProven(ctx: Context, entry: ProvenEntry): void {
+  const list = loadProven(ctx.cfg.abs.generated).filter((e) => e.file !== entry.file);
+  list.push(entry);
+  fs.mkdirSync(ctx.cfg.abs.generated, { recursive: true });
+  fs.writeFileSync(provenPath(ctx.cfg.abs.generated), `${JSON.stringify(list, null, 2)}\n`);
 }

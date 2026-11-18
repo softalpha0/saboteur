@@ -44,12 +44,29 @@ let active: Server | null = null;
 export function setActiveServer(s: Server | null): void {
   active = s;
 }
+// A generated test that Kane has not proven yet. If the run is stopped, it must not stay in the suite.
+let pending: string | null = null;
+export function setPendingCandidate(file: string | null): void {
+  pending = file;
+}
+export function removeCandidateFiles(file: string): void {
+  fs.rmSync(file, { force: true });
+  fs.rmSync(path.join(path.dirname(file), `output-${path.basename(file).replace(/\.md$/, '')}`), {
+    recursive: true,
+    force: true,
+  });
+}
 let hooked = false;
 export function hookSignals(): void {
   if (hooked) return;
   hooked = true;
   process.on('SIGINT', () => {
     console.log('\n  stopping…');
+    if (pending) {
+      removeCandidateFiles(pending);
+      console.log(`  removed unproven test ${path.basename(pending)}`);
+      pending = null;
+    }
     const s = active;
     active = null;
     (s ? s.stop() : Promise.resolve()).finally(() => process.exit(130));
