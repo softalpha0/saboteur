@@ -1,5 +1,6 @@
 import fs from 'node:fs';
 import path from 'node:path';
+import { renderHtml } from './html.ts';
 import { type AttackRecord, type MutantReport, type Report, scoreText } from './schema.ts';
 
 const cell = (s: string | undefined, max = 160): string => {
@@ -129,7 +130,7 @@ export function renderMarkdown(report: Report, reportDir: string): string {
   return lines.join('\n');
 }
 
-/** Write report.json + report.md into reports/<runId>/ and copy both to reports/latest/. */
+/** Write report.json + report.md + report.html into reports/<runId>/ and the same into reports/latest/. */
 export function writeReport(report: Report, reportsRoot: string): { dir: string; latest: string } {
   const dir = path.join(reportsRoot, report.runId);
   const latest = path.join(reportsRoot, 'latest');
@@ -137,6 +138,7 @@ export function writeReport(report: Report, reportsRoot: string): { dir: string;
     fs.mkdirSync(d, { recursive: true });
     fs.writeFileSync(path.join(d, 'report.json'), `${JSON.stringify(report, null, 2)}\n`);
     fs.writeFileSync(path.join(d, 'report.md'), renderMarkdown(report, d));
+    fs.writeFileSync(path.join(d, 'report.html'), renderHtml(report, d));
   }
   return { dir, latest };
 }

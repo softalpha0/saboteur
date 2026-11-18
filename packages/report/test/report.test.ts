@@ -133,5 +133,11 @@ describe('renderMarkdown + writeReport', () => {
     const out = writeReport(report, path.join(root, 'reports'));
     expect(JSON.parse(fs.readFileSync(path.join(out.latest, 'report.json'), 'utf8')).runId).toBe('sample');
     expect(fs.readFileSync(path.join(out.dir, 'report.md'), 'utf8')).toContain('# Saboteur report');
+    const html = fs.readFileSync(path.join(out.latest, 'report.html'), 'utf8');
+    expect(html).toContain('<title>Saboteur report</title>');
+    expect(html).toContain('1/2 caught');
+    expect(html).toContain('Total | skips last');
+    expect(html).toContain('Kane: expected $54.00');
+    expect(html).not.toMatch(/<script/);
   });
 });

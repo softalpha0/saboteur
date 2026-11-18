@@ -103,7 +103,7 @@ function printScores(report: Report, reportsDir: string) {
   const excluded = report.after.errors + report.after.invalid + report.after.rejected;
   if (excluded)
     ui.warn(`${excluded} bug(s) excluded from the score (error/invalid/rejected); see the report`);
-  ui.info(`Report: ${path.join(reportsDir, 'latest', 'report.md')}`);
+  ui.info(`Report: ${path.join(reportsDir, 'latest', 'report.md')} (also report.html)`);
 }
 
 // ---------------- commands ----------------
