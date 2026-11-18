@@ -123,19 +123,42 @@ export async function cmdBaseline(cfg: Resolved) {
   return r.ok ? 0 : 1;
 }
 
-export async function cmdAttack(cfg: Resolved, opts: { only?: string; withGenerated?: boolean }) {
+export async function cmdAttack(
+  cfg: Resolved,
+  opts: { only?: string; withGenerated?: boolean; resume?: boolean },
+) {
   hookSignals();
   const ctx = createContext(cfg);
   const s = suites(cfg.abs.tests, cfg.abs.generated);
   const files = opts.withGenerated ? s.all : s.base;
-  const mutants = selectMutants(ctx.manifest, opts.only);
+  const suite = rel(cfg, files);
+  let mutants = selectMutants(ctx.manifest, opts.only);
+
+  // --resume: keep verdicts from an interrupted attack on the same suite, run only what is missing.
+  const previous = loadState<AttackState>(ctx.stateDir, 'attack');
+  const kept = new Map<string, AttackRecord>();
+  if (opts.resume && previous && previous.suite.join('|') === suite.join('|')) {
+    for (const m of mutants) {
+      const r = previous.records[m.id];
+      if (r && r.verdict !== 'error') kept.set(m.id, r);
+    }
+    if (kept.size) ui.info(`resuming: ${kept.size} verdict(s) kept from run ${previous.runId}`);
+    mutants = mutants.filter((m) => !kept.has(m.id));
+  } else if (opts.resume) {
+    ui.warn('nothing to resume for this suite; running every bug');
+  }
+
+  // Save after every bug, so an interrupted attack keeps what it already learned.
+  const records = new Map(kept);
+  const save = () =>
+    saveState<AttackState>(ctx, 'attack', { runId: ctx.runId, suite, records: Object.fromEntries(records) });
   const creditsBefore = await creditGuard(ctx, 'attack');
-  const records = await attack(ctx, mutants, files, opts.withGenerated ? 'after' : 'before');
-  saveState<AttackState>(ctx, 'attack', {
-    runId: ctx.runId,
-    suite: rel(cfg, files),
-    records: Object.fromEntries(records),
+  await attack(ctx, mutants, files, opts.withGenerated ? 'after' : 'before', (id, rec) => {
+    records.set(id, rec);
+    save();
   });
+  save();
+  mutants = selectMutants(ctx.manifest, opts.only);
   const report = reportFrom(ctx, {
     mode: 'attack-only',
     base: files,

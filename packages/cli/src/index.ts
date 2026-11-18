@@ -50,7 +50,10 @@ program
   .description('apply each bug, run the Kane suite with --no-adaptive-heal, record caught / slipped')
   .option('--only <ids>', 'comma-separated mutant ids, e.g. M03,M05')
   .option('--with-generated', 'include tests/kane/generated in the suite')
-  .action((o: { only?: string; withGenerated?: boolean }) => main(() => cmdAttack(cfg(), o)));
+  .option('--resume', 'keep verdicts from an interrupted attack on the same suite; run only the rest')
+  .action((o: { only?: string; withGenerated?: boolean; resume?: boolean }) =>
+    main(() => cmdAttack(cfg(), o)),
+  );
 
 program
   .command('fill')
