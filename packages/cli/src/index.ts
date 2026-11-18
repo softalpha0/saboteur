@@ -24,8 +24,11 @@ async function main(fn: () => Promise<number>) {
   try {
     process.exitCode = await fn();
   } catch (err) {
-    if (err instanceof CreditGuardError || err instanceof InvalidRunError) ui.fail(err.message);
-    else ui.fail(err instanceof Error ? (err.stack ?? err.message) : String(err));
+    // Known, user-fixable problems print one line. SABOTEUR_DEBUG=1 shows the stack for anything else.
+    const debug = Boolean(process.env.SABOTEUR_DEBUG);
+    if (err instanceof CreditGuardError || err instanceof InvalidRunError || !(err instanceof Error))
+      ui.fail(String(err instanceof Error ? err.message : err));
+    else ui.fail(debug ? (err.stack ?? err.message) : `${err.message}  (set SABOTEUR_DEBUG=1 for details)`);
     process.exitCode = 1;
   }
 }
