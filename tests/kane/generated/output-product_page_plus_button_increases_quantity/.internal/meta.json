@@ -1,0 +1,25 @@
+{
+  "test_id": "f51c2931-7547-4e1e-8ebb-dbd2957975b9",
+  "project_id": "01M7H2V70YP7A3ASWA4HQQ8TNH",
+  "folder_id": "01M7P0FZEX77WKK3976PJAAG9D",
+  "org_id": "3433676",
+  "session_name": "product_page_plus_button_increases_quantity",
+  "commit_id": "abb66647-908b-4107-891a-1b6ff9974c36",
+  "testcase_id": "01M7QFBEFD45TH2VHW7492GX9K",
+  "executions": [
+    {
+      "execution_id": "5764d681-5082-4d61-80cf-d201ab3b8656",
+      "run_kind": "author",
+      "status": "passed",
+      "valid": true,
+      "at": "2026-11-18T14:03:58.746Z"
+    },
+    {
+      "execution_id": "77ddf703-4093-426e-8468-6564f8ef466b",
+      "run_kind": "replay",
+      "status": "broken",
+      "valid": true,
+      "at": "2026-11-18T14:07:10.892Z"
+    }
+  ]
+}

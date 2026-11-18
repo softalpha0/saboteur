@@ -1,0 +1,25 @@
+{
+  "test_id": "16b60a7d-4902-4fc8-83bb-bc5dd81febcf",
+  "project_id": "01M7H2V70YP7A3ASWA4HQQ8TNH",
+  "folder_id": "01M7P0FZEX77WKK3976PJAAG9D",
+  "org_id": "3433676",
+  "session_name": "out_of_stock_beanie_cannot_be_added",
+  "commit_id": "d09be957-ce2c-4aaa-b0ae-8d44a3828379",
+  "testcase_id": "01M7QBQ4SWG4GEN815X3T3FAHM",
+  "executions": [
+    {
+      "execution_id": "b337f603-a44e-4a1f-a502-bade6e4165f5",
+      "run_kind": "author",
+      "status": "passed",
+      "valid": true,
+      "at": "2026-11-18T13:01:04.830Z"
+    },
+    {
+      "execution_id": "8dbea977-e479-41a7-baa1-e43515745331",
+      "run_kind": "replay",
+      "status": "broken",
+      "valid": true,
+      "at": "2026-11-18T13:03:27.415Z"
+    }
+  ]
+}

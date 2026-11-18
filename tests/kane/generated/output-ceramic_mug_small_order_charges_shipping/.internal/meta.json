@@ -1,0 +1,25 @@
+{
+  "test_id": "90fb039f-190b-459c-893f-4dd140460fc7",
+  "project_id": "01M7H2V70YP7A3ASWA4HQQ8TNH",
+  "folder_id": "01M7P0FZEX77WKK3976PJAAG9D",
+  "org_id": "3433676",
+  "session_name": "ceramic_mug_small_order_charges_shipping",
+  "commit_id": "9a15fed3-19ff-401e-aba9-b723c6fabe03",
+  "testcase_id": "01M7QFQX7603B450FNR9A5VSZ8",
+  "executions": [
+    {
+      "execution_id": "255745d6-a2d5-4954-a43f-a78335993651",
+      "run_kind": "author",
+      "status": "passed",
+      "valid": true,
+      "at": "2026-11-18T14:10:05.424Z"
+    },
+    {
+      "execution_id": "9e6e2d97-6214-48a5-abb8-526c60ff484e",
+      "run_kind": "replay",
+      "status": "broken",
+      "valid": true,
+      "at": "2026-11-18T14:12:03.416Z"
+    }
+  ]
+}
