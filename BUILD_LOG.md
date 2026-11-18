@@ -15,6 +15,8 @@ One dated line per block. Real results only: exit codes, credits used, what brok
 | | packages/kane + parser tests | | | |
 | | 10 mutants apply + build | | | |
 | 2026-11-18 | Baseline (Windows): 4/4 starter tests pass on clean, exec `f5fa2d5b-9183-4ad3-83e9-826d4b4d0525`. **First real attack: 0/10 caught** by the starter suite; every bug slipped (no test checks totals, +, Remove, out-of-stock, email rule, order number, redirect target or reload). ~3 min per bug with tests one at a time | Real | baseline ~3.3 (10368.44 → 10365.15); attack ~19 for 10 bugs × 4 replays (10365.15 → 10346.11) | Fill M01, M03, M08 first |
+| 2026-11-18 | Fill: all 10 survivors got a Kane-proven test, every one on attempt 1 (so the retry loop never fired). Credits: ~580 for 3, ~500 for 7 (recording new tests is the expensive part) | Real | ~1080 | |
+| 2026-11-18 | Final run --replay: baseline 18/18 pass; before **0/10** again; after: M01 to M06 caught, then Kane hung on M07 after Chrome crashed (TargetClosedError) for 2h+. Cause: Saboteur's hard timeout only killed the Windows launcher, not Kane. Fixed: kill the whole process tree, kill Kane after 10 min of silence, one retry. Also: attacks stop at the first catch (fail-fast) and every catch is confirmed by re-running that test alone | Run incomplete; no report | ~55 so far | Re-run with the fixes |
 | | First survivor closed by fill loop | | | |
 | | `saboteur run` end to end on fresh clone | | | |
 | 2026-11-19 10:00 | Feature freeze | | | |

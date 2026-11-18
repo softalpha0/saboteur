@@ -79,6 +79,11 @@ describe('saboteur run --replay (scripted Kane)', () => {
             [member('tests/kane/starter/a_test.md', 'failed', 'Final verification failed: "total $29.99"')],
             1,
           ), // M01 killed
+          suiteRun(
+            'm01c',
+            [member('tests/kane/starter/a_test.md', 'failed', 'Final verification failed: "total $29.99"')],
+            1,
+          ), // confirm
           suiteRun('m03', [member('tests/kane/starter/a_test.md', 'passed')], 0), // M03 survived
           suiteRun(
             'm03b',
@@ -88,6 +93,7 @@ describe('saboteur run --replay (scripted Kane)', () => {
             ],
             1,
           ), // M03 killed by generated
+          suiteRun('m03c', [member('tests/kane/generated/g_test.md', 'failed', 'Total mismatch')], 1), // confirm
         ],
       }),
     );
@@ -122,12 +128,16 @@ describe('saboteur run --replay (scripted Kane)', () => {
       .trim()
       .split('\n')
       .filter((a) => a.startsWith('testrun run') && !a.includes('--dry-run'));
-    expect(argv).toHaveLength(4);
+    expect(argv).toHaveLength(6);
     expect(argv[0]).not.toContain('--no-adaptive-heal'); // baseline heals
     expect(argv[0]).toContain('g_test.md'); // baseline records generated tests too
     expect(argv[1]).toContain('--no-adaptive-heal');
+    expect(argv[1]).toContain('--on-failure fail-fast'); // attacks stop at the first catch
+    expect(argv[0]).not.toContain('fail-fast'); // baseline runs every test
     expect(argv[1]).not.toContain('g_test.md'); // "before" = starter suite only
-    expect(argv[3]).toContain('g_test.md'); // re-attack with generated
+    expect(argv[2]).toContain('a_test.md'); // confirm: the failed test alone
+    expect(argv[2]).not.toContain('fail-fast');
+    expect(argv[4]).toContain('g_test.md'); // re-attack with generated
   }, 180_000);
 
   it('stops the run as invalid when Kane authors a test on a bugged build', async () => {

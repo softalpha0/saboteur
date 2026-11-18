@@ -36,9 +36,9 @@ export function classifyMutant(
   if (run.killed)
     return {
       verdict: 'error',
-      reason: 'Saboteur hard timeout hit; Kane was stopped',
+      reason: 'Kane hung or ran too long and was stopped by Saboteur',
       caughtBy,
-      retry: false,
+      retry: true,
     };
 
   switch (run.exitCode) {

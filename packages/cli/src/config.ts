@@ -5,7 +5,7 @@ export type SaboteurConfig = {
   app: { dir: string; build: string; serve: string; url: string; routes?: string };
   tests: { dir: string; generatedDir: string };
   mutations: { manifest: string };
-  kane: { parallel: number; suiteTimeoutMin: number; minCredits: number };
+  kane: { parallel: number; suiteTimeoutMin: number; minCredits: number; failFast?: boolean };
   agent: { maxAttempts: number };
   workDir?: string;
 };

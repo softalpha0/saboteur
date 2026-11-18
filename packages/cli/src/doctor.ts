@@ -3,7 +3,14 @@ import os from 'node:os';
 import path from 'node:path';
 import { modelFromEnv } from '@saboteur/agent';
 import { balance, dryRunSuite, version } from '@saboteur/kane';
-import { assertPortFree, checkPatch, cleanup, loadManifest, prepare } from '@saboteur/mutator';
+import {
+  assertPortFree,
+  checkPatch,
+  cleanup,
+  loadManifest,
+  prepare,
+  stopLeftoverServer,
+} from '@saboteur/mutator';
 import type { Resolved } from './config.ts';
 import { loadProven } from './pipeline.ts';
 import { relPaths, suites } from './suite.ts';
@@ -152,6 +159,9 @@ export async function doctor(
 
   // App builds + port free.
   try {
+    if (await stopLeftoverServer(path.join(cfg.root, '.saboteur', 'state', 'server.pid.json'), cfg.app.url)) {
+      ui.ok(`stopped a shop server left running by an earlier Saboteur run on ${cfg.app.url}`);
+    }
     await assertPortFree(cfg.app.url);
     ui.ok(`${cfg.app.url} is free`);
   } catch (err) {

@@ -1,6 +1,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import spawn from 'cross-spawn';
+import treeKill from 'tree-kill';
 import { NdjsonSplitter } from './ndjson.ts';
 import type { KaneEvent } from './types.ts';
 
@@ -23,6 +24,8 @@ export type KaneSpawnOptions = {
   label: string;
   /** Saboteur's hard kill. Kane has its own --timeout; this only guards against a hung process. */
   hardTimeoutMs: number;
+  /** Kill Kane when it prints nothing at all (stdout or stderr) for this long. Default 10 min. */
+  stallTimeoutMs?: number;
   onEvent?: (e: KaneEvent) => void;
 };
 
@@ -89,12 +92,32 @@ export function spawnKane(opts: KaneSpawnOptions): Promise<KaneProcessResult> {
     }
 
     let killed = false;
-    const timer = setTimeout(() => {
+    // Kill the whole process tree. On Windows kane-cli runs behind a launcher, so killing only the
+    // direct child leaves Kane (and its Chrome) running and the run waits forever.
+    const killTree = (why: string) => {
+      if (killed) return;
       killed = true;
-      progress.write(`\n[saboteur] hard timeout after ${opts.hardTimeoutMs} ms, stopping Kane\n`);
-      child.kill('SIGTERM');
-      setTimeout(() => child.kill('SIGKILL'), 10_000).unref();
-    }, opts.hardTimeoutMs);
+      progress.write(`\n[saboteur] ${why}, stopping Kane\n`);
+      stderrTail = `${stderrTail}\n[saboteur] ${why}`.slice(-4000);
+      if (child.pid !== undefined) treeKill(child.pid, 'SIGKILL', () => undefined);
+      else child.kill('SIGKILL');
+      // If something still holds the output pipes open, do not wait for them forever.
+      setTimeout(() => finish(3), 15_000).unref();
+    };
+    const timer = setTimeout(
+      () => killTree(`hard timeout after ${Math.round(opts.hardTimeoutMs / 60_000)} min`),
+      opts.hardTimeoutMs,
+    );
+    const stallMs = opts.stallTimeoutMs ?? 10 * 60_000;
+    let lastOutput = Date.now();
+    const stall = setInterval(
+      () => {
+        if (Date.now() - lastOutput > stallMs)
+          killTree(`no output from Kane for ${Math.round(stallMs / 60_000)} min (hung)`);
+      },
+      Math.min(15_000, Math.max(250, stallMs / 4)),
+    );
+    stall.unref();
 
     const splitter = new NdjsonSplitter((event, line) => {
       raw.write(`${line}\n`);
@@ -104,9 +127,13 @@ export function spawnKane(opts: KaneSpawnOptions): Promise<KaneProcessResult> {
     });
 
     child.stdout?.setEncoding('utf8');
-    child.stdout?.on('data', (chunk: string) => splitter.push(chunk));
+    child.stdout?.on('data', (chunk: string) => {
+      lastOutput = Date.now();
+      splitter.push(chunk);
+    });
     child.stderr?.setEncoding('utf8');
     child.stderr?.on('data', (chunk: string) => {
+      lastOutput = Date.now();
       progress.write(chunk);
       stderrTail = (stderrTail + chunk).slice(-4000);
     });
@@ -116,6 +143,7 @@ export function spawnKane(opts: KaneSpawnOptions): Promise<KaneProcessResult> {
       if (settled) return;
       settled = true;
       clearTimeout(timer);
+      clearInterval(stall);
       splitter.end();
       raw.end();
       progress.end();
@@ -140,5 +168,9 @@ export function spawnKane(opts: KaneSpawnOptions): Promise<KaneProcessResult> {
       finish(2);
     });
     child.on('close', (code, signal) => finish(code ?? (signal ? 3 : 2)));
+    // 'close' waits for the output pipes; a grandchild (e.g. Chrome) can keep them open after Kane exits.
+    child.on('exit', (code, signal) => {
+      setTimeout(() => finish(killed ? 3 : (code ?? (signal ? 3 : 2))), 10_000).unref();
+    });
   });
 }

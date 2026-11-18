@@ -84,6 +84,9 @@ importers:
       cross-spawn:
         specifier: 7.0.6
         version: 7.0.6
+      tree-kill:
+        specifier: 1.2.2
+        version: 1.2.2
     devDependencies:
       '@types/cross-spawn':
         specifier: 6.0.6

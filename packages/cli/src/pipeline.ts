@@ -52,6 +52,7 @@ export async function withServed<T>(
     serveCmd: ctx.cfg.app.serve,
     url: ctx.cfg.app.url,
     logFile: path.join(ctx.evidenceDir, `serve-${label}.log`),
+    pidFile: path.join(ctx.stateDir, 'server.pid.json'),
   });
   setActiveServer(server);
   try {
@@ -76,11 +77,19 @@ function suiteOpts(ctx: Context, files: string[], label: string, noHeal: boolean
   return {
     files: relPaths(ctx.cfg.root, files),
     noHeal,
+    // Attacks only (bugged builds): the first failed test already means "caught". A bug only counts as
+    // slipped when every test passed, so stopping early never changes a verdict. Baseline runs everything.
+    failFast: noHeal && ctx.cfg.kane.failFast !== false,
     parallel: ctx.cfg.kane.parallel,
     cwd: ctx.cfg.root,
     logDir: ctx.evidenceDir,
     label,
-    hardTimeoutMs: ctx.cfg.kane.suiteTimeoutMin * MIN,
+    // Enough for every test to take ~3 min, never less than the configured floor.
+    hardTimeoutMs:
+      Math.max(
+        ctx.cfg.kane.suiteTimeoutMin,
+        Math.ceil(files.length / Math.max(1, ctx.cfg.kane.parallel)) * 3,
+      ) * MIN,
     onMemberEnd: (m: { file: string; status: string; durationS: number; failure?: { message: string } }) =>
       ui.dim(
         `    · ${m.file} ${m.status} ${m.durationS}s${m.failure ? `: ${short(m.failure.message, 90)}` : ''}`,
@@ -193,9 +202,37 @@ export async function attackOne(
       let run = await runSuite(suiteOpts(ctx, files, `${label}-${mutant.id}`, true));
       noteVersion(ctx, run);
       let rec = toRecord(run, files, ctx, false);
-      if (classifyMutant(run).retry) {
-        ui.dim('    only broken/interrupted members; re-running once (PRD §8)');
-        run = await runSuite(suiteOpts(ctx, files, `${label}-${mutant.id}-retry`, true));
+      let retry = classifyMutant(run).retry;
+
+      // Confirm a catch: re-run the test that failed, alone. A slow or flaky run (e.g. a timed-out wait)
+      // must never count as a caught bug. Two failures in a row = caught.
+      if (rec.verdict === 'killed' && rec.caughtBy[0]) {
+        const name = rec.caughtBy[0].file;
+        const file = files.find((f) => path.basename(f) === name);
+        if (file) {
+          ui.dim(`    confirming: re-running ${name} alone`);
+          const confirm = await runSuite({
+            ...suiteOpts(ctx, [file], `${label}-${mutant.id}-confirm`, true),
+            failFast: false,
+          });
+          const c = classifyMutant(confirm);
+          if (c.verdict === 'killed') {
+            rec = { ...rec, reason: `${rec.reason}; confirmed: ${name} failed again on its own` };
+          } else {
+            ui.dim(
+              `    ${name} did not fail again (${c.verdict}); treating the first failure as flaky and re-running the suite`,
+            );
+            retry = true;
+          }
+        }
+      }
+
+      if (retry) {
+        ui.dim('    re-running the suite once (PRD §8)');
+        run = await runSuite({
+          ...suiteOpts(ctx, files, `${label}-${mutant.id}-retry`, true),
+          failFast: false,
+        });
         rec = toRecord(run, files, ctx, true);
       }
       return rec;

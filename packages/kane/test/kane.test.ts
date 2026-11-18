@@ -21,6 +21,7 @@ import {
   runSuite,
   runTestFile,
 } from '../src/index.ts';
+import { spawnKane } from '../src/spawn.ts';
 
 const here = path.dirname(fileURLToPath(import.meta.url));
 const fixture = (name: string) => path.join(here, 'fixtures', name);
@@ -350,4 +351,28 @@ describe('infra failures are never a caught bug', () => {
     expect(c.reason).toMatch(/browser failed/);
     expect(isInfraFailure('assertion_failed: @ step 5')).toBe(false);
   });
+});
+
+describe('a hung Kane is killed (whole process tree) and the run goes on', () => {
+  it('stall timeout stops it, marks it killed and returns', async () => {
+    const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'saboteur-hang-'));
+    process.env.KANE_CLI_BIN = fixture('hang-kane.mjs');
+    const started = Date.now();
+    const r = await spawnKane({
+      args: ['testrun', 'run', 'x_test.md'],
+      cwd: dir,
+      logDir: dir,
+      label: 'hang',
+      hardTimeoutMs: 60_000,
+      stallTimeoutMs: 1000,
+    });
+    expect(r.killed).toBe(true);
+    expect(r.exitCode).not.toBe(0);
+    expect(r.stderrTail).toMatch(/hung/);
+    expect(Date.now() - started).toBeLessThan(30_000);
+    expect(classifyMutant({ exitCode: r.exitCode, members: [], killed: true })).toMatchObject({
+      verdict: 'error',
+      retry: true,
+    });
+  }, 40_000);
 });
