@@ -16,7 +16,7 @@ export {
   steps,
   validateTest,
 } from './validate.ts';
-export { TestWriter, type Turn, type WriterReply, modelFromEnv } from './writer.ts';
+export { TestWriter, type Turn, type WriterReply, modelFromEnv, redactSecrets } from './writer.ts';
 export {
   MutantProposer,
   type ProposeInput,

@@ -1,5 +1,6 @@
 import fs from 'node:fs';
 import path from 'node:path';
+import { modelFromEnv } from '@saboteur/agent';
 import { balance, dryRunSuite, version } from '@saboteur/kane';
 import { assertPortFree, checkPatch, cleanup, loadManifest, prepare } from '@saboteur/mutator';
 import type { Resolved } from './config.ts';
@@ -142,7 +143,14 @@ export async function doctor(
   // Claude (live mode only).
   const hasKey = Boolean(process.env.ANTHROPIC_API_KEY || process.env.ANTHROPIC_AUTH_TOKEN);
   const hasModel = Boolean(process.env.ANTHROPIC_MODEL?.trim());
-  if (hasKey && hasModel) ui.ok(`Claude: key set, model ${process.env.ANTHROPIC_MODEL}`);
+  let modelProblem: string | undefined;
+  try {
+    if (hasModel) modelFromEnv();
+  } catch (err) {
+    modelProblem = (err as Error).message; // never contains the value itself
+  }
+  if (modelProblem) fail(`Claude: ${modelProblem}`);
+  else if (hasKey && hasModel) ui.ok(`Claude: key set, model ${process.env.ANTHROPIC_MODEL}`);
   else if (opts.live)
     fail('Claude: set ANTHROPIC_API_KEY and ANTHROPIC_MODEL in .env (or use --replay, which needs neither)');
   else ui.warn('Claude key/model not set: fine for --replay, needed for the live fill loop');

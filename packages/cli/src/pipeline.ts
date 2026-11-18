@@ -1,6 +1,6 @@
 import fs from 'node:fs';
 import path from 'node:path';
-import { TestWriter, type WriterReply, validateTest } from '@saboteur/agent';
+import { TestWriter, type WriterReply, redactSecrets, validateTest } from '@saboteur/agent';
 import {
   type SuiteRun,
   type TestFileRun,
@@ -295,7 +295,7 @@ export async function fillOne(ctx: Context, opts: FillOptions): Promise<FillReco
   ];
   const history: FillAttempt[] = [];
   const record: FillRecord = { attempts: 0, accepted: false, transcript: transcriptPath, history };
-  const flush = () => fs.writeFileSync(transcriptPath, `${t.join('\n')}\n`);
+  const flush = () => fs.writeFileSync(transcriptPath, redactSecrets(`${t.join('\n')}\n`));
 
   ui.title(`Fill ${mutant.id}: ${mutant.title}`);
   let mutantDir: string | undefined;
@@ -456,7 +456,7 @@ export async function fillOne(ctx: Context, opts: FillOptions): Promise<FillReco
       t.push(`**Unproven** after ${record.attempts} attempt(s). Nothing was added to the suite.`);
     }
   } catch (err) {
-    record.error = err instanceof Error ? err.message : String(err);
+    record.error = redactSecrets(err instanceof Error ? err.message : String(err));
     ui.fail(`fill stopped: ${record.error}`);
     t.push(`**Stopped:** ${record.error}`);
   } finally {
