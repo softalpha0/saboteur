@@ -4,7 +4,7 @@ export type Classification = {
   verdict: MutantVerdict;
   reason: string;
   /** Members that failed (Kane caught the bug), with Kane's failure.message. */
-  caughtBy: { file: string; message?: string; stepIndex?: number }[];
+  caughtBy: { file: string; message?: string; stepIndex?: number; detail?: string }[];
   /** True when the rules say "re-run once" (only broken / interrupted members). */
   retry: boolean;
 };
@@ -15,7 +15,12 @@ export function classifyMutant(
 ): Classification {
   const caughtBy = run.members
     .filter((m) => m.status === 'failed')
-    .map((m) => ({ file: m.file, message: m.failure?.message, stepIndex: m.failure?.stepIndex }));
+    .map((m) => ({
+      file: m.file,
+      message: m.failure?.message,
+      stepIndex: m.failure?.stepIndex,
+      detail: m.failure?.detail,
+    }));
 
   const authored = (run.totals?.authored ?? 0) + run.members.filter((m) => m.authored).length;
   if (authored > 0) {

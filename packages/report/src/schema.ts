@@ -6,7 +6,7 @@ export type AttackRecord = {
   reason: string;
   exitCode: number | null;
   executionId?: string;
-  caughtBy: { file: string; message?: string; stepIndex?: number }[];
+  caughtBy: { file: string; message?: string; stepIndex?: number; detail?: string }[];
   links: string[];
   rawLog?: string;
   evidencePacks: string[];

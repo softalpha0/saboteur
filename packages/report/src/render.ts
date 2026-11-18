@@ -1,5 +1,6 @@
 import fs from 'node:fs';
 import path from 'node:path';
+import { renderHtml } from './html.ts';
 import { type AttackRecord, type MutantReport, type Report, scoreText } from './schema.ts';
 
 const cell = (s: string | undefined, max = 160): string => {
@@ -31,7 +32,7 @@ const label: Record<string, string> = {
 function caught(m: MutantReport): { file?: string; message?: string } {
   const r = m.after?.verdict === 'killed' ? m.after : m.before;
   const c = r.caughtBy[0];
-  return { file: c?.file, message: c?.message };
+  return { file: c?.file, message: c?.detail ? `${c.message ?? ''} ${c.detail}` : c?.message };
 }
 
 export function renderMarkdown(report: Report, reportDir: string): string {
@@ -41,11 +42,20 @@ export function renderMarkdown(report: Report, reportDir: string): string {
     `Run \`${report.runId}\` · mode **${report.mode}** · Kane CLI ${report.kaneCliVersion ?? 'unknown'} · app \`${report.app}\` at ${report.appUrl}`,
     '',
   );
-  lines.push(`**Before: ${scoreText(report.before)}** (starter suite, ${report.suiteBefore.length} tests)  `);
-  lines.push(
-    `**After: ${scoreText(report.after)}** (with generated tests, ${report.suiteAfter.length} tests)`,
-    '',
-  );
+  if (report.mode === 'attack-only') {
+    lines.push(
+      `**Score: ${scoreText(report.before)}** (${report.suiteBefore.length} tests). Fill the gaps, then \`saboteur run\` for a before/after score.`,
+      '',
+    );
+  } else {
+    lines.push(
+      `**Before: ${scoreText(report.before)}** (starter suite, ${report.suiteBefore.length} tests)  `,
+    );
+    lines.push(
+      `**After: ${scoreText(report.after)}** (with generated tests, ${report.suiteAfter.length} tests)`,
+      '',
+    );
+  }
   const excluded = report.after.errors + report.after.invalid + report.after.rejected;
   if (excluded > 0)
     lines.push(`${excluded} mutant(s) excluded from the score (error, invalid or rejected). See below.`, '');
@@ -129,7 +139,7 @@ export function renderMarkdown(report: Report, reportDir: string): string {
   return lines.join('\n');
 }
 
-/** Write report.json + report.md into reports/<runId>/ and copy both to reports/latest/. */
+/** Write report.json + report.md + report.html into reports/<runId>/ and the same into reports/latest/. */
 export function writeReport(report: Report, reportsRoot: string): { dir: string; latest: string } {
   const dir = path.join(reportsRoot, report.runId);
   const latest = path.join(reportsRoot, 'latest');
@@ -137,6 +147,7 @@ export function writeReport(report: Report, reportsRoot: string): { dir: string;
     fs.mkdirSync(d, { recursive: true });
     fs.writeFileSync(path.join(d, 'report.json'), `${JSON.stringify(report, null, 2)}\n`);
     fs.writeFileSync(path.join(d, 'report.md'), renderMarkdown(report, d));
+    fs.writeFileSync(path.join(d, 'report.html'), renderHtml(report, d));
   }
   return { dir, latest };
 }

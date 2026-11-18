@@ -72,4 +72,8 @@ Port 4173 is fixed because the `_test.md` files have `url: http://localhost:4173
 
 ## 5. AI mutants (Should, S4)
 
+**As built:** Claude returns each bug as an exact find/replace edit plus a Kane check (JSON). Saboteur checks the snippet occurs exactly once, makes the patch itself with `git diff` on a scratch copy, applies + builds it, rejects it if the build output is byte-identical to the correct build, then runs the Kane check on the bugged build (must pass) **and** on the correct build (must fail). Only then is it written to `mutations/ai/` and appended to the manifest with `"source": "ai"` and its `kaneCheck`. Transcript: `evidence/runs/<run-id>/mutate.md`.
+
+Original plan:
+
 `saboteur mutate --ai --count 5` asks Claude for new bug patches for the configured app. A proposed patch is kept only if it applies, builds, and changes what the page shows. The visible-change check is one short `kane-cli run "<objective ending in a check of the expected broken behaviour>" --agent --headless --url http://localhost:4173` against the served mutant: `run_end.status: "passed"` means Kane saw the bug. (Kane also has `run --analyzer-only --condition …` for checking the current page, but it works on the browser's current page, so test it before relying on it.) Kept patches are written to `mutations/ai/` and added to the manifest with `"source": "ai"`.

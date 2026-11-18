@@ -1,0 +1,91 @@
+name: Saboteur
+
+# Runs `saboteur attack` with real Kane CLI and posts the score on the PR.
+# Opt-in, because every run spends Kane credits:
+#   - run it by hand (Actions tab → Saboteur → Run workflow), or
+#   - add the label "saboteur" to a pull request.
+# Needs repo secrets LT_USERNAME and LT_ACCESS_KEY (TestMu dashboard → Settings → Keys).
+# Kane auth in CI is basic auth only; never `kane-cli login` here (docs/03 §1).
+
+on:
+  workflow_dispatch:
+    inputs:
+      only:
+        description: 'Mutant ids, comma-separated (empty = all)'
+        required: false
+        default: ''
+  pull_request:
+    types: [labeled, synchronize]
+
+permissions:
+  contents: read
+  pull-requests: write
+
+concurrency:
+  group: saboteur-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  attack:
+    if: github.event_name == 'workflow_dispatch' || contains(github.event.pull_request.labels.*.name, 'saboteur')
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    env:
+      LT_USERNAME: ${{ secrets.LT_USERNAME }}
+      LT_ACCESS_KEY: ${{ secrets.LT_ACCESS_KEY }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: pnpm
+      - uses: browser-actions/setup-chrome@v1
+        id: chrome
+      - run: npm install -g @testmuai/kane-cli
+      - run: pnpm install --frozen-lockfile
+
+      - name: Check secrets
+        run: |
+          if [ -z "$LT_USERNAME" ] || [ -z "$LT_ACCESS_KEY" ]; then
+            echo "::error::Add repo secrets LT_USERNAME and LT_ACCESS_KEY to run Saboteur with Kane."
+            exit 1
+          fi
+
+      - name: Doctor
+        env:
+          KANE_CLI_CHROME_PATH: ${{ steps.chrome.outputs.chrome-path }}
+        run: pnpm saboteur doctor --replay
+
+      # Tests must already be recorded (committed output-*/ folders). An unrecorded test makes the run
+      # "invalid" instead of authoring against a bugged build.
+      - name: Attack
+        env:
+          KANE_CLI_CHROME_PATH: ${{ steps.chrome.outputs.chrome-path }}
+        run: |
+          if [ -n "${{ github.event.inputs.only }}" ]; then
+            pnpm saboteur attack --with-generated --only "${{ github.event.inputs.only }}"
+          else
+            pnpm saboteur attack --with-generated
+          fi
+
+      - name: Job summary
+        if: always() && hashFiles('reports/latest/report.md') != ''
+        run: cat reports/latest/report.md >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Comment on the PR
+        if: always() && github.event_name == 'pull_request' && hashFiles('reports/latest/report.md') != ''
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh pr comment "${{ github.event.pull_request.number }}" --repo "${{ github.repository }}" --body-file reports/latest/report.md --edit-last || gh pr comment "${{ github.event.pull_request.number }}" --repo "${{ github.repository }}" --body-file reports/latest/report.md
+
+      - name: Upload report, Kane logs and evidence packs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: saboteur-${{ github.run_id }}
+          path: |
+            reports/latest/
+            evidence/runs/
+            .testmuai/evidence/*.evidence
+          if-no-files-found: ignore

@@ -1,8 +1,9 @@
 import fs from 'node:fs';
 import path from 'node:path';
-import { digestTestmd, digestTestrun } from './parse.ts';
+import { parseAll } from './ndjson.ts';
+import { detailFromSessionLog, digestTestmd, digestTestrun } from './parse.ts';
 import { authArgs, kaneCommand, spawnKane } from './spawn.ts';
-import type { KaneEvent, MemberResult, SuiteRun, TestFileRun } from './types.ts';
+import type { KaneEvent, MemberResult, ObjectiveRun, SuiteRun, TestFileRun } from './types.ts';
 
 export type RunSuiteOptions = {
   /** Explicit *_test.md paths. A folder is not a valid testrun path (docs/03 §2). */
@@ -59,6 +60,7 @@ export async function runSuite(opts: RunSuiteOptions): Promise<SuiteRun> {
     },
   });
   const d = digestTestrun(proc.events);
+  enrichFailures(d.members);
   return {
     exitCode: proc.exitCode,
     killed: proc.killed,
@@ -76,6 +78,20 @@ export async function runSuite(opts: RunSuiteOptions): Promise<SuiteRun> {
     progressLogPath: proc.progressLogPath,
     stderrTail: proc.stderrTail,
   };
+}
+
+/** Add Kane's fuller explanation (from each failed member's session log) next to its terse failure.message. */
+export function enrichFailures(members: MemberResult[]): void {
+  for (const m of members) {
+    if (!m.failure || !m.logPath) continue;
+    try {
+      if (!fs.existsSync(m.logPath)) continue;
+      const detail = detailFromSessionLog(parseAll(fs.readFileSync(m.logPath, 'utf8')), m.failure.message);
+      if (detail) m.failure.detail = detail;
+    } catch {
+      // A missing or unreadable log never changes a verdict; it only loses the extra text.
+    }
+  }
 }
 
 export type RunTestFileOptions = {
@@ -118,6 +134,57 @@ export async function runTestFile(opts: RunTestFileOptions): Promise<TestFileRun
     failureStepIndex: d.failureStepIndex,
     summaryText: d.summaryText,
     evidencePacks: newEvidencePacks(opts.cwd, started),
+    rawLogPath: proc.rawLogPath,
+    progressLogPath: proc.progressLogPath,
+    stderrTail: proc.stderrTail,
+  };
+}
+
+export type RunObjectiveOptions = {
+  objective: string;
+  url?: string;
+  cwd: string;
+  logDir: string;
+  label: string;
+  maxSteps?: number;
+  timeoutS?: number;
+};
+
+/** `kane-cli run "<objective>" --agent --headless`: the ad-hoc probe (docs/03 §2). Reads run_end only. */
+export async function runObjective(opts: RunObjectiveOptions): Promise<ObjectiveRun> {
+  const timeoutS = opts.timeoutS ?? 300;
+  const args = [
+    'run',
+    opts.objective,
+    '--agent',
+    '--headless',
+    '--max-steps',
+    String(opts.maxSteps ?? 40),
+    '--timeout',
+    String(timeoutS),
+  ];
+  if (opts.url) args.push('--url', opts.url);
+  args.push(...authArgs());
+  const proc = await spawnKane({
+    args,
+    cwd: opts.cwd,
+    logDir: opts.logDir,
+    label: opts.label,
+    hardTimeoutMs: (timeoutS + 120) * 1000,
+  });
+  const end = [...proc.events].reverse().find((e) => e.type === 'run_end');
+  const s = (v: unknown) => (typeof v === 'string' && v ? v : undefined);
+  const credits = end ? (end.credits_consumed ?? end.credits) : undefined;
+  return {
+    exitCode: proc.exitCode,
+    killed: proc.killed,
+    status: end?.status === 'passed' || end?.status === 'failed' ? end.status : undefined,
+    summary: s(end?.summary),
+    oneLiner: s(end?.one_liner),
+    reason: s(end?.reason),
+    credits:
+      typeof credits === 'number' ? credits : typeof credits === 'string' ? Number(credits) : undefined,
+    testUrl: s(end?.test_url),
     rawLogPath: proc.rawLogPath,
     progressLogPath: proc.progressLogPath,
     stderrTail: proc.stderrTail,

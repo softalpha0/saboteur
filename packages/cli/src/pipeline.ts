@@ -198,13 +198,16 @@ export async function attack(
   mutants: Mutant[],
   files: string[],
   label: string,
+  onResult?: (id: string, rec: AttackRecord) => void,
 ): Promise<Map<string, AttackRecord>> {
-  ui.title(`Attack (${label}): ${mutants.length} bug(s) × ${files.length} Kane test(s), healing off`);
+  const par = ctx.cfg.kane.parallel > 1 ? `, ${ctx.cfg.kane.parallel} tests at a time` : '';
+  ui.title(`Attack (${label}): ${mutants.length} bug(s) × ${files.length} Kane test(s), healing off${par}`);
   attackHeader();
   const out = new Map<string, AttackRecord>();
   for (const m of mutants) {
     const rec = await attackOne(ctx, m, files, label);
     out.set(m.id, rec);
+    onResult?.(m.id, rec);
     const detail =
       rec.verdict === 'killed'
         ? `${rec.caughtBy[0]?.file}: ${short(rec.caughtBy[0]?.message, 70)}`
