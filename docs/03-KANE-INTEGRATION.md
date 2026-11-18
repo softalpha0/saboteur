@@ -51,6 +51,8 @@ On a mutant we want the opposite: if the app broke, the test should **fail**, no
 - Baseline (clean app): healing **on** (default). Authors any new tests.
 - Attack (mutant app): `--no-adaptive-heal`. A failed replay is a failed test.
 
+**Spike result (2026-11-18, Kane 0.10.5): passed.** A replayed test failed (exit 1, member `failed`) when the badge was broken, with `--no-adaptive-heal`. Real output in `evidence/spike/`. Note: the real `failure.message` was terse (`assertion_failed: @ step 5`), shorter than the doc example.
+
 **Spike to run in hour 1 (riskiest assumption):** confirm that a replayed test with a closing assertion ("verify the total shows $59.98") **fails** when the total is wrong. Docs say checkpoints are "evaluated during test execution", but confirm it on a real replay. If replay does not re-check assertions, switch attack runs to `--author` (re-author every step, slower, more credits) or to one-shot `kane-cli run` objectives. Record the result in `BUILD_LOG.md`.
 
 ### 2.2 Exit codes
