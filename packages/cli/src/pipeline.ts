@@ -77,6 +77,9 @@ function suiteOpts(ctx: Context, files: string[], label: string, noHeal: boolean
   return {
     files: relPaths(ctx.cfg.root, files),
     noHeal,
+    // Attacks only (bugged builds): the first failed test already means "caught". A bug only counts as
+    // slipped when every test passed, so stopping early never changes a verdict. Baseline runs everything.
+    failFast: noHeal && ctx.cfg.kane.failFast !== false,
     parallel: ctx.cfg.kane.parallel,
     cwd: ctx.cfg.root,
     logDir: ctx.evidenceDir,

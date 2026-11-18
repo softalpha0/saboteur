@@ -126,6 +126,8 @@ describe('saboteur run --replay (scripted Kane)', () => {
     expect(argv[0]).not.toContain('--no-adaptive-heal'); // baseline heals
     expect(argv[0]).toContain('g_test.md'); // baseline records generated tests too
     expect(argv[1]).toContain('--no-adaptive-heal');
+    expect(argv[1]).toContain('--on-failure fail-fast'); // attacks stop at the first catch
+    expect(argv[0]).not.toContain('fail-fast'); // baseline runs every test
     expect(argv[1]).not.toContain('g_test.md'); // "before" = starter suite only
     expect(argv[3]).toContain('g_test.md'); // re-attack with generated
   }, 180_000);

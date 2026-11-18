@@ -10,6 +10,8 @@ export type RunSuiteOptions = {
   files: string[];
   noHeal: boolean;
   parallel?: number;
+  /** Stop the suite at the first failed member (`--on-failure fail-fast`). For attacks: one failure already means caught. */
+  failFast?: boolean;
   cwd: string;
   logDir: string;
   label: string;
@@ -42,6 +44,7 @@ export async function runSuite(opts: RunSuiteOptions): Promise<SuiteRun> {
   const args = ['testrun', 'run', ...opts.files, '--agent', '--headless'];
   if (opts.noHeal) args.push('--no-adaptive-heal');
   if (opts.parallel && opts.parallel > 1) args.push('--parallel', String(opts.parallel));
+  if (opts.failFast) args.push('--on-failure', 'fail-fast');
   args.push(...authArgs());
 
   const started = Date.now();
