@@ -1,4 +1,5 @@
 import fs from 'node:fs';
+import os from 'node:os';
 import path from 'node:path';
 import { modelFromEnv } from '@saboteur/agent';
 import { balance, dryRunSuite, version } from '@saboteur/kane';
@@ -76,6 +77,21 @@ export async function doctor(
       res.credits = b.credits;
       ui.ok(`signed in, ${b.credits} credits (floor ${cfg.kane.minCredits})`);
     }
+  }
+
+  // Kane keeps screenshots and logs for every run under ~/.testmuai; a full disk crashes Chrome mid-run.
+  try {
+    const st = await fs.promises.statfs(os.homedir());
+    const freeGb = (st.bavail * st.bsize) / 1024 ** 3;
+    if (freeGb < 2)
+      fail(
+        `only ${freeGb.toFixed(1)} GB free on the drive with your home folder; Kane needs room for screenshots and logs. Free some space (see README: disk space).`,
+      );
+    else if (freeGb < 5)
+      ui.warn(`${freeGb.toFixed(1)} GB free disk space; a full attack writes a lot of Kane screenshots`);
+    else ui.ok(`${freeGb.toFixed(0)} GB free disk space`);
+  } catch {
+    // statfs is not available everywhere; skip the check
   }
 
   const chrome = findChrome();

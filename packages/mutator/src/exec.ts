@@ -20,6 +20,7 @@ export function startShell(
 ): ChildProcess {
   fs.mkdirSync(path.dirname(logFile), { recursive: true });
   const log = fs.createWriteStream(logFile, { flags: 'a' });
+  log.on('error', (err) => process.stderr.write(`[saboteur] could not write ${logFile}: ${err.message}\n`));
   log.write(`$ ${command}  (in ${cwd})\n`);
   const child = spawn(command, {
     cwd,

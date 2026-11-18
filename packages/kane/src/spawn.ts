@@ -54,6 +54,12 @@ export function spawnKane(opts: KaneSpawnOptions): Promise<KaneProcessResult> {
   const progressLogPath = path.join(opts.logDir, `progress-${opts.label}.log`);
   const raw = fs.createWriteStream(rawLogPath);
   const progress = fs.createWriteStream(progressLogPath);
+  // A full disk must not crash the whole run; Kane's own result (exit code, events) still comes back.
+  const onLogError = (err: Error) => {
+    process.stderr.write(`[saboteur] could not write Kane log: ${err.message}\n`);
+  };
+  raw.on('error', onLogError);
+  progress.on('error', onLogError);
   const { cmd, prefix } = kaneCommand();
   const args = [...prefix, ...opts.args];
   progress.write(`$ kane-cli ${redactArgs(opts.args).join(' ')}\n`);

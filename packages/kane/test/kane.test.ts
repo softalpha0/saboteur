@@ -12,6 +12,7 @@ import {
   digestTestmd,
   digestTestrun,
   enrichFailures,
+  isInfraFailure,
   joinKaneText,
   parseAll,
   parseCredits,
@@ -320,5 +321,33 @@ describe('runObjective (kane-cli run, stand-in binary)', () => {
     expect(fs.readFileSync(r.progressLogPath, 'utf8')).toContain(
       'argv: run Verify the total is wrong --agent --headless --max-steps 40 --timeout 300 --url http://localhost:4173',
     );
+  });
+});
+
+describe('infra failures are never a caught bug', () => {
+  it('browser_disconnected / disk full => error with retry, not killed', () => {
+    const members = [
+      {
+        file: 'a_test.md',
+        path: 'a',
+        status: 'failed' as const,
+        durationS: 1,
+        authored: false,
+        failure: { message: "browser_disconnected: [Errno 28] No space left on device: 'C:\\x'" },
+      },
+      {
+        file: 'b_test.md',
+        path: 'b',
+        status: 'failed' as const,
+        durationS: 1,
+        authored: false,
+        failure: { message: 'Final verification failed: "total"' },
+      },
+    ];
+    const c = classifyMutant({ exitCode: 1, members, killed: false });
+    expect(c.verdict).toBe('error');
+    expect(c.retry).toBe(true);
+    expect(c.reason).toMatch(/browser failed/);
+    expect(isInfraFailure('assertion_failed: @ step 5')).toBe(false);
   });
 });
