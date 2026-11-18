@@ -1,0 +1,3 @@
+# Kane recordings and Kane NDJSON: keep the bytes exactly as Kane wrote them (no CRLF conversion on Windows).
+tests/kane/**/output-*/** -text
+*.ndjson -text
