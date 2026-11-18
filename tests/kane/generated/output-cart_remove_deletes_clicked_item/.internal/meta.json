@@ -20,6 +20,14 @@
       "status": "broken",
       "valid": true,
       "at": "2026-11-18T12:56:41.323Z"
+    },
+    {
+      "execution_id": "f737d321-d247-4341-8fbd-7fefe342e6f0",
+      "run_kind": "replay",
+      "status": "passed",
+      "valid": true,
+      "uploaded": true,
+      "at": "2026-11-18T15:08:03.818Z"
     }
   ]
 }

@@ -1,25 +1,19 @@
 {
+  "commit_id": "a6f6cc4f-f21c-4bd4-be1b-016b918b9cbc",
   "test_id": "219dcb13-0704-4345-bd29-a5d03746178a",
+  "testcase_id": "01M7QGR5XM750JX7A1Z6C7GJ0X",
   "project_id": "01M7H2V70YP7A3ASWA4HQQ8TNH",
   "folder_id": "01M7P0FZEX77WKK3976PJAAG9D",
   "org_id": "3433676",
   "session_name": "wool_beanie_click_add_does_not_change_cart",
-  "commit_id": "a6f6cc4f-f21c-4bd4-be1b-016b918b9cbc",
-  "testcase_id": "01M7QGR5XM750JX7A1Z6C7GJ0X",
   "executions": [
     {
-      "execution_id": "1fbea9c8-f6a1-4efa-92ec-b20cca89e01c",
+      "execution_id": "f737d321-d247-4341-8fbd-7fefe342e6f0",
       "run_kind": "author",
-      "status": "passed",
+      "status": "failed",
       "valid": true,
-      "at": "2026-11-18T14:29:32.432Z"
-    },
-    {
-      "execution_id": "12887906-b54f-4bfa-b9aa-b9441047b0d9",
-      "run_kind": "replay",
-      "status": "broken",
-      "valid": true,
-      "at": "2026-11-18T14:31:40.852Z"
+      "uploaded": true,
+      "at": "2026-11-18T15:08:05.820Z"
     }
   ]
 }

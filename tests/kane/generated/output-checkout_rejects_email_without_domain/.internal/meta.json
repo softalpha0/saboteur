@@ -18,6 +18,14 @@
       "status": "broken",
       "valid": true,
       "at": "2026-11-18T12:50:08.463Z"
+    },
+    {
+      "execution_id": "f737d321-d247-4341-8fbd-7fefe342e6f0",
+      "run_kind": "replay",
+      "status": "passed",
+      "valid": true,
+      "uploaded": true,
+      "at": "2026-11-18T15:08:05.744Z"
     }
   ],
   "commit_id": "48d9bfd2-8604-4536-9fb9-82ec5a0c3337",
