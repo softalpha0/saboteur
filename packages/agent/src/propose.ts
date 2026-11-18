@@ -24,6 +24,11 @@ export type ProposeInput = {
   files: { path: string; content: string }[];
   existing: { id: string; title: string; where: string }[];
   count: number;
+  /**
+   * Duel mode (red team): the current test suite. Claude is asked for bugs these tests will NOT catch.
+   * Kane, not Claude, then decides whether the bug really slips through.
+   */
+  tests?: { file: string; body: string }[];
 };
 
 export function proposePrompt(input: ProposeInput): { system: string; user: string } {
@@ -36,6 +41,15 @@ export function proposePrompt(input: ProposeInput): { system: string; user: stri
         ? input.existing.map((m) => `- ${m.id} ${m.title} (${m.where})`).join('\n')
         : '(none)',
       files: input.files.map((f) => `--- ${f.path} ---\n${f.content}`).join('\n\n'),
+      testsSection: input.tests
+        ? [
+            'CURRENT TESTS (Kane CLI _test.md files; they all pass on the correct app):',
+            input.tests.map((t) => `--- ${t.file} ---\n${t.body.trim()}`).join('\n\n'),
+            '',
+            'You are the red team. Plant bugs that these tests will NOT catch: break something they do not check.',
+            'Kane will run every one of these tests against your bug. If any test fails, your bug was caught.',
+          ].join('\n')
+        : '',
     }),
   };
 }
