@@ -115,7 +115,12 @@ Your own app: edit `saboteur.config.json` (build/serve commands, URL, tests dir,
 | `pnpm saboteur attack [--only M03] [--with-generated]` | For each bug: copy the app, `git apply`, build, serve on :4173, `kane-cli testrun run ... --no-adaptive-heal`, classify |
 | `pnpm saboteur fill [--only M03]` | For each survivor of the last attack: Claude writes one `_test.md`, Kane must pass it on the clean build and fail it on the bugged build (max 3 tries) |
 | `pnpm saboteur run [--replay] [--only ...]` | doctor, baseline, attack with the starter suite (before score), re-attack survivors with generated tests already in the repo, fill what still slips through (skipped with `--replay`), re-attack, write the report (after score) |
-| `pnpm saboteur report` | Re-render `reports/latest/report.md` from `report.json` |
+| `pnpm saboteur mutate --ai [--count 5] [--dry-run]` | Claude proposes new bugs for your app as small find/replace edits. Saboteur makes the patch itself and keeps a bug only if it applies, builds, changes the build output, and Kane confirms it is visible: Claude's check must pass on the bugged build and fail on the correct one. Kept bugs go to `mutations/ai/` and the manifest (`"source": "ai"`) |
+| `pnpm saboteur report` | Re-render `reports/latest/report.md` and `report.html` from `report.json` |
+
+Every report is written three ways: `report.json`, `report.md` and a static `report.html` (open it in a browser).
+
+On GitHub: `.github/workflows/saboteur.yml` runs `saboteur attack` with real Kane on a pull request labelled `saboteur` (or by hand) and posts the report as a PR comment. It needs repo secrets `LT_USERNAME` and `LT_ACCESS_KEY`, and spends credits, so it never runs unless asked.
 
 Logs for every run: `evidence/runs/<run-id>/` (Kane NDJSON, Kane stderr, build and serve logs, one `fill-<bug>.md` transcript per survivor).
 
@@ -140,8 +145,9 @@ evidence/             real run results and links
 
 ## Known limitations
 
-- Bugs run one at a time on a fixed port (4173), so a full attack takes a while. _TODO: real timing._
-- The demo catalog is hand-written for the demo shop. `mutate --ai` (Claude proposes bugs for your own app) is not built yet.
+- A full attack takes a while: every bug is a fresh build plus a replay of the whole suite. _TODO: real timing._
+- The demo catalog (M01 to M10) is hand-written. `mutate --ai` adds more for your own app; each kept bug costs two short Kane runs to prove it is visible.
+- Bugs run one at a time. Running several in parallel would need one port per worker, and the `_test.md` files point at one URL.
 - Kane runs cost credits; replays of recorded tests are much cheaper than authoring runs.
 
 ## Build log
