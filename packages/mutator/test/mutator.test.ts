@@ -16,6 +16,7 @@ import {
   selectMutants,
   serve,
   slug,
+  stopLeftoverServer,
 } from '../src/index.ts';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../../..');
@@ -144,4 +145,32 @@ describe('authoring AI mutants (S4 helpers)', () => {
     fs.writeFileSync(path.join(dir, 'a.js'), '2');
     expect(hashDir(dir)).not.toBe(h1);
   });
+});
+
+describe('leftover server after a crash', () => {
+  it('a later serve stops the server an earlier run recorded, and only that one', async () => {
+    const clean = await prepare({ appDir, buildCmd: 'vite build', workRoot, logFile: log });
+    const pidFile = path.join(workRoot, 'server.pid.json');
+    // Simulate a crash: start a server and never call stop().
+    await serve({
+      dir: clean.dir,
+      serveCmd: 'vite preview --port 4185 --strictPort',
+      url: 'http://localhost:4185',
+      logFile: log,
+      pidFile,
+    });
+    expect(fs.existsSync(pidFile)).toBe(true);
+    const second = await serve({
+      dir: clean.dir,
+      serveCmd: 'vite preview --port 4185 --strictPort',
+      url: 'http://localhost:4185',
+      logFile: log,
+      pidFile,
+    });
+    await second.stop();
+    expect(fs.existsSync(pidFile)).toBe(false);
+    // With no record, something on the port is never touched.
+    expect(await stopLeftoverServer(pidFile, 'http://localhost:4185')).toBe(false);
+    await cleanup(clean.dir);
+  }, 120_000);
 });

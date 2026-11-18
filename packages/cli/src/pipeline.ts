@@ -52,6 +52,7 @@ export async function withServed<T>(
     serveCmd: ctx.cfg.app.serve,
     url: ctx.cfg.app.url,
     logFile: path.join(ctx.evidenceDir, `serve-${label}.log`),
+    pidFile: path.join(ctx.stateDir, 'server.pid.json'),
   });
   setActiveServer(server);
   try {
