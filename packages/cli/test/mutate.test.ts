@@ -3,7 +3,7 @@ import os from 'node:os';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import type { MutantProposer, Proposal } from '@saboteur/agent';
-import { loadManifest } from '@saboteur/mutator';
+import { loadManifest, nextMutantId } from '@saboteur/mutator';
 import { afterAll, describe, expect, it } from 'vitest';
 import { loadConfig } from '../src/config.ts';
 import { cmdMutate } from '../src/mutate.ts';
@@ -33,6 +33,12 @@ const p = (over: Partial<Proposal>): Proposal => ({
 describe('saboteur mutate --ai', () => {
   it('keeps only proposals Kane proves visible; writes patch + manifest entry with source ai', async () => {
     fs.cpSync(path.join(repo, 'apps/shop/mutations'), path.join(tmp, 'mutations'), { recursive: true });
+    // The real catalog grows over time (earlier duels add AI bugs), so expected ids are relative to it.
+    const existing = loadManifest(path.join(tmp, 'mutations/manifest.json'));
+    const id = nextMutantId(existing);
+    const existingIds = new Set(existing.mutants.map((x) => x.id));
+    const aiDir = path.join(tmp, 'mutations/ai');
+    const aiBefore = fs.existsSync(aiDir) ? fs.readdirSync(aiDir).length : 0;
     fs.mkdirSync(path.join(tmp, 'tests/kane/starter'), { recursive: true });
     fs.writeFileSync(
       path.join(tmp, 'saboteur.config.json'),
@@ -83,13 +89,13 @@ describe('saboteur mutate --ai', () => {
     expect(code).toBe(0);
 
     const m = loadManifest(path.join(tmp, 'mutations/manifest.json'));
-    const added = m.mutants.filter((x) => x.source === 'ai');
-    expect(added.map((x) => [x.id, x.title, x.patch])).toEqual([
-      ['M11', 'Mug price typo', 'ai/M11-mug-price-typo.patch'],
+    const added = m.mutants.filter((x) => !existingIds.has(x.id));
+    expect(added.map((x) => [x.id, x.title, x.patch, x.source])).toEqual([
+      [id, 'Mug price typo', `ai/${id}-mug-price-typo.patch`, 'ai'],
     ]);
-    const patch = fs.readFileSync(path.join(tmp, 'mutations/ai/M11-mug-price-typo.patch'), 'utf8');
+    const patch = fs.readFileSync(path.join(aiDir, `${id}-mug-price-typo.patch`), 'utf8');
     expect(patch).toContain('+++ b/src/data/products.ts');
-    expect(fs.readdirSync(path.join(tmp, 'mutations/ai'))).toHaveLength(1);
+    expect(fs.readdirSync(aiDir)).toHaveLength(aiBefore + 1);
 
     const runs = fs
       .readFileSync(`${script}.argv.log`, 'utf8')

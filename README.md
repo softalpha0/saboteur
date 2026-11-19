@@ -5,7 +5,7 @@
 [![CI](https://github.com/softalpha0/saboteur/actions/workflows/ci.yml/badge.svg)](https://github.com/softalpha0/saboteur/actions/workflows/ci.yml)
 ![Verified with Kane CLI](https://img.shields.io/badge/verified%20with-Kane%20CLI-6b4fbb)
 
-▶️ **Demo video:** _TODO (YouTube link)_ · 📊 **Showcase report:** [`evidence/README.md`](evidence/README.md) · 🏁 Built for the [KaneCLI Online Hackathon](https://www.kaneclihack.sh/) (TestMu AI, Nov 2026)
+🌐 **Live results:** [softalpha0.github.io/saboteur](https://softalpha0.github.io/saboteur/) · ▶️ **Demo video:** _TODO (YouTube link)_ · 📊 **Evidence:** [`evidence/README.md`](evidence/README.md) · 🏁 Built for the [KaneCLI Online Hackathon](https://www.kaneclihack.sh/) (TestMu AI, Nov 2026)
 
 > **Before: 0/10** planted bugs caught by the 4 starter tests → **After: 10/10** with 14 Claude-written tests, each proven by Kane.
 > **Duel:** a red Claude then found 3 more bugs the 18-test suite missed; a blue Claude closed all 3 with Kane-proven tests. **Red 3 : Blue 3**, suite 18 → 21.
