@@ -102,7 +102,7 @@ export function classifyMutant(
  */
 export function isInfraFailure(message: string | undefined): boolean {
   if (!message) return false;
-  return /browser_disconnected|ENOSPC|No space left on device|Target (page, context or browser|closed)|chrome (failed|crashed)|ECONNREFUSED/i.test(
+  return /browser_disconnected|analyzer_failed|ENOSPC|No space left on device|Target (page, context or browser|closed)|chrome (failed|crashed)|ECONNREFUSED/i.test(
     message,
   );
 }
