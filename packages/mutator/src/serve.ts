@@ -100,7 +100,15 @@ export async function serve(opts: {
 
   const deadline = Date.now() + (opts.timeoutMs ?? 30_000);
   while (Date.now() < deadline) {
-    if (exited !== null) throw new Error(`serve command exited with code ${exited}; see ${opts.logFile}`);
+    if (exited !== null) {
+      let tail = '';
+      try {
+        tail = fs.readFileSync(opts.logFile, 'utf8').trim().split(/\r?\n/).slice(-3).join(' | ');
+      } catch {}
+      throw new Error(
+        `serve command exited with code ${exited}${tail ? `: ${tail.slice(0, 300)}` : ''}; see ${opts.logFile}`,
+      );
+    }
     if ((await responds(opts.url)) === 200) return { url: opts.url, stop };
     await new Promise((r) => setTimeout(r, 300));
   }

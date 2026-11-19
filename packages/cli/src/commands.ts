@@ -233,7 +233,7 @@ export async function cmdRun(cfg: Resolved, opts: { replay: boolean; only?: stri
 
   // Baseline over everything that will be used later, so no test is authored on a bugged build.
   let s = suites(cfg.abs.tests, cfg.abs.generated);
-  const cleanDir = await buildClean(ctx);
+  let cleanDir = await buildClean(ctx);
   const before = new Map<string, AttackRecord>();
   const after = new Map<string, AttackRecord>();
   const closedBy = new Map<string, MutantReport['closedBy']>();
@@ -261,6 +261,10 @@ export async function cmdRun(cfg: Resolved, opts: { replay: boolean; only?: stri
     }
 
     if (!opts.replay && survivors.length) {
+      // Fresh clean build for the fill phase (as "saboteur fill" does): the attack has run for a long
+      // time since the baseline build, and the fill must prove tests against a known-good copy.
+      await cleanup(cleanDir);
+      cleanDir = await buildClean(ctx);
       const filled: Mutant[] = [];
       for (const m of survivors) {
         await creditGuard(ctx, `fill ${m.id}`);

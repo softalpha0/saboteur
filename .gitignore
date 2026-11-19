@@ -15,3 +15,4 @@ examples/*/reports/*
 
 # Per-run logs; copy a showcase run to evidence/showcase/ to commit it
 evidence/runs/
+examples/*/evidence/runs/
