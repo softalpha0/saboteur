@@ -23,11 +23,12 @@
 6. [Verified evidence](#verified-evidence)
 7. [Tech stack](#tech-stack)
 8. [Run it yourself](#run-it-yourself)
-9. [Testing](#testing)
-10. [Project layout](#project-layout)
-11. [Known limitations](#known-limitations)
-12. [Build log](#build-log)
-13. [Credits](#credits)
+9. [Second app: TodoMVC](#second-app-todomvc)
+10. [Testing](#testing)
+11. [Project layout](#project-layout)
+12. [Known limitations](#known-limitations)
+13. [Build log](#build-log)
+14. [Credits](#credits)
 
 ## The problem
 
@@ -128,6 +129,20 @@ On GitHub: `.github/workflows/saboteur.yml` runs `saboteur attack` with real Kan
 
 Logs for every run: `evidence/runs/<run-id>/` (Kane NDJSON, Kane stderr, build and serve logs, one `fill-<bug>.md` transcript per survivor).
 
+## Second app: TodoMVC
+
+Saboteur is not tied to the demo shop. `apps/todomvc` is the official React [TodoMVC](https://github.com/tastejs/todomvc) (MIT), with only its build switched to Vite and nothing in `src/` changed. It has 10 hand-written bugs (`apps/todomvc/mutations/`), 4 starter Kane tests (`examples/todomvc/tests/starter/`) and its own config. Everything runs the same way through `pnpm todomvc`:
+
+```bash
+pnpm todomvc doctor
+pnpm todomvc baseline
+pnpm todomvc attack
+pnpm todomvc fill
+pnpm todomvc duel
+```
+
+Reports go to `examples/todomvc/reports/`. Results: [`evidence/README.md`](evidence/README.md) once the real runs are in.
+
 ## Testing
 
 `pnpm test` (Vitest: Kane NDJSON parser, verdict rules, `_test.md` validator, prompts, report, every patch applies and builds, and the fill loop and `run --replay` end to end against real builds of the shop with a scripted stand-in for `kane-cli`, so CI spends no credits) · `pnpm biome check` · `pnpm -r typecheck`. Kane-backed checks: [`docs/09-TESTING.md`](docs/09-TESTING.md).
@@ -136,6 +151,8 @@ Logs for every run: `evidence/runs/<run-id>/` (Kane NDJSON, Kane stderr, build a
 
 ```
 apps/shop/            demo shop + mutations/ (bug patches) + ROUTES.md
+apps/todomvc/         TodoMVC (React, MIT, from tastejs/todomvc) + its mutations/ + ROUTES.md
+examples/todomvc/     Saboteur config + starter Kane tests for TodoMVC
 packages/cli          saboteur CLI
 packages/kane         the only code that calls kane-cli
 packages/agent        Claude prompts + _test.md validator

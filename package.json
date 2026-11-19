@@ -13,7 +13,8 @@
     "saboteur": "tsx packages/cli/src/index.ts",
     "test": "vitest run",
     "lint": "biome check .",
-    "typecheck": "pnpm -r typecheck"
+    "typecheck": "pnpm -r typecheck",
+    "todomvc": "tsx packages/cli/src/index.ts -c examples/todomvc/saboteur.config.json"
   },
   "devDependencies": {
     "@biomejs/biome": "^1.9.4",

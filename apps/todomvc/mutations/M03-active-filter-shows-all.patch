@@ -1,0 +1,13 @@
+diff --git a/src/todo/components/main.jsx b/src/todo/components/main.jsx
+index 4cf1a8a..80cd59a 100644
+--- a/src/todo/components/main.jsx
++++ b/src/todo/components/main.jsx
+@@ -12,7 +12,7 @@ export function Main({ todos, dispatch }) {
+         () =>
+             todos.filter((todo) => {
+                 if (route === "/active")
+-                    return !todo.completed;
++                    return todo;
+ 
+                 if (route === "/completed")
+                     return todo.completed;

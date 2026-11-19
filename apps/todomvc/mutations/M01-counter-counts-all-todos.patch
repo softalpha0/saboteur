@@ -1,0 +1,13 @@
+diff --git a/src/todo/components/footer.jsx b/src/todo/components/footer.jsx
+index 70b7ac5..0d1cd74 100644
+--- a/src/todo/components/footer.jsx
++++ b/src/todo/components/footer.jsx
+@@ -14,7 +14,7 @@ export function Footer({ todos, dispatch }) {
+ 
+     return (
+         <footer className="footer" data-testid="footer" hidden={todos.length === 0}>
+-            <span className="todo-count">{`${activeTodos.length} ${activeTodos.length === 1 ? "item" : "items"} left!`}</span>
++            <span className="todo-count">{`${todos.length} ${todos.length === 1 ? "item" : "items"} left!`}</span>
+             <ul className="filters" data-testid="footer-navigation">
+                 <li>
+                     <a className={classnames({ selected: route === "/" })} href="#/">All</a>

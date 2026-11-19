@@ -1,0 +1,13 @@
+diff --git a/src/todo/components/input.jsx b/src/todo/components/input.jsx
+index bfaab32..b2b3147 100644
+--- a/src/todo/components/input.jsx
++++ b/src/todo/components/input.jsx
+@@ -13,7 +13,7 @@ export function Input({ onSubmit, placeholder, label, defaultValue, onBlur, edit
+     const handleKeyDown = useCallback(
+         (e) => {
+             if (e.key !== "Enter") return;
+-            const value = e.target.value.trim();
++            const value = e.target.value;
+             // For new-todo, ignore empty submits. For edit, an empty
+             // submit means "delete this todo" — let the parent decide.
+             if (!editing && value.length === 0) return;

@@ -1,0 +1,24 @@
+{
+  "app": {
+    "dir": "../../apps/todomvc",
+    "build": "vite build",
+    "serve": "vite preview --port 4174 --strictPort",
+    "url": "http://localhost:4174",
+    "routes": "../../apps/todomvc/ROUTES.md"
+  },
+  "tests": {
+    "dir": "tests",
+    "generatedDir": "tests/generated"
+  },
+  "mutations": {
+    "manifest": "../../apps/todomvc/mutations/manifest.json"
+  },
+  "kane": {
+    "parallel": 2,
+    "suiteTimeoutMin": 15,
+    "minCredits": 200
+  },
+  "agent": {
+    "maxAttempts": 3
+  }
+}

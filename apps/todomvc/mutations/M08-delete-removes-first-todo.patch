@@ -1,0 +1,13 @@
+diff --git a/src/todo/reducer.js b/src/todo/reducer.js
+index b43c358..94b31e3 100644
+--- a/src/todo/reducer.js
++++ b/src/todo/reducer.js
+@@ -49,7 +49,7 @@ export const todoReducer = (state, action) => {
+         case UPDATE_ITEM:
+             return state.map((todo) => (todo.id === action.payload.id ? { ...todo, title: action.payload.title } : todo));
+         case REMOVE_ITEM:
+-            return state.filter((todo) => todo.id !== action.payload.id);
++            return state.slice(1);
+         case TOGGLE_ITEM:
+             return state.map((todo) => (todo.id === action.payload.id ? { ...todo, completed: !todo.completed } : todo));
+         case REMOVE_ALL_ITEMS:
