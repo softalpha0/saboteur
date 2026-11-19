@@ -21,11 +21,16 @@ function badge(v: string): string {
   return `<span class="b b-${esc(v)}">${esc(LABEL[v] ?? v)}</span>`;
 }
 
-function links(r: AttackRecord | undefined, dir: string): string {
+export type HtmlOptions = {
+  /** For a published page: leave out links to local log and transcript files that only exist on the machine that ran. */
+  public?: boolean;
+};
+
+function links(r: AttackRecord | undefined, dir: string, opts: HtmlOptions = {}): string {
   if (!r) return '';
   const out = r.links.map((l, i) => `<a href="${esc(l)}">Kane ${i + 1}</a>`);
   if (r.executionId) out.push(`<code>${esc(r.executionId)}</code>`);
-  const log = rel(dir, r.rawLog);
+  const log = opts.public ? undefined : rel(dir, r.rawLog);
   if (log) out.push(`<a href="${esc(log)}">log</a>`);
   return out.join(' · ');
 }
@@ -39,7 +44,7 @@ function pct(killed: number, survived: number): number {
   return killed + survived === 0 ? 0 : Math.round((killed / (killed + survived)) * 100);
 }
 
-export function renderHtml(report: Report, reportDir: string): string {
+export function renderHtml(report: Report, reportDir: string, opts: HtmlOptions = {}): string {
   const rows = report.mutants
     .map((m) => {
       const c = caught(m);
@@ -51,7 +56,7 @@ export function renderHtml(report: Report, reportDir: string): string {
   <td>${badge(m.verdictAfter)}${m.closedBy === 'fill' ? ' <span class="sub">new test</span>' : ''}${m.after ? '' : ' <span class="sub">not re-run</span>'}</td>
   <td>${c ? `<code>${esc(c.file)}</code>` : ''}</td>
   <td class="said">${esc(said)}</td>
-  <td class="links">${[links(m.before, reportDir), links(m.after, reportDir)].filter(Boolean).join('<br>')}</td>
+  <td class="links">${[links(m.before, reportDir, opts), links(m.after, reportDir, opts)].filter(Boolean).join('<br>')}</td>
 </tr>`;
     })
     .join('\n');
@@ -75,7 +80,7 @@ export function renderHtml(report: Report, reportDir: string): string {
       const head = f.accepted
         ? `accepted on attempt ${f.attempts}: <code>${esc(f.testFile)}</code>`
         : `unproven after ${f.attempts} attempt(s)`;
-      return `<section class="card"><h3>${esc(m.id)} ${esc(m.title)}</h3><p>${head} · <a href="${esc(rel(reportDir, f.transcript))}">transcript</a></p><ol>${steps}</ol>${f.error ? `<p class="err">${esc(f.error)}</p>` : ''}</section>`;
+      return `<section class="card"><h3>${esc(m.id)} ${esc(m.title)}</h3><p>${head}${opts.public ? '' : ` · <a href="${esc(rel(reportDir, f.transcript))}">transcript</a>`}</p><ol>${steps}</ol>${f.error ? `<p class="err">${esc(f.error)}</p>` : ''}</section>`;
     })
     .join('\n');
 

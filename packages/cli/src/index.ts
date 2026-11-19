@@ -7,6 +7,7 @@ import { type Resolved, loadConfig, loadDotEnv } from './config.ts';
 import { cmdDuel } from './duel.ts';
 import { cmdMutate } from './mutate.ts';
 import { CreditGuardError, InvalidRunError } from './pipeline.ts';
+import { cmdSite } from './site.ts';
 import { ui } from './ui.ts';
 
 const program = new Command();
@@ -115,6 +116,21 @@ program
         throw new Error('--rounds must be a whole number from 1 to 20');
       return cmdDuel(cfg(), { rounds });
     }),
+  );
+
+program
+  .command('site')
+  .description('build a public static site (landing page, report, duel) from your real reports into site/')
+  .option('--report <file>', 'main report.json (default: reports/latest/report.json)')
+  .option(
+    '--merge <files...>',
+    'attack report.json files that fill in bugs the main report has no verdict for',
+  )
+  .option('--duel <file>', 'duel.json (default: reports/latest-duel/duel.json)')
+  .option('--video <url>', 'link to your demo video')
+  .option('--repo <url>', 'source repo link (default: from git remote origin)')
+  .action((o: { report?: string; merge?: string[]; duel?: string; video?: string; repo?: string }) =>
+    main(() => cmdSite(cfg(), o)),
   );
 
 program
