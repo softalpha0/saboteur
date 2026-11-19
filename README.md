@@ -7,7 +7,9 @@
 
 ▶️ **Demo video:** _TODO (YouTube link)_ · 📊 **Showcase report:** [`evidence/README.md`](evidence/README.md) · 🏁 Built for the [KaneCLI Online Hackathon](https://www.kaneclihack.sh/) (TestMu AI, Nov 2026)
 
-> Before: **_TODO_/10** planted bugs caught by the starter suite → After: **_TODO_/10**. Numbers from a real run, see evidence.
+> **Before: 0/10** planted bugs caught by the 4 starter tests → **After: 10/10** with 14 Claude-written tests, each proven by Kane.
+> **Duel:** a red Claude then found 3 more bugs the 18-test suite missed; a blue Claude closed all 3 with Kane-proven tests. **Red 3 : Blue 3**, suite 18 → 21.
+> Real Kane CLI runs on Windows, 18 to 19 Nov 2026. Details: [`evidence/README.md`](evidence/README.md).
 
 ---
 
@@ -90,7 +92,7 @@ More diagrams (sequence, mutant state machine): [`docs/04-ARCHITECTURE.md`](docs
 
 ## Verified evidence
 
-See [`evidence/README.md`](evidence/README.md): per-bug Kane results, Test Manager links, closed-loop transcripts, launch posts. _TODO after showcase run._
+See [`evidence/README.md`](evidence/README.md): per-bug Kane results, which test caught each bug, the duel rounds, credits used, and what went wrong along the way.
 
 ## Tech stack
 
@@ -146,7 +148,9 @@ evidence/             real run results and links
 
 ## Known limitations
 
-- A full attack takes a while: every bug is a fresh build plus a replay of the whole suite. _TODO: real timing._
+- A full attack takes a while: every bug is a fresh build plus a Kane replay. On our Windows laptop the first full run took hours (tests one at a time, every test run for every bug). With 2 tests at a time and fail-fast, a caught bug takes about 1 to 3 minutes; a bug that slips runs the whole suite.
+- On a slow machine Kane's browser can crash or time out. Saboteur never counts that as a caught bug: it is an error, retried once, and every catch is re-run alone to confirm it.
+- Claude wrote every test correctly on the first attempt in our runs, so Kane's feedback loop (failure text back to Claude) has not been needed in a real run yet. It is covered by automated tests.
 - The demo catalog (M01 to M10) is hand-written. `mutate --ai` adds more for your own app; each kept bug costs two short Kane runs to prove it is visible.
 - Bugs run one at a time. Running several in parallel would need one port per worker, and the `_test.md` files point at one URL.
 - Kane keeps screenshots and logs for every run under `~/.testmuai/kaneai/sessions/`. After many runs this can fill a small disk; `saboteur doctor` warns under 5 GB free and stops under 2 GB. Old session folders can be deleted once their runs are reported (results are also uploaded to Test Manager).
