@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Saboteur</title>
+<meta name="description" content="Saboteur plants real bugs in your web app, uses Kane CLI to show which ones your tests miss, and has Claude write new Kane tests that Kane must prove.">
+<style>
+:root{--bg:#fafaf7;--fg:#1d1d1f;--muted:#62626a;--card:#fff;--line:#e6e6e2;--red:#c4372b;--green:#1f7a3a;--blue:#2f5bd3;--accent:#5b4bc4}
+@media (prefers-color-scheme:dark){:root{--bg:#0e1013;--fg:#f1f1f3;--muted:#a0a3ac;--card:#161920;--line:#262a33;--red:#ff6b5e;--green:#3ccf7a;--blue:#7fa2ff;--accent:#b0a4ff}}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--fg);font:17px/1.55 system-ui,-apple-system,"Segoe UI",sans-serif}
+main{max-width:1040px;margin:0 auto;padding:48px 16px 64px}
+h1{font-size:clamp(40px,7vw,72px);line-height:1.02;letter-spacing:-2px;margin:0}h1 span{color:var(--red)}
+.lead{font-size:clamp(18px,2.4vw,22px);color:var(--muted);max-width:720px;margin:18px 0 0}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px;margin:36px 0}
+.stat{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:20px}
+.stat .k{font-size:14px;color:var(--muted);font-weight:600}.stat .v{font-size:40px;font-weight:800;letter-spacing:-1px;margin:6px 0}
+.stat .s{font-size:14px;color:var(--muted)}.red{color:var(--red)}.green{color:var(--green)}.blue{color:var(--blue)}
+.vid{margin:8px 0 36px}.vid video{width:100%;border-radius:16px;border:1px solid var(--line);display:block}.vid figcaption{font-size:13px;color:var(--muted);margin-top:8px}
+h2{font-size:28px;letter-spacing:-.5px;margin:40px 0 14px}
+.steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px}
+.step{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:18px}.step b{display:block;font-size:19px;margin-bottom:6px}
+.step p{margin:0;color:var(--muted);font-size:15px}
+.links{display:flex;flex-wrap:wrap;gap:10px;margin:18px 0}
+.btn{display:inline-block;padding:10px 16px;border-radius:10px;border:1px solid var(--line);background:var(--card);color:var(--fg);text-decoration:none;font-weight:600}
+.btn.primary{background:var(--fg);color:var(--bg);border-color:var(--fg)}
+pre{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;overflow-x:auto;font-size:14px}
+.note{font-size:14px;color:var(--muted)}
+footer{margin-top:48px;font-size:14px;color:var(--muted)}
+</style></head><body><main>
+<h1>Saboteur <span>tests your tests</span></h1>
+<p class="lead">It plants real bugs in your web app one at a time, lets Kane CLI run your tests against each broken build, and shows which bugs slipped through. Then Claude writes a new Kane test for every miss, and Kane only keeps it if it passes on the correct app and fails on the bug.</p>
+
+<div class="stats">
+<div class="stat"><div class="k">Planted bugs caught</div><div class="v"><span class="red">0/10</span> → <span class="green">10/10</span></div><div class="s">4 starter tests, then with Claude's Kane-proven tests</div></div>
+<div class="stat"><div class="k">Duel: AI attacker vs the suite</div><div class="v"><span class="red">Red 3</span> : <span class="blue">Blue 3</span></div><div class="s">Red found 3 bugs the suite missed; blue closed 3 with Kane-proven tests</div></div>
+<div class="stat"><div class="k">Test suite</div><div class="v">4 → 21</div><div class="s">every added test proven by Kane CLI</div></div>
+</div>
+<figure class="vid"><video src="assets/explainer.mp4" autoplay muted loop playsinline controls></video><figcaption>Animated illustration of the real runs below.</figcaption></figure>
+<div class="links"><a class="btn primary" href="report.html">Full report</a><a class="btn" href="duel.html">Duel scoreboard</a><a class="btn" href="https://github.com/softalpha0/saboteur">Source on GitHub</a></div>
+<h2>How it works</h2>
+<div class="steps">
+<div class="step"><b>1 · Plant</b><p>A small, realistic bug as a code patch: a wrong total, a dead button, a bad redirect. One at a time, on a fresh build.</p></div>
+<div class="step"><b>2 · Hunt</b><p>Kane CLI replays your <code>_test.md</code> suite in real Chrome with healing off, so a broken page fails instead of being worked around.</p></div>
+<div class="step"><b>3 · Score</b><p>Caught or slipped, per bug. Browser crashes and timeouts are errors, never catches, and every catch is re-run to confirm it.</p></div>
+<div class="step"><b>4 · Close the gaps</b><p>Claude writes a test for each miss. Kane runs it on the correct app (must pass) and the bugged app (must fail). Kane's failure text goes back to Claude if not.</p></div>
+</div>
+<h2>Run it yourself</h2>
+<pre>git clone https://github.com/softalpha0/saboteur
+cd saboteur
+pnpm i
+kane-cli login
+pnpm saboteur doctor --replay
+pnpm saboteur run --replay</pre>
+<p class="note">Replay mode needs no Claude key: it uses the committed, Kane-proven tests. Point it at your own app with <code>saboteur.config.json</code>.</p>
+<footer>Every number on this site comes from real Kane CLI runs (2026-11-18T16-26-23Z, 2026-11-18T21-08-14Z, 2026-11-19T04-28-01Z). Verdicts for M07, M08, M09 come from a later attack run, because Kane's browser crashed on those bugs in the main run. Built for the KaneCLI Online Hackathon with Kane CLI and Claude.</footer>
+</main></body></html>

@@ -1,0 +1,145 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Saboteur report</title>
+<style>
+:root { --bg:#fafaf7; --fg:#1d1d1f; --muted:#6b6b70; --card:#fff; --line:#e6e6e2; --ok:#1f7a3a; --okbg:#e3f3e8; --bad:#b3261e; --badbg:#fbe5e3; --warn:#8a5a00; --warnbg:#fdf0d5; --accent:#5b4bc4; }
+@media (prefers-color-scheme: dark) { :root { --bg:#141416; --fg:#ececef; --muted:#a0a0a8; --card:#1d1d21; --line:#2e2e34; --ok:#7bd88f; --okbg:#1c3324; --bad:#ff8a80; --badbg:#3a1d1b; --warn:#f5c26b; --warnbg:#3a2e14; --accent:#a99cff; } }
+* { box-sizing: border-box; }
+body { margin:0; background:var(--bg); color:var(--fg); font:15px/1.5 system-ui, -apple-system, "Segoe UI", sans-serif; }
+main { max-width: 1100px; margin: 0 auto; padding: 24px 16px 48px; }
+h1 { margin: 0 0 4px; font-size: 26px; }
+.meta { color: var(--muted); font-size: 13px; }
+.scores { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; margin: 20px 0; }
+.card { background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 16px; margin-bottom: 12px; }
+.big { font-size: 34px; font-weight: 700; }
+.bar { height: 8px; background: var(--line); border-radius: 4px; overflow: hidden; margin-top: 8px; }
+.bar > div { height: 100%; background: var(--accent); }
+.table { overflow-x: auto; }
+table { width: 100%; min-width: 820px; border-collapse: collapse; background: var(--card); border: 1px solid var(--line); border-radius: 12px; }
+th, td { text-align: left; padding: 10px 12px; border-bottom: 1px solid var(--line); vertical-align: top; }
+th { font-size: 12px; text-transform: uppercase; letter-spacing: .04em; color: var(--muted); }
+.sub { color: var(--muted); font-size: 12px; }
+.said { max-width: 320px; font-size: 13px; }
+.links { font-size: 13px; white-space: nowrap; }
+.b { display: inline-block; padding: 1px 8px; border-radius: 999px; font-size: 12px; font-weight: 600; white-space: nowrap; }
+.b-killed { color: var(--ok); background: var(--okbg); }
+.b-survived { color: var(--bad); background: var(--badbg); }
+.b-error, .b-invalid, .b-rejected { color: var(--warn); background: var(--warnbg); }
+.kane { color: var(--muted); font-size: 13px; margin-top: 2px; }
+.err { color: var(--bad); }
+a { color: var(--accent); }
+code { font-size: 12px; }
+</style>
+</head>
+<body>
+<main>
+<h1>Saboteur report</h1>
+<div class="meta">Run <code>2026-11-18T16-26-23Z</code> · mode replay · Kane CLI 0.10.5 · apps/shop at http://localhost:4173</div>
+<div class="scores">
+  <div class="card"><div class="sub">Before (starter suite, 4 tests)</div><div class="big">0/10 caught</div><div class="bar"><div style="width:0%"></div></div></div>
+  <div class="card"><div class="sub">After (with generated tests, 18 tests)</div><div class="big">10/10 caught</div><div class="bar"><div style="width:100%"></div></div></div>
+  <div class="card"><div class="sub">Baseline on the clean build</div><div class="big">exit 0</div><div class="sub">0 recorded during baseline · <code>262da6b6-09ef-465f-afc6-3316bdbe18ab</code></div></div>
+</div>
+<h2>Per bug</h2>
+<div class="table"><table>
+<thead><tr><th>Bug</th><th>What breaks</th><th>Before</th><th>After</th><th>Caught by</th><th>Kane said</th><th>Kane results</th></tr></thead>
+<tbody>
+<tr>
+  <td><b>M01</b></td>
+  <td>Cart total skips the last item<div class="sub">Customer is charged less than the items in the cart: the last line item is left out of the subtotal and total</div></td>
+  <td><span class="b b-survived">slipped through</span></td>
+  <td><span class="b b-killed">caught</span></td>
+  <td><code>cart_remove_deletes_clicked_item_test.md</code></td>
+  <td class="said">assertion_failed: @ step 6</td>
+  <td class="links"><code>87d7db84-5b3d-4c96-994d-cf5e71b6a88f</code><br><code>a6f6d83b-81cb-4a6b-a69c-c12bb6781ac5</code></td>
+</tr>
+<tr>
+  <td><b>M02</b></td>
+  <td>&quot;+&quot; quantity button does nothing<div class="sub">Customer cannot increase the quantity of an item with the + button</div></td>
+  <td><span class="b b-survived">slipped through</span></td>
+  <td><span class="b b-killed">caught</span></td>
+  <td><code>cart_quantity_increase_button_test.md</code></td>
+  <td class="said">assertion_failed: @ step 6</td>
+  <td class="links"><code>5dd0e1a3-c26e-42ac-8bea-db8b110149e5</code><br><code>1e20be18-c7d4-40fd-b595-fbf4ca75644e</code></td>
+</tr>
+<tr>
+  <td><b>M03</b></td>
+  <td>Code SAVE10 takes 1% off instead of 10%<div class="sub">Customer gets a much smaller discount than SAVE10 promises</div></td>
+  <td><span class="b b-survived">slipped through</span></td>
+  <td><span class="b b-killed">caught</span></td>
+  <td><code>save10_discount_ten_percent_test.md</code></td>
+  <td class="said">assertion_failed: @ step 7</td>
+  <td class="links"><code>2fe3a05c-5bb4-46db-ae3f-5818b0c6d4e0</code><br><code>85306619-798b-4f16-a132-302cfa844347</code></td>
+</tr>
+<tr>
+  <td><b>M04</b></td>
+  <td>Shipping fee not added on orders under $50<div class="sub">Shop loses the $5.00 shipping fee on small orders; total is $5.00 too low</div></td>
+  <td><span class="b b-survived">slipped through</span></td>
+  <td><span class="b b-killed">caught</span></td>
+  <td><code>cart_quantity_increase_button_test.md</code></td>
+  <td class="said">assertion_failed: @ step 7</td>
+  <td class="links"><code>93bf49c1-21eb-49c9-a813-c883a1b1873b</code><br><code>4d06963d-a2c8-4753-bd0c-8757382c29e9</code></td>
+</tr>
+<tr>
+  <td><b>M05</b></td>
+  <td>Checkout accepts an email without a domain (a@)<div class="sub">Orders are placed with an email address nobody can reply to</div></td>
+  <td><span class="b b-survived">slipped through</span></td>
+  <td><span class="b b-killed">caught</span></td>
+  <td><code>checkout_rejects_email_without_tld_test.md</code></td>
+  <td class="said">assertion_failed: @ step 8</td>
+  <td class="links"><code>b9bf3371-d275-4d17-9a4a-6ed3244b13ae</code><br><code>555fc65a-a2ff-4518-a550-6c875090df0e</code></td>
+</tr>
+<tr>
+  <td><b>M06</b></td>
+  <td>&quot;Remove&quot; deletes the first item, not the clicked one<div class="sub">Customer clicks Remove on one item and a different item disappears</div></td>
+  <td><span class="b b-survived">slipped through</span></td>
+  <td><span class="b b-killed">caught</span></td>
+  <td><code>cart_remove_deletes_clicked_item_test.md</code></td>
+  <td class="said">assertion_failed: @ step 6</td>
+  <td class="links"><code>0951a945-5b99-4d6d-a051-0c31414b9c7f</code><br><code>4d971cd5-850c-4e39-a3cc-8d026caac042</code></td>
+</tr>
+<tr>
+  <td><b>M07</b></td>
+  <td>Out-of-stock product can still be added to cart<div class="sub">Customer can order the Wool Beanie, which is out of stock</div></td>
+  <td><span class="b b-survived">slipped through</span></td>
+  <td><span class="b b-killed">caught</span></td>
+  <td><code>out_of_stock_beanie_cannot_be_added_test.md</code></td>
+  <td class="said">assertion_failed: @ step 3</td>
+  <td class="links"><code>c1bfc58c-fa23-4280-98b7-8d7056a95f02</code><br><code>99fe151a-eb47-4d85-894e-b75978999683</code></td>
+</tr>
+<tr>
+  <td><b>M08</b></td>
+  <td>Order confirmation shows a blank order number<div class="sub">Customer has no order number to quote to support</div></td>
+  <td><span class="b b-survived">slipped through</span></td>
+  <td><span class="b b-killed">caught</span></td>
+  <td><code>order_confirmation_shows_order_number_test.md</code></td>
+  <td class="said">assertion_failed: @ step 4</td>
+  <td class="links"><code>dad50b74-7040-4c8f-9fb3-378dde7c7888</code><br><code>78ec5386-ddfa-4c60-a44b-5d65774b5b4d</code></td>
+</tr>
+<tr>
+  <td><b>M09</b></td>
+  <td>Login redirects to Home instead of Account<div class="sub">After signing in the customer lands on the home page, not My account</div></td>
+  <td><span class="b b-survived">slipped through</span></td>
+  <td><span class="b b-killed">caught</span></td>
+  <td><code>login_redirects_to_account_test.md</code></td>
+  <td class="said">assertion_failed: @ step 11</td>
+  <td class="links"><code>cd640e44-bd6b-47e5-8db8-6b935c1956c2</code><br><code>9a983ce7-557c-4b6d-ae45-bb0c3d245f22</code></td>
+</tr>
+<tr>
+  <td><b>M10</b></td>
+  <td>Cart empties on page refresh (state not saved)<div class="sub">Customer loses everything in the cart when the page reloads</div></td>
+  <td><span class="b b-survived">slipped through</span></td>
+  <td><span class="b b-killed">caught</span></td>
+  <td><code>cart_remove_deletes_clicked_item_test.md</code></td>
+  <td class="said">assertion_failed: @ step 6</td>
+  <td class="links"><code>c0a53fa6-250e-42c8-93e2-48299c6cfc2c</code><br><code>dd518a67-e3fa-452a-85f4-c0fc8e70bc9a</code></td>
+</tr>
+</tbody></table></div>
+
+<p class="sub">Every verdict above is a Kane CLI result. Generated from report.json, 2026-11-18T20:52:53.230Z.</p>
+</main>
+</body>
+</html>

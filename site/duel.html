@@ -1,0 +1,31 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Saboteur duel</title><style>
+:root{--bg:#fafaf7;--fg:#1d1d1f;--muted:#6b6b70;--card:#fff;--line:#e6e6e2;--red:#c4372b;--blue:#2f5bd3;--redbg:#fbe5e3;--bluebg:#e4ebfb}
+@media (prefers-color-scheme:dark){:root{--bg:#141416;--fg:#ececef;--muted:#a0a0a8;--card:#1d1d21;--line:#2e2e34;--red:#ff8a80;--blue:#8fb0ff;--redbg:#3a1d1b;--bluebg:#1c2540}}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--fg);font:15px/1.5 system-ui,-apple-system,"Segoe UI",sans-serif}
+main{max-width:980px;margin:0 auto;padding:24px 16px 48px}h1{margin:0 0 4px}.meta,.sub{color:var(--muted);font-size:13px}
+.board{display:flex;justify-content:center;gap:28px;align-items:center;margin:24px 0;font-weight:800;font-size:56px}
+.board .r{color:var(--red)}.board .b{color:var(--blue)}.board .sep{color:var(--muted);font-size:40px}
+.round{display:grid;grid-template-columns:90px 1fr 1fr 70px;gap:12px;align-items:center;background:var(--card);border:1px solid var(--line);border-left-width:6px;border-radius:10px;padding:12px 14px;margin-bottom:10px}
+.round.blue{border-left-color:var(--blue)}.round.closed{border-left-color:transparent;background:linear-gradient(to bottom,var(--red) 50%,var(--blue) 50%) left top/6px 100% no-repeat,var(--card);background-origin:border-box}.round.red{border-left-color:var(--red)}.round.gray{border-left-color:var(--line)}
+.n{font-weight:700}.bug{font-weight:600}.sc{text-align:right;font-weight:700}
+@media (max-width:640px){.round{grid-template-columns:1fr 60px}.n{grid-column:1/-1}.out{grid-column:1/-1}}
+code{font-size:12px}
+</style></head><body><main>
+<h1>Saboteur duel</h1>
+<div class="meta">apps/shop at http://localhost:4173 · red and blue are both Claude · Kane CLI is the referee · run <code>2026-11-19T04-28-01Z</code></div>
+<div class="board"><span class="r">Red 3</span><span class="sep">:</span><span class="b">Blue 3</span></div>
+<p class="meta" style="text-align:center">Red scores for every bug that slips past the suite. Blue scores for every bug the suite catches, and for every hole closed with a test Kane proves. The suite grew from 18 to 21 tests.</p>
+<div class="round closed"><div class="n">Round 1</div>
+<div class="what"><div class="bug">Cart badge counts distinct products instead of total quantity</div><div class="sub">The header cart badge shows how many different products are in the cart, not how many items. Adding the same product twice still shows 1, so shoppers lose track of how many items they have.</div></div>
+<div class="out">RED found a hole, BLUE closed it with a Kane-proven test<div class="sub">new test <code>cart_badge_counts_total_quantity_test.md</code>, attempt 1</div></div>
+<div class="sc">1 : 1</div></div>
+<div class="round closed"><div class="n">Round 2</div>
+<div class="what"><div class="bug">Free-shipping threshold checks the subtotal before the discount</div><div class="sub">An order whose subtotal is $50 or more but drops below $50 after SAVE10 wrongly gets free shipping, so the customer is undercharged by $5.00.</div></div>
+<div class="out">RED found a hole, BLUE closed it with a Kane-proven test<div class="sub">new test <code>save10_drops_below_free_shipping_threshold_test.md</code>, attempt 1</div></div>
+<div class="sc">2 : 2</div></div>
+<div class="round closed"><div class="n">Round 3</div>
+<div class="what"><div class="bug">Sign out leaves the customer signed in</div><div class="sub">After pressing &quot;Sign out&quot; on the account page, the header still shows &quot;Signed in as demo@saboteur.shop&quot;, so the customer appears to still be logged in until they refresh the page.</div></div>
+<div class="out">RED found a hole, BLUE closed it with a Kane-proven test<div class="sub">new test <code>sign_out_clears_signed_in_header_test.md</code>, attempt 1</div></div>
+<div class="sc">3 : 3</div></div>
+</main></body></html>
