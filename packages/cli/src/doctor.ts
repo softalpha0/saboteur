@@ -160,7 +160,7 @@ export async function doctor(
   // App builds + port free.
   try {
     if (await stopLeftoverServer(path.join(cfg.root, '.saboteur', 'state', 'server.pid.json'), cfg.app.url)) {
-      ui.ok(`stopped a shop server left running by an earlier Saboteur run on ${cfg.app.url}`);
+      ui.ok(`stopped an app server left running by an earlier Saboteur run on ${cfg.app.url}`);
     }
     await assertPortFree(cfg.app.url);
     ui.ok(`${cfg.app.url} is free`);

@@ -21,6 +21,8 @@ program
 function cfg(): Resolved {
   const c = loadConfig(program.opts<{ config: string }>().config);
   loadDotEnv(path.join(c.root, '.env'));
+  // A config in a subfolder (examples/todomvc) still picks up the repo's .env when run from the repo root.
+  loadDotEnv(path.resolve('.env'));
   return c;
 }
 

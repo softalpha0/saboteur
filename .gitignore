@@ -5,9 +5,11 @@ dist/
 !.env.example
 .saboteur/
 .testmuai/evidence/
+**/.testmuai/evidence/
 reports/*
 !reports/showcase/
 !reports/.gitkeep
+examples/*/reports/*
 *.log
 .DS_Store
 

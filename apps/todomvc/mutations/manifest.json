@@ -1,0 +1,96 @@
+{
+  "version": 1,
+  "app": "apps/todomvc",
+  "mutants": [
+    {
+      "id": "M01",
+      "title": "\"items left\" counts completed todos too",
+      "category": "display",
+      "patch": "M01-counter-counts-all-todos.patch",
+      "userImpact": "The counter overstates the work left: completed todos are still counted as left",
+      "where": "src/todo/components/footer.jsx",
+      "source": "hand"
+    },
+    {
+      "id": "M02",
+      "title": "Counter says \"1 items left!\"",
+      "category": "display",
+      "patch": "M02-one-items-left.patch",
+      "userImpact": "With exactly one active todo the counter reads \"1 items left!\" instead of \"1 item left!\"",
+      "where": "src/todo/components/footer.jsx",
+      "source": "hand"
+    },
+    {
+      "id": "M03",
+      "title": "Active filter also shows completed todos",
+      "category": "filter",
+      "patch": "M03-active-filter-shows-all.patch",
+      "userImpact": "The Active view lists completed todos, so users cannot see only what is left",
+      "where": "src/todo/components/main.jsx",
+      "source": "hand"
+    },
+    {
+      "id": "M04",
+      "title": "Completed filter shows the active todos",
+      "category": "filter",
+      "patch": "M04-completed-filter-shows-active.patch",
+      "userImpact": "The Completed view lists the wrong todos: active ones instead of completed ones",
+      "where": "src/todo/components/main.jsx",
+      "source": "hand"
+    },
+    {
+      "id": "M05",
+      "title": "\"Clear completed\" deletes the active todos",
+      "category": "data-loss",
+      "patch": "M05-clear-completed-removes-active.patch",
+      "userImpact": "Clicking Clear completed throws away every unfinished todo and keeps the finished ones",
+      "where": "src/todo/reducer.js",
+      "source": "hand"
+    },
+    {
+      "id": "M06",
+      "title": "A todo of only spaces can be added",
+      "category": "validation",
+      "patch": "M06-blank-todo-accepted.patch",
+      "userImpact": "Pressing Enter in the new-todo box with only spaces adds an empty todo",
+      "where": "src/todo/components/input.jsx",
+      "source": "hand"
+    },
+    {
+      "id": "M07",
+      "title": "Clearing a todo's text no longer deletes it",
+      "category": "interaction",
+      "patch": "M07-emptied-todo-not-deleted.patch",
+      "userImpact": "Editing a todo to empty text and pressing Enter keeps the old todo instead of deleting it",
+      "where": "src/todo/components/item.jsx",
+      "source": "hand"
+    },
+    {
+      "id": "M08",
+      "title": "Delete button removes the first todo, not the one clicked",
+      "category": "data-loss",
+      "patch": "M08-delete-removes-first-todo.patch",
+      "userImpact": "Deleting any todo removes the first todo in the list instead",
+      "where": "src/todo/reducer.js",
+      "source": "hand"
+    },
+    {
+      "id": "M09",
+      "title": "\"Mark all as complete\" cannot un-complete",
+      "category": "interaction",
+      "patch": "M09-toggle-all-never-unchecks.patch",
+      "userImpact": "The toggle-all arrow marks everything complete but never marks them active again",
+      "where": "src/todo/components/main.jsx",
+      "source": "hand"
+    },
+    {
+      "id": "M10",
+      "title": "Edited todo text is not saved",
+      "category": "interaction",
+      "patch": "M10-edit-not-saved.patch",
+      "userImpact": "After double-click editing a todo and pressing Enter, the old text comes back",
+      "where": "src/todo/reducer.js",
+      "source": "hand"
+    }
+  ]
+}

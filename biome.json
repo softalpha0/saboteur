@@ -9,7 +9,9 @@
       "reports",
       "evidence/runs",
       ".testmuai",
-      "**/*.patch"
+      "**/*.patch",
+      "apps/todomvc",
+      "examples/*/reports"
     ]
   },
   "formatter": {

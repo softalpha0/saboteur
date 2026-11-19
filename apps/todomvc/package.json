@@ -1,0 +1,24 @@
+{
+  "name": "todomvc",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "description": "TodoMVC (React) from tastejs/todomvc, built with Vite so Saboteur can mutate it. MIT, see LICENSE.md.",
+  "scripts": {
+    "dev": "vite --port 5174",
+    "build": "vite build",
+    "preview": "vite preview --port 4174 --strictPort"
+  },
+  "dependencies": {
+    "classnames": "2.5.1",
+    "react": "18.3.1",
+    "react-dom": "18.3.1",
+    "react-router-dom": "6.28.0",
+    "todomvc-app-css": "2.4.3",
+    "todomvc-common": "1.0.5"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "4.3.4",
+    "vite": "5.4.11"
+  }
+}

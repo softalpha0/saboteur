@@ -1,0 +1,13 @@
+diff --git a/src/todo/reducer.js b/src/todo/reducer.js
+index b43c358..1adc83b 100644
+--- a/src/todo/reducer.js
++++ b/src/todo/reducer.js
+@@ -57,7 +57,7 @@ export const todoReducer = (state, action) => {
+         case TOGGLE_ALL:
+             return state.map((todo) => (todo.completed !== action.payload.completed ? { ...todo, completed: action.payload.completed } : todo));
+         case REMOVE_COMPLETED_ITEMS:
+-            return state.filter((todo) => !todo.completed);
++            return state.filter((todo) => todo.completed);
+     }
+ 
+     throw Error(`Unknown action: ${action.type}`);

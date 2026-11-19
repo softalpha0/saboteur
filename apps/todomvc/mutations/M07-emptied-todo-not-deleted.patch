@@ -1,0 +1,13 @@
+diff --git a/src/todo/components/item.jsx b/src/todo/components/item.jsx
+index e558306..8b49c72 100644
+--- a/src/todo/components/item.jsx
++++ b/src/todo/components/item.jsx
+@@ -24,7 +24,7 @@ export const Item = memo(function Item({ todo, dispatch }) {
+             // otherwise dispatch twice.
+             if (!isWritable) return;
+             setIsWritable(false);
+-            if (newTitle.length === 0) removeItem();
++            if (newTitle.length === 0) return;
+             else updateItem(newTitle);
+         },
+         [isWritable, removeItem, updateItem]
