@@ -12,6 +12,7 @@ Read in this order before building.
 | 06 | [06-AGENT-PROMPTS.md](06-AGENT-PROMPTS.md) | Claude prompts, validator, accept rule, transcripts |
 | 07 | [07-BUILD-PLAN.md](07-BUILD-PLAN.md) | Hour-by-hour plan, hour-1 spike, cut order |
 | 08 | [08-DEMO-AND-SUBMISSION.md](08-DEMO-AND-SUBMISSION.md) | Description, video script, posts, submission checklist |
+| 10 | [10-VIDEO-SCRIPT.md](10-VIDEO-SCRIPT.md) | Shot-by-shot demo video script from the real runs |
 | 09 | [09-TESTING.md](09-TESTING.md) | Unit tests vs Kane-backed checks |
 
 Also: [`../apps/shop/ROUTES.md`](../apps/shop/ROUTES.md) (demo shop spec, fed to Claude), [`../AGENTS.md`](../AGENTS.md), [`../CLAUDE.md`](../CLAUDE.md), [`../BUILD_LOG.md`](../BUILD_LOG.md), [`../evidence/README.md`](../evidence/README.md).
