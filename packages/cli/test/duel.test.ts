@@ -4,7 +4,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import type { MutantProposer, Proposal, TestWriter, WriterReply } from '@saboteur/agent';
 import { parseAnswer } from '@saboteur/agent';
-import { loadManifest } from '@saboteur/mutator';
+import { loadManifest, nextMutantId } from '@saboteur/mutator';
 import { afterAll, describe, expect, it } from 'vitest';
 import { loadConfig } from '../src/config.ts';
 import { type DuelReport, cmdDuel } from '../src/duel.ts';
@@ -78,6 +78,11 @@ Verify its price shows $34.99.
 describe('saboteur duel', () => {
   it('scores defended, closed and forfeit rounds from Kane verdicts only', async () => {
     fs.cpSync(path.join(repo, 'apps/shop/mutations'), path.join(tmp, 'mutations'), { recursive: true });
+    // The real catalog grows over time (earlier duels add AI bugs), so expected ids are relative to it.
+    const existing = loadManifest(path.join(tmp, 'mutations/manifest.json'));
+    const first = nextMutantId(existing);
+    const second = nextMutantId(existing, 1);
+    const existingIds = new Set(existing.mutants.map((m) => m.id));
     fs.mkdirSync(path.join(tmp, 'tests/kane/starter'), { recursive: true });
     fs.writeFileSync(path.join(tmp, 'tests/kane/starter/a_test.md'), '## A\nVerify A.\n');
     fs.writeFileSync(
@@ -173,9 +178,12 @@ describe('saboteur duel', () => {
     expect(r.rounds[1]?.fill?.accepted).toBe(true);
     expect(
       loadManifest(path.join(tmp, 'mutations/manifest.json'))
-        .mutants.filter((m) => m.source === 'ai')
-        .map((m) => m.id),
-    ).toEqual(['M11', 'M12']);
+        .mutants.filter((m) => !existingIds.has(m.id))
+        .map((m) => [m.id, m.source]),
+    ).toEqual([
+      [first, 'ai'],
+      [second, 'ai'],
+    ]);
     const html = fs.readFileSync(path.join(tmp, 'reports/latest-duel/duel.html'), 'utf8');
     expect(html).toContain('Red 1');
     expect(html).toContain('Blue 2');
