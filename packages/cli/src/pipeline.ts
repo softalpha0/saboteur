@@ -349,6 +349,7 @@ export async function fillOne(ctx: Context, opts: FillOptions): Promise<FillReco
 
   ui.title(`Fill ${mutant.id}: ${mutant.title}`);
   let mutantDir: string | undefined;
+  let candidate: string | null = null;
   try {
     ({ dir: mutantDir } = await prepare({
       appDir: ctx.cfg.abs.app,
@@ -435,6 +436,7 @@ export async function fillOne(ctx: Context, opts: FillOptions): Promise<FillReco
       fs.mkdirSync(ctx.cfg.abs.generated, { recursive: true });
       const file = path.join(ctx.cfg.abs.generated, reply.fileName);
       setPendingCandidate(file);
+      candidate = file;
       fs.writeFileSync(file, reply.body);
       ui.info(`attempt ${n}: ${path.relative(ctx.cfg.root, file)}`);
 
@@ -497,6 +499,7 @@ export async function fillOne(ctx: Context, opts: FillOptions): Promise<FillReco
 
       attempt.decision = 'accepted';
       setPendingCandidate(null);
+      candidate = null;
       recordProven(ctx, {
         file: path.basename(file),
         mutant: mutant.id,
@@ -518,6 +521,8 @@ export async function fillOne(ctx: Context, opts: FillOptions): Promise<FillReco
       t.push(`**Unproven** after ${record.attempts} attempt(s). Nothing was added to the suite.`);
     }
   } catch (err) {
+    // A candidate that never got both Kane verdicts must not stay in the suite.
+    if (candidate) removeCandidate(candidate);
     record.error = redactSecrets(err instanceof Error ? err.message : String(err));
     ui.fail(`fill stopped: ${record.error}`);
     t.push(`**Stopped:** ${record.error}`);
