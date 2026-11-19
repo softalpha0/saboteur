@@ -1,0 +1,47 @@
+[
+  {
+    "file": "cart_badge_counts_total_quantity_test.md",
+    "mutant": "M11",
+    "runId": "2026-11-19T04-28-01Z",
+    "attempt": 1,
+    "model": "claude-opus-5-5",
+    "clean": {
+      "exitCode": 0,
+      "shareUrl": "https://test-manager.lambdatest.com/projects/01M7H2V70YP7A3ASWA4HQQ8TNH/test-cases/01M7S1XXHV12PM5J5GKJHPRAQW/dashboard/share/US_LU6ZWLLJU2HUEMWML717XXVQUGUR60GQEMDG065GO7VA3TR7Y3065DB7FYUHZOBQ?type=summary&agentView=true&fqdn=summary-page"
+    },
+    "bugged": {
+      "exitCode": 1
+    },
+    "acceptedAt": "2026-11-19T04:50:02.726Z"
+  },
+  {
+    "file": "save10_drops_below_free_shipping_threshold_test.md",
+    "mutant": "M12",
+    "runId": "2026-11-19T04-28-01Z",
+    "attempt": 1,
+    "model": "claude-opus-5-5",
+    "clean": {
+      "exitCode": 0,
+      "shareUrl": "https://test-manager.lambdatest.com/projects/01M7H2V70YP7A3ASWA4HQQ8TNH/test-cases/01M7S3A7YQC2DTCE79H5CESGN7/dashboard/share/US_672PEHZBK1KQAIHURLDOJXZHZTK6DGODE0ZGOL2T7YC4V5YYHDA2DJ6C8JXHSTXZ?type=summary&agentView=true&fqdn=summary-page"
+    },
+    "bugged": {
+      "exitCode": 1
+    },
+    "acceptedAt": "2026-11-19T05:14:49.616Z"
+  },
+  {
+    "file": "sign_out_clears_signed_in_header_test.md",
+    "mutant": "M13",
+    "runId": "2026-11-19T04-28-01Z",
+    "attempt": 1,
+    "model": "claude-opus-5-5",
+    "clean": {
+      "exitCode": 0,
+      "shareUrl": "https://test-manager.lambdatest.com/projects/01M7H2V70YP7A3ASWA4HQQ8TNH/test-cases/01M7S4SV1NKP1FGY542QHM7QJT/dashboard/share/US_VP56VCYNUBHRMU9KSB9ZIP5L9JF3HA8BCWZ08Q3NG3UBBUKKLEANM83S8T3BIRAS?type=summary&agentView=true&fqdn=summary-page"
+    },
+    "bugged": {
+      "exitCode": 1
+    },
+    "acceptedAt": "2026-11-19T05:40:59.421Z"
+  }
+]

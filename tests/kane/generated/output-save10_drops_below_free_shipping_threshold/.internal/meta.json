@@ -1,0 +1,33 @@
+{
+  "test_id": "873ad356-a16f-43ca-9cef-ed4dd65b51a7",
+  "project_id": "01M7H2V70YP7A3ASWA4HQQ8TNH",
+  "folder_id": "01M7P0FZEX77WKK3976PJAAG9D",
+  "org_id": "3433676",
+  "session_name": "save10_drops_below_free_shipping_threshold",
+  "commit_id": "48f15fde-4302-479a-94e2-e4dbe5a77448",
+  "testcase_id": "01M7S3A7YQC2DTCE79H5CESGN7",
+  "executions": [
+    {
+      "execution_id": "42506c02-bcb5-4d67-ba86-50a66d6afdba",
+      "run_kind": "author",
+      "status": "passed",
+      "valid": true,
+      "at": "2026-11-19T05:12:13.787Z"
+    },
+    {
+      "execution_id": "ef942a30-265f-4f3e-9825-434cba0e1e21",
+      "run_kind": "replay",
+      "status": "broken",
+      "valid": true,
+      "at": "2026-11-19T05:14:32.120Z"
+    },
+    {
+      "execution_id": "130b301c-662f-4c3c-a7cb-77f61adcfbb7",
+      "run_kind": "replay",
+      "status": "passed",
+      "valid": true,
+      "uploaded": true,
+      "at": "2026-11-19T05:34:06.083Z"
+    }
+  ]
+}

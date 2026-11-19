@@ -1,0 +1,13 @@
+diff --git a/src/lib/cart.ts b/src/lib/cart.ts
+index 76ed184..6607943 100644
+--- a/src/lib/cart.ts
++++ b/src/lib/cart.ts
+@@ -42,7 +42,7 @@ export function totals(lines: CartLine[], code: string | null): Totals {
+ }
+ 
+ export function itemCount(lines: CartLine[]): number {
+-  return lines.reduce((n, l) => n + l.qty, 0);
++  return lines.reduce((n, l) => n + (l.qty > 0 ? 1 : 0), 0);
+ }
+ 
+ export function clampQty(qty: number): number {

@@ -1,0 +1,13 @@
+diff --git a/src/state/auth.tsx b/src/state/auth.tsx
+index 211e79e..b68e70e 100644
+--- a/src/state/auth.tsx
++++ b/src/state/auth.tsx
+@@ -27,7 +27,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
+       return ok;
+     },
+     signOut() {
+-      setEmail(null);
++      setEmail(email);
+       save(KEY, null);
+     },
+   };

@@ -81,6 +81,36 @@
       "patch": "M10-cart-lost-on-refresh.patch",
       "userImpact": "Customer loses everything in the cart when the page reloads",
       "where": "src/state/cart.tsx"
+    },
+    {
+      "id": "M11",
+      "title": "Cart badge counts distinct products instead of total quantity",
+      "category": "display",
+      "patch": "ai/M11-cart-badge-counts-distinct-products-instead-of-t.patch",
+      "userImpact": "The header cart badge shows how many different products are in the cart, not how many items. Adding the same product twice still shows 1, so shoppers lose track of how many items they have.",
+      "where": "src/lib/cart.ts",
+      "source": "ai",
+      "kaneCheck": "Open the home page at http://localhost:4173 and click the 'Add to cart' button for Canvas Tote once. Then click the 'Add to cart' button for Canvas Tote a second time. Open the cart page at /cart and confirm Canvas Tote is listed with quantity 2. Verify the cart badge in the header shows 1 (instead of 2)."
+    },
+    {
+      "id": "M12",
+      "title": "Free-shipping threshold checks the subtotal before the discount",
+      "category": "maths",
+      "patch": "ai/M12-free-shipping-threshold-checks-the-subtotal-befo.patch",
+      "userImpact": "An order whose subtotal is $50 or more but drops below $50 after SAVE10 wrongly gets free shipping, so the customer is undercharged by $5.00.",
+      "where": "src/lib/cart.ts",
+      "source": "ai",
+      "kaneCheck": "Open http://localhost:4173. On the home page, add the Canvas Tote to the cart, then add the Desk Plant to the cart. Open the cart page at /cart and verify the Subtotal shows $54.98. Enter the discount code SAVE10 and click Apply. Verify the Discount shows −$5.50, Shipping shows Free and the Total shows $49.48."
+    },
+    {
+      "id": "M13",
+      "title": "Sign out leaves the customer signed in",
+      "category": "state",
+      "patch": "ai/M13-sign-out-leaves-the-customer-signed-in.patch",
+      "userImpact": "After pressing \"Sign out\" on the account page, the header still shows \"Signed in as demo@saboteur.shop\", so the customer appears to still be logged in until they refresh the page.",
+      "where": "src/state/auth.tsx",
+      "source": "ai",
+      "kaneCheck": "Open http://localhost:4173/login and sign in with email \"demo@saboteur.shop\" and password \"sabotage123\". On the My account page, press the \"Sign out\" button. Do not reload the page. You should land on the home page product grid. Verify the header still shows \"Signed in as demo@saboteur.shop\" and does not show a \"Sign in\" link."
     }
   ]
 }

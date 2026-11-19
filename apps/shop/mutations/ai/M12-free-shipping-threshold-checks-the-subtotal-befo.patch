@@ -1,0 +1,13 @@
+diff --git a/src/lib/cart.ts b/src/lib/cart.ts
+index 76ed184..fef1873 100644
+--- a/src/lib/cart.ts
++++ b/src/lib/cart.ts
+@@ -37,7 +37,7 @@ export function shipping(afterDiscountCents: number, hasItems: boolean): number
+ export function totals(lines: CartLine[], code: string | null): Totals {
+   const sub = subtotal(lines);
+   const discount = discountCents(sub, code);
+-  const ship = shipping(sub - discount, lines.length > 0);
++  const ship = shipping(sub, lines.length > 0);
+   return { subtotal: sub, discount, shipping: ship, total: sub - discount + ship };
+ }
+ 
