@@ -263,8 +263,15 @@ export function renderDuelMarkdown(r: DuelReport): string {
 export function renderDuelHtml(r: DuelReport): string {
   const rows = r.rounds
     .map((x) => {
+      // closed = red found a hole AND blue closed it: show both colours.
       const cls =
-        x.outcome === 'defended' || x.outcome === 'closed' ? 'blue' : x.outcome === 'open' ? 'red' : 'gray';
+        x.outcome === 'defended'
+          ? 'blue'
+          : x.outcome === 'closed'
+            ? 'closed'
+            : x.outcome === 'open'
+              ? 'red'
+              : 'gray';
       return `<div class="round ${cls}"><div class="n">Round ${x.n}</div>
 <div class="what"><div class="bug">${x.bug ? esc(x.bug.title) : 'Red forfeited'}</div><div class="sub">${esc(x.bug?.userImpact ?? x.dropped.map((d) => d.reason).join('; '))}</div></div>
 <div class="out">${esc(LABEL[x.outcome])}${x.attack?.caughtBy[0] ? `<div class="sub">caught by <code>${esc(x.attack.caughtBy[0].file)}</code></div>` : ''}${x.fill?.accepted ? `<div class="sub">new test <code>${esc(path.basename(x.fill.testFile ?? ''))}</code>, attempt ${x.fill.attempts}</div>` : ''}</div>
@@ -280,7 +287,7 @@ main{max-width:980px;margin:0 auto;padding:24px 16px 48px}h1{margin:0 0 4px}.met
 .board{display:flex;justify-content:center;gap:28px;align-items:center;margin:24px 0;font-weight:800;font-size:56px}
 .board .r{color:var(--red)}.board .b{color:var(--blue)}.board .sep{color:var(--muted);font-size:40px}
 .round{display:grid;grid-template-columns:90px 1fr 1fr 70px;gap:12px;align-items:center;background:var(--card);border:1px solid var(--line);border-left-width:6px;border-radius:10px;padding:12px 14px;margin-bottom:10px}
-.round.blue{border-left-color:var(--blue)}.round.red{border-left-color:var(--red)}.round.gray{border-left-color:var(--line)}
+.round.blue{border-left-color:var(--blue)}.round.closed{border-left-color:transparent;background:linear-gradient(to bottom,var(--red) 50%,var(--blue) 50%) left top/6px 100% no-repeat,var(--card);background-origin:border-box}.round.red{border-left-color:var(--red)}.round.gray{border-left-color:var(--line)}
 .n{font-weight:700}.bug{font-weight:600}.sc{text-align:right;font-weight:700}
 @media (max-width:640px){.round{grid-template-columns:1fr 60px}.n{grid-column:1/-1}.out{grid-column:1/-1}}
 code{font-size:12px}
