@@ -24,9 +24,9 @@ import { short, ui } from './ui.ts';
 
 export type MutateOptions = { count: number; dryRun?: boolean; proposer?: MutantProposer };
 
-type Outcome = { proposal: Proposal; id?: string; kept: boolean; reason: string };
+export type Outcome = { proposal: Proposal; id?: string; kept: boolean; reason: string; mutant?: Mutant };
 
-const distOf = (dir: string) => path.join(dir, 'dist');
+export const distOf = (dir: string) => path.join(dir, 'dist');
 const fence = (s: string, lang = '') => `\`\`\`\`${lang}\n${s.trimEnd()}\n\`\`\`\``;
 
 function kaneLine(r: ObjectiveRun): string {
@@ -115,7 +115,8 @@ export async function cmdMutate(cfg: Resolved, opts: MutateOptions): Promise<num
   return 0;
 }
 
-async function checkOne(
+/** Check one proposal end to end (applies, builds, changes the build, Kane sees it) and keep it if it passes. */
+export async function checkOne(
   ctx: Context,
   p: Proposal,
   s: { cleanDir: string; cleanHash?: string; tmp: string; dryRun: boolean; t: string[] },
@@ -229,7 +230,7 @@ async function checkOne(
     fs.writeFileSync(path.join(dest, file), patch);
     appendToManifest(cfg.abs.manifest, { ...mutant, patch: `ai/${file}`, kaneCheck: p.kaneCheck });
     t.push(`**Kept** as \`${id}\` → \`mutations/ai/${file}\``, '');
-    return { proposal: p, id, kept: true, reason: 'kept' };
+    return { proposal: p, id, kept: true, reason: 'kept', mutant: { ...mutant, patch: `ai/${file}` } };
   } finally {
     await cleanup(dir);
   }

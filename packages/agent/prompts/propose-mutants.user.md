@@ -8,3 +8,4 @@ EXISTING BUGS (do not repeat):
 
 SOURCE FILES:
 {{files}}
+{{testsSection}}

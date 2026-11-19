@@ -4,6 +4,7 @@ import { redactSecrets } from '@saboteur/agent';
 import { Command } from 'commander';
 import { cmdAttack, cmdBaseline, cmdDoctor, cmdFill, cmdReport, cmdRun } from './commands.ts';
 import { type Resolved, loadConfig, loadDotEnv } from './config.ts';
+import { cmdDuel } from './duel.ts';
 import { cmdMutate } from './mutate.ts';
 import { CreditGuardError, InvalidRunError } from './pipeline.ts';
 import { ui } from './ui.ts';
@@ -98,6 +99,21 @@ program
       if (!Number.isInteger(count) || count < 1 || count > 20)
         throw new Error('--count must be a whole number from 1 to 20');
       return cmdMutate(cfg(), { count, dryRun: o.dryRun });
+    }),
+  );
+
+program
+  .command('duel')
+  .description(
+    'red team vs blue team: Claude plants bugs your tests miss, Claude writes tests to catch them, Kane referees',
+  )
+  .option('--rounds <n>', 'how many rounds', '3')
+  .action((o: { rounds: string }) =>
+    main(async () => {
+      const rounds = Number(o.rounds);
+      if (!Number.isInteger(rounds) || rounds < 1 || rounds > 20)
+        throw new Error('--rounds must be a whole number from 1 to 20');
+      return cmdDuel(cfg(), { rounds });
     }),
   );
 
