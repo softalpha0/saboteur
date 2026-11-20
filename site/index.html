@@ -27,14 +27,15 @@ footer{margin-top:48px;font-size:14px;color:var(--muted)}
 </style></head><body><main>
 <h1>Saboteur <span>tests your tests</span></h1>
 <p class="lead">It plants real bugs in your web app one at a time, lets Kane CLI run your tests against each broken build, and shows which bugs slipped through. Then Claude writes a new Kane test for every miss, and Kane only keeps it if it passes on the correct app and fails on the bug.</p>
-
+<p class="cta"><a class="btn" href="https://youtu.be/_3oNNZhODN0">Watch the demo video</a></p>
 <div class="stats">
 <div class="stat"><div class="k">Planted bugs caught</div><div class="v"><span class="red">0/10</span> → <span class="green">10/10</span></div><div class="s">4 starter tests, then with Claude's Kane-proven tests</div></div>
 <div class="stat"><div class="k">Duel: AI attacker vs the suite</div><div class="v"><span class="red">Red 3</span> : <span class="blue">Blue 3</span></div><div class="s">Red found 3 bugs the suite missed; blue closed 3 with Kane-proven tests</div></div>
+<div class="stat"><div class="k">React TodoMVC, an app we didn't write</div><div class="v"><span class="red">2/10</span> → <span class="green">10/10</span></div><div class="s">4 starter tests, then 11 with Claude's Kane-proven tests</div></div>
 <div class="stat"><div class="k">Test suite</div><div class="v">4 → 21</div><div class="s">every added test proven by Kane CLI</div></div>
 </div>
 <figure class="vid"><video src="assets/explainer.mp4" autoplay muted loop playsinline controls></video><figcaption>Animated illustration of the real runs below.</figcaption></figure>
-<div class="links"><a class="btn primary" href="report.html">Full report</a><a class="btn" href="demo/shop/">Try the shop's bugs live</a><a class="btn" href="demo/todomvc/">Try TodoMVC's bugs live</a><a class="btn" href="duel.html">Duel scoreboard</a><a class="btn" href="https://github.com/softalpha0/saboteur">Source on GitHub</a></div>
+<div class="links"><a class="btn primary" href="report.html">Full report</a><a class="btn" href="demo/shop/">Try the shop's bugs live</a><a class="btn" href="demo/todomvc/">Try TodoMVC's bugs live</a><a class="btn" href="duel.html">Duel scoreboard</a><a class="btn" href="todomvc/report.html">TodoMVC report</a><a class="btn" href="https://github.com/softalpha0/saboteur">Source on GitHub</a></div>
 <h2>How it works</h2>
 <div class="steps">
 <div class="step"><b>1 · Plant</b><p>A small, realistic bug as a code patch: a wrong total, a dead button, a bad redirect. One at a time, on a fresh build.</p></div>
@@ -50,5 +51,5 @@ kane-cli login
 pnpm saboteur doctor --replay
 pnpm saboteur run --replay</pre>
 <p class="note">Replay mode needs no Claude key: it uses the committed, Kane-proven tests. Point it at your own app with <code>saboteur.config.json</code>.</p>
-<footer>Every number on this site comes from real Kane CLI runs (2026-11-18T16-26-23Z, 2026-11-18T21-08-14Z, 2026-11-19T04-28-01Z). Verdicts for M07, M08, M09 come from a later attack run, because Kane's browser crashed on those bugs in the main run. Built for the KaneCLI Online Hackathon with Kane CLI and Claude.</footer>
+<footer>Every number on this site comes from real Kane CLI runs (2026-11-18T16-26-23Z, 2026-11-18T21-08-14Z, 2026-11-19T04-28-01Z, 2026-11-20T02-11-09Z). Verdicts for M07, M08, M09 come from a later attack run, because Kane's browser crashed on those bugs in the main run. Built for the KaneCLI Online Hackathon with Kane CLI and Claude.</footer>
 </main></body></html>

@@ -1,0 +1,105 @@
+{
+  "test_id": "1e264147-4d8c-4a40-8886-a38319d76562",
+  "project_id": "01M7H2V70YP7A3ASWA4HQQ8TNH",
+  "folder_id": "01M7P0FZEX77WKK3976PJAAG9D",
+  "org_id": "3433676",
+  "session_name": "counter_excludes_completed",
+  "commit_id": "bb41a55f-2d6b-4848-92b3-19b689f0d298",
+  "testcase_id": "01M7TKTA2XNX1ZJY03NW4A9XX4",
+  "executions": [
+    {
+      "execution_id": "af669367-d004-49be-b56a-2b9f9a68e7cc",
+      "run_kind": "author",
+      "status": "passed",
+      "valid": true,
+      "at": "2026-11-19T19:20:41.419Z"
+    },
+    {
+      "execution_id": "39b893bb-e893-4834-b360-2df1accefeee",
+      "run_kind": "replay",
+      "status": "broken",
+      "valid": true,
+      "at": "2026-11-19T19:22:42.647Z"
+    },
+    {
+      "execution_id": "5ddfbe24-46d1-4bc9-be69-6bdc9872a725",
+      "run_kind": "replay",
+      "status": "passed",
+      "valid": true,
+      "uploaded": true,
+      "at": "2026-11-20T02:18:29.563Z"
+    },
+    {
+      "execution_id": "90786b3b-12ff-4ee5-b0be-135b2107389c",
+      "run_kind": "author",
+      "status": "skipped",
+      "valid": true,
+      "uploaded": true,
+      "at": "2026-11-20T02:45:35.377Z"
+    },
+    {
+      "execution_id": "326c356a-215c-4564-b59e-f1a792c2fbd6",
+      "run_kind": "author",
+      "status": "skipped",
+      "valid": true,
+      "uploaded": true,
+      "at": "2026-11-20T02:50:06.388Z"
+    },
+    {
+      "execution_id": "fed91b62-7313-442c-8b9d-8b4af137c7f9",
+      "run_kind": "replay",
+      "status": "passed",
+      "valid": true,
+      "uploaded": true,
+      "at": "2026-11-20T02:55:38.730Z"
+    },
+    {
+      "execution_id": "399d962a-e3ca-4607-b24b-bfd565afb5af",
+      "run_kind": "author",
+      "status": "skipped",
+      "valid": true,
+      "uploaded": true,
+      "at": "2026-11-20T03:00:39.791Z"
+    },
+    {
+      "execution_id": "e76e158a-6305-4b6d-94f6-dc406803ae29",
+      "run_kind": "replay",
+      "status": "passed",
+      "valid": true,
+      "uploaded": true,
+      "at": "2026-11-20T03:08:29.666Z"
+    },
+    {
+      "execution_id": "4b810be2-6876-4ade-a2ae-7ac8596da4ea",
+      "run_kind": "replay",
+      "status": "passed",
+      "valid": true,
+      "uploaded": true,
+      "at": "2026-11-20T03:14:47.894Z"
+    },
+    {
+      "execution_id": "a1079756-b4c5-41fc-b97d-bf8d9ce7bf84",
+      "run_kind": "replay",
+      "status": "passed",
+      "valid": true,
+      "uploaded": true,
+      "at": "2026-11-20T03:20:49.450Z"
+    },
+    {
+      "execution_id": "48b7f691-61ff-4851-8ce5-4d1f9c6e6f40",
+      "run_kind": "replay",
+      "status": "passed",
+      "valid": true,
+      "uploaded": true,
+      "at": "2026-11-20T03:29:01.853Z"
+    },
+    {
+      "execution_id": "08615d84-6904-467b-85a7-80e27c25c238",
+      "run_kind": "replay",
+      "status": "passed",
+      "valid": true,
+      "uploaded": true,
+      "at": "2026-11-20T03:41:32.789Z"
+    }
+  ]
+}

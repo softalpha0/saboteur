@@ -1,0 +1,393 @@
+{
+  "test_id": "aaf97f68-8b66-48f7-93f4-f86289375a7d",
+  "project_id": "01M7H2V70YP7A3ASWA4HQQ8TNH",
+  "folder_id": "01M7P0FZEX77WKK3976PJAAG9D",
+  "org_id": "3433676",
+  "session_name": "add_todo",
+  "commit_id": "a362611d-739e-437e-b289-7557e8bbfb84",
+  "testcase_id": "01M7TDSAFKQ30GQNYR62289KS5",
+  "executions": [
+    {
+      "execution_id": "4e65b4a4-218b-4802-8014-a6aff12e1f45",
+      "run_kind": "author",
+      "status": "passed",
+      "valid": true,
+      "at": "2026-11-19T17:34:11.307Z"
+    },
+    {
+      "execution_id": "8b81aad8-1d4a-4004-a664-c8a143176a53",
+      "run_kind": "author",
+      "status": "passed",
+      "at": "2026-11-19T17:39:30.000Z",
+      "uploaded": true
+    },
+    {
+      "execution_id": "3927704a-84d6-4cd9-b4cb-e43842b1e208",
+      "run_kind": "replay",
+      "status": "passed",
+      "valid": true,
+      "uploaded": false,
+      "at": "2026-11-19T17:42:37.827Z"
+    },
+    {
+      "execution_id": "a4b21a56-2139-4391-b128-8dee01818f76",
+      "run_kind": "replay",
+      "status": "failed",
+      "valid": true,
+      "uploaded": false,
+      "at": "2026-11-19T17:44:50.315Z"
+    },
+    {
+      "execution_id": "fe080705-f78d-4c12-8246-fa147323849c",
+      "run_kind": "replay",
+      "status": "failed",
+      "valid": true,
+      "uploaded": true,
+      "at": "2026-11-19T17:46:24.758Z"
+    },
+    {
+      "execution_id": "0f5fabdd-1974-4469-9cd5-71dce187d29d",
+      "run_kind": "replay",
+      "status": "passed",
+      "valid": true,
+      "uploaded": true,
+      "at": "2026-11-19T17:49:14.891Z"
+    },
+    {
+      "execution_id": "9bcde53e-8c98-4d47-86c9-01a96a97e488",
+      "run_kind": "replay",
+      "status": "passed",
+      "valid": true,
+      "uploaded": true,
+      "at": "2026-11-19T17:52:10.458Z"
+    },
+    {
+      "execution_id": "a877815f-6ea2-4d64-84c2-56ad8bdbb525",
+      "run_kind": "replay",
+      "status": "passed",
+      "valid": true,
+      "uploaded": true,
+      "at": "2026-11-19T17:54:52.744Z"
+    },
+    {
+      "execution_id": "2f25dc66-1c12-4c96-82ae-5ff0b44fe8c2",
+      "run_kind": "replay",
+      "status": "passed",
+      "valid": true,
+      "uploaded": true,
+      "at": "2026-11-19T17:57:57.397Z"
+    },
+    {
+      "execution_id": "7fc1d335-5adf-472d-835e-798e70a855f6",
+      "run_kind": "replay",
+      "status": "passed",
+      "valid": true,
+      "uploaded": true,
+      "at": "2026-11-19T18:01:01.645Z"
+    },
+    {
+      "execution_id": "17afc815-c9fa-4840-b5f8-31cdd263b98e",
+      "run_kind": "replay",
+      "status": "passed",
+      "valid": true,
+      "uploaded": true,
+      "at": "2026-11-19T18:03:52.350Z"
+    },
+    {
+      "execution_id": "cdeeb610-6761-4929-ad6b-69111d399761",
+      "run_kind": "replay",
+      "status": "passed",
+      "valid": true,
+      "uploaded": true,
+      "at": "2026-11-19T18:08:57.067Z"
+    },
+    {
+      "execution_id": "2f40b56f-2795-4665-b518-7e21952242e3",
+      "run_kind": "replay",
+      "status": "passed",
+      "valid": true,
+      "uploaded": true,
+      "at": "2026-11-19T18:13:23.450Z"
+    },
+    {
+      "execution_id": "17a8b1cf-6e1c-4e16-9a62-645689ea4ac2",
+      "run_kind": "replay",
+      "status": "passed",
+      "valid": true,
+      "uploaded": true,
+      "at": "2026-11-19T18:33:20.029Z"
+    },
+    {
+      "execution_id": "59e8e5c3-fc16-40fa-902f-00ad7fa21869",
+      "run_kind": "replay",
+      "status": "passed",
+      "valid": true,
+      "uploaded": true,
+      "at": "2026-11-19T18:36:03.893Z"
+    },
+    {
+      "execution_id": "2b7dc7bb-acad-4087-b9fb-f817c4b6a3a2",
+      "run_kind": "replay",
+      "status": "failed",
+      "valid": true,
+      "uploaded": true,
+      "at": "2026-11-19T18:38:27.298Z"
+    },
+    {
+      "execution_id": "1cccbc55-aefa-4037-8bbe-e9e7aa35138e",
+      "run_kind": "replay",
+      "status": "failed",
+      "valid": true,
+      "uploaded": true,
+      "at": "2026-11-19T18:40:56.090Z"
+    },
+    {
+      "execution_id": "6abaa22d-661f-482e-9d19-760f5dd683d4",
+      "run_kind": "replay",
+      "status": "passed",
+      "valid": true,
+      "uploaded": false,
+      "at": "2026-11-19T18:44:17.004Z"
+    },
+    {
+      "execution_id": "80750bed-85f0-42df-8854-fe3fe519de38",
+      "run_kind": "replay",
+      "status": "passed",
+      "valid": true,
+      "uploaded": true,
+      "at": "2026-11-19T18:48:40.199Z"
+    },
+    {
+      "execution_id": "3598160e-2c71-4843-b0f7-2b42aac077f4",
+      "run_kind": "replay",
+      "status": "passed",
+      "valid": true,
+      "uploaded": true,
+      "at": "2026-11-19T18:51:04.979Z"
+    },
+    {
+      "execution_id": "bddc4d1a-c0f0-40bf-9782-4e7b71b38f21",
+      "run_kind": "replay",
+      "status": "passed",
+      "valid": true,
+      "uploaded": true,
+      "at": "2026-11-19T18:53:40.272Z"
+    },
+    {
+      "execution_id": "7da21df3-bcea-4481-980c-41b41768b417",
+      "run_kind": "replay",
+      "status": "passed",
+      "valid": true,
+      "uploaded": true,
+      "at": "2026-11-19T18:56:14.533Z"
+    },
+    {
+      "execution_id": "060547ba-cc5c-4329-b662-5578259ef2af",
+      "run_kind": "replay",
+      "status": "passed",
+      "valid": true,
+      "uploaded": true,
+      "at": "2026-11-19T18:59:39.681Z"
+    },
+    {
+      "execution_id": "f51899c2-7dca-47f5-a00e-fe702d984074",
+      "run_kind": "replay",
+      "status": "passed",
+      "valid": true,
+      "uploaded": true,
+      "at": "2026-11-19T19:03:01.585Z"
+    },
+    {
+      "execution_id": "5bfb84c8-56ff-457d-a02d-901568efdd88",
+      "run_kind": "replay",
+      "status": "passed",
+      "valid": true,
+      "uploaded": false,
+      "at": "2026-11-19T19:05:19.858Z"
+    },
+    {
+      "execution_id": "6ed52242-4b0f-445a-8d92-866011fe10f5",
+      "run_kind": "replay",
+      "status": "passed",
+      "valid": true,
+      "uploaded": true,
+      "at": "2026-11-19T19:09:49.389Z"
+    },
+    {
+      "execution_id": "ffd2ce5c-70a4-4c01-8a40-a6ce664947de",
+      "run_kind": "replay",
+      "status": "passed",
+      "valid": true,
+      "uploaded": true,
+      "at": "2026-11-19T19:13:55.668Z"
+    },
+    {
+      "execution_id": "5ddfbe24-46d1-4bc9-be69-6bdc9872a725",
+      "run_kind": "replay",
+      "status": "passed",
+      "valid": true,
+      "uploaded": true,
+      "at": "2026-11-20T02:18:29.590Z"
+    },
+    {
+      "execution_id": "4a62ecb1-f027-4cac-9b19-db4b1b2dc11e",
+      "run_kind": "replay",
+      "status": "passed",
+      "valid": true,
+      "uploaded": true,
+      "at": "2026-11-20T02:20:44.715Z"
+    },
+    {
+      "execution_id": "ac656731-7e4d-488f-a2b3-596523585884",
+      "run_kind": "replay",
+      "status": "failed",
+      "valid": true,
+      "uploaded": true,
+      "at": "2026-11-20T02:22:32.706Z"
+    },
+    {
+      "execution_id": "5f5e437f-32c0-4ba9-bc07-4a0dabc456bc",
+      "run_kind": "replay",
+      "status": "failed",
+      "valid": true,
+      "uploaded": true,
+      "at": "2026-11-20T02:23:43.730Z"
+    },
+    {
+      "execution_id": "6f9858b3-d191-46d8-916f-c78de7210baf",
+      "run_kind": "replay",
+      "status": "passed",
+      "valid": true,
+      "uploaded": true,
+      "at": "2026-11-20T02:25:49.494Z"
+    },
+    {
+      "execution_id": "7138af1d-f2ff-400d-8b12-5401fc9a3103",
+      "run_kind": "replay",
+      "status": "passed",
+      "valid": true,
+      "uploaded": true,
+      "at": "2026-11-20T02:28:01.241Z"
+    },
+    {
+      "execution_id": "553a1dc6-7fa4-4861-b94a-3b80326c13b4",
+      "run_kind": "replay",
+      "status": "passed",
+      "valid": true,
+      "uploaded": true,
+      "at": "2026-11-20T02:30:22.861Z"
+    },
+    {
+      "execution_id": "dacf355e-ecdc-400c-a88b-8fd3884801c1",
+      "run_kind": "replay",
+      "status": "passed",
+      "valid": true,
+      "uploaded": true,
+      "at": "2026-11-20T02:32:32.634Z"
+    },
+    {
+      "execution_id": "fadaa29a-09ca-4e76-9d22-b8ec3a95a5ab",
+      "run_kind": "replay",
+      "status": "passed",
+      "valid": true,
+      "uploaded": true,
+      "at": "2026-11-20T02:34:49.817Z"
+    },
+    {
+      "execution_id": "d1e7ca83-4a38-4903-8e4d-41a64e2898e5",
+      "run_kind": "replay",
+      "status": "passed",
+      "valid": true,
+      "uploaded": true,
+      "at": "2026-11-20T02:37:00.692Z"
+    },
+    {
+      "execution_id": "a0ace413-918b-4343-945d-8dc4bdc3e300",
+      "run_kind": "replay",
+      "status": "passed",
+      "valid": true,
+      "uploaded": true,
+      "at": "2026-11-20T02:39:14.627Z"
+    },
+    {
+      "execution_id": "d7289362-1cde-490a-96db-58e2b8937469",
+      "run_kind": "replay",
+      "status": "passed",
+      "valid": true,
+      "uploaded": true,
+      "at": "2026-11-20T02:41:59.993Z"
+    },
+    {
+      "execution_id": "90786b3b-12ff-4ee5-b0be-135b2107389c",
+      "run_kind": "author",
+      "status": "skipped",
+      "valid": true,
+      "uploaded": true,
+      "at": "2026-11-20T02:45:35.427Z"
+    },
+    {
+      "execution_id": "326c356a-215c-4564-b59e-f1a792c2fbd6",
+      "run_kind": "author",
+      "status": "skipped",
+      "valid": true,
+      "uploaded": true,
+      "at": "2026-11-20T02:50:06.410Z"
+    },
+    {
+      "execution_id": "fed91b62-7313-442c-8b9d-8b4af137c7f9",
+      "run_kind": "author",
+      "status": "skipped",
+      "valid": true,
+      "uploaded": true,
+      "at": "2026-11-20T02:55:38.745Z"
+    },
+    {
+      "execution_id": "399d962a-e3ca-4607-b24b-bfd565afb5af",
+      "run_kind": "author",
+      "status": "skipped",
+      "valid": true,
+      "uploaded": true,
+      "at": "2026-11-20T03:00:39.808Z"
+    },
+    {
+      "execution_id": "e76e158a-6305-4b6d-94f6-dc406803ae29",
+      "run_kind": "replay",
+      "status": "passed",
+      "valid": true,
+      "uploaded": true,
+      "at": "2026-11-20T03:08:29.681Z"
+    },
+    {
+      "execution_id": "4b810be2-6876-4ade-a2ae-7ac8596da4ea",
+      "run_kind": "author",
+      "status": "skipped",
+      "valid": true,
+      "uploaded": true,
+      "at": "2026-11-20T03:14:47.913Z"
+    },
+    {
+      "execution_id": "a1079756-b4c5-41fc-b97d-bf8d9ce7bf84",
+      "run_kind": "author",
+      "status": "skipped",
+      "valid": true,
+      "uploaded": true,
+      "at": "2026-11-20T03:20:49.467Z"
+    },
+    {
+      "execution_id": "48b7f691-61ff-4851-8ce5-4d1f9c6e6f40",
+      "run_kind": "replay",
+      "status": "passed",
+      "valid": true,
+      "uploaded": true,
+      "at": "2026-11-20T03:29:01.867Z"
+    },
+    {
+      "execution_id": "08615d84-6904-467b-85a7-80e27c25c238",
+      "run_kind": "replay",
+      "status": "passed",
+      "valid": true,
+      "uploaded": true,
+      "at": "2026-11-20T03:41:32.818Z"
+    }
+  ]
+}

@@ -1,0 +1,121 @@
+{
+  "test_id": "0cdcf458-6ead-4004-8133-1a086074d434",
+  "project_id": "01M7H2V70YP7A3ASWA4HQQ8TNH",
+  "folder_id": "01M7P0FZEX77WKK3976PJAAG9D",
+  "org_id": "3433676",
+  "session_name": "clear_completed_keeps_active",
+  "commit_id": "e5541ea8-4342-47ea-ad7d-9d8d1a57475b",
+  "testcase_id": "01M7TMZQXQQ85RWNEB9WTBNP8F",
+  "executions": [
+    {
+      "execution_id": "e61c851c-b9bb-48a4-887a-1acd24f567b0",
+      "run_kind": "author",
+      "status": "passed",
+      "valid": true,
+      "at": "2026-11-19T19:41:23.744Z"
+    },
+    {
+      "execution_id": "c1a7df32-ba6c-4945-845b-fe8c4c2653b9",
+      "run_kind": "replay",
+      "status": "broken",
+      "valid": true,
+      "at": "2026-11-19T19:44:34.195Z"
+    },
+    {
+      "execution_id": "5ddfbe24-46d1-4bc9-be69-6bdc9872a725",
+      "run_kind": "replay",
+      "status": "passed",
+      "valid": true,
+      "uploaded": true,
+      "at": "2026-11-20T02:18:29.514Z"
+    },
+    {
+      "execution_id": "90786b3b-12ff-4ee5-b0be-135b2107389c",
+      "run_kind": "replay",
+      "status": "failed",
+      "valid": true,
+      "uploaded": true,
+      "at": "2026-11-20T02:45:35.326Z"
+    },
+    {
+      "execution_id": "943f56ce-3a9e-4d4b-bb65-d540042f6d8d",
+      "run_kind": "replay",
+      "status": "failed",
+      "valid": true,
+      "uploaded": true,
+      "at": "2026-11-20T02:47:01.160Z"
+    },
+    {
+      "execution_id": "326c356a-215c-4564-b59e-f1a792c2fbd6",
+      "run_kind": "replay",
+      "status": "passed",
+      "valid": true,
+      "uploaded": true,
+      "at": "2026-11-20T02:50:06.324Z"
+    },
+    {
+      "execution_id": "fed91b62-7313-442c-8b9d-8b4af137c7f9",
+      "run_kind": "replay",
+      "status": "passed",
+      "valid": true,
+      "uploaded": true,
+      "at": "2026-11-20T02:55:38.702Z"
+    },
+    {
+      "execution_id": "399d962a-e3ca-4607-b24b-bfd565afb5af",
+      "run_kind": "replay",
+      "status": "failed",
+      "valid": true,
+      "uploaded": true,
+      "at": "2026-11-20T03:00:39.765Z"
+    },
+    {
+      "execution_id": "b9273905-2a16-4ae3-b6aa-51ff184121bc",
+      "run_kind": "replay",
+      "status": "failed",
+      "valid": true,
+      "uploaded": true,
+      "at": "2026-11-20T03:03:02.050Z"
+    },
+    {
+      "execution_id": "e76e158a-6305-4b6d-94f6-dc406803ae29",
+      "run_kind": "replay",
+      "status": "passed",
+      "valid": true,
+      "uploaded": true,
+      "at": "2026-11-20T03:08:29.633Z"
+    },
+    {
+      "execution_id": "4b810be2-6876-4ade-a2ae-7ac8596da4ea",
+      "run_kind": "replay",
+      "status": "passed",
+      "valid": true,
+      "uploaded": true,
+      "at": "2026-11-20T03:14:47.861Z"
+    },
+    {
+      "execution_id": "a1079756-b4c5-41fc-b97d-bf8d9ce7bf84",
+      "run_kind": "replay",
+      "status": "passed",
+      "valid": true,
+      "uploaded": true,
+      "at": "2026-11-20T03:20:49.421Z"
+    },
+    {
+      "execution_id": "48b7f691-61ff-4851-8ce5-4d1f9c6e6f40",
+      "run_kind": "replay",
+      "status": "passed",
+      "valid": true,
+      "uploaded": true,
+      "at": "2026-11-20T03:29:01.826Z"
+    },
+    {
+      "execution_id": "08615d84-6904-467b-85a7-80e27c25c238",
+      "run_kind": "replay",
+      "status": "passed",
+      "valid": true,
+      "uploaded": true,
+      "at": "2026-11-20T03:41:32.736Z"
+    }
+  ]
+}

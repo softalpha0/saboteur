@@ -1,0 +1,16 @@
+{
+  "test_id": "63d733a2-b3f9-47f1-b821-647e6451d1f7",
+  "project_id": "01M7H2V70YP7A3ASWA4HQQ8TNH",
+  "folder_id": "01M7P0FZEX77WKK3976PJAAG9D",
+  "org_id": "3433676",
+  "session_name": "delete_middle_todo_removes_only_that_todo",
+  "executions": [
+    {
+      "execution_id": "4209ab42-22d3-4d6e-9522-0676c2a9a692",
+      "run_kind": "author",
+      "status": "broken",
+      "valid": true,
+      "at": "2026-11-19T20:07:38.447Z"
+    }
+  ]
+}

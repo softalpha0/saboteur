@@ -1,0 +1,146 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Saboteur report</title>
+<style>
+:root { --bg:#fafaf7; --fg:#1d1d1f; --muted:#6b6b70; --card:#fff; --line:#e6e6e2; --ok:#1f7a3a; --okbg:#e3f3e8; --bad:#b3261e; --badbg:#fbe5e3; --warn:#8a5a00; --warnbg:#fdf0d5; --accent:#5b4bc4; }
+@media (prefers-color-scheme: dark) { :root { --bg:#141416; --fg:#ececef; --muted:#a0a0a8; --card:#1d1d21; --line:#2e2e34; --ok:#7bd88f; --okbg:#1c3324; --bad:#ff8a80; --badbg:#3a1d1b; --warn:#f5c26b; --warnbg:#3a2e14; --accent:#a99cff; } }
+* { box-sizing: border-box; }
+body { margin:0; background:var(--bg); color:var(--fg); font:15px/1.5 system-ui, -apple-system, "Segoe UI", sans-serif; }
+main { max-width: 1100px; margin: 0 auto; padding: 24px 16px 48px; }
+h1 { margin: 0 0 4px; font-size: 26px; }
+.meta { color: var(--muted); font-size: 13px; }
+.scores { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; margin: 20px 0; }
+.card { background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 16px; margin-bottom: 12px; }
+.big { font-size: 34px; font-weight: 700; }
+.bar { height: 8px; background: var(--line); border-radius: 4px; overflow: hidden; margin-top: 8px; }
+.bar > div { height: 100%; background: var(--accent); }
+.table { overflow-x: auto; }
+table { width: 100%; min-width: 820px; border-collapse: collapse; background: var(--card); border: 1px solid var(--line); border-radius: 12px; }
+th, td { text-align: left; padding: 10px 12px; border-bottom: 1px solid var(--line); vertical-align: top; }
+th { font-size: 12px; text-transform: uppercase; letter-spacing: .04em; color: var(--muted); }
+.sub { color: var(--muted); font-size: 12px; }
+.said { max-width: 320px; font-size: 13px; }
+.links { font-size: 13px; white-space: nowrap; }
+.b { display: inline-block; padding: 1px 8px; border-radius: 999px; font-size: 12px; font-weight: 600; white-space: nowrap; }
+.b-killed { color: var(--ok); background: var(--okbg); }
+.b-survived { color: var(--bad); background: var(--badbg); }
+.b-error, .b-invalid, .b-rejected { color: var(--warn); background: var(--warnbg); }
+.kane { color: var(--muted); font-size: 13px; margin-top: 2px; }
+.err { color: var(--bad); }
+a { color: var(--accent); }
+code { font-size: 12px; }
+</style>
+</head>
+<body>
+<main>
+<h1>Saboteur report</h1>
+<div class="meta">Run <code>2026-11-20T02-11-09Z</code> · mode live · Kane CLI 0.10.5 · ../../apps/todomvc at http://localhost:4174</div>
+<div class="scores">
+  <div class="card"><div class="sub">Before (starter suite, 4 tests)</div><div class="big">2/10 caught</div><div class="bar"><div style="width:20%"></div></div></div>
+  <div class="card"><div class="sub">After (with generated tests, 11 tests)</div><div class="big">10/10 caught</div><div class="bar"><div style="width:100%"></div></div></div>
+  <div class="card"><div class="sub">Baseline on the clean build</div><div class="big">exit 0</div><div class="sub">0 recorded during baseline · <code>5ddfbe24-46d1-4bc9-be69-6bdc9872a725</code></div></div>
+</div>
+<h2>Per bug</h2>
+<div class="table"><table>
+<thead><tr><th>Bug</th><th>What breaks</th><th>Before</th><th>After</th><th>Caught by</th><th>Kane said</th><th>Kane results</th></tr></thead>
+<tbody>
+<tr>
+  <td><b>M01</b></td>
+  <td>&quot;items left&quot; counts completed todos too<div class="sub">The counter overstates the work left: completed todos are still counted as left</div></td>
+  <td><span class="b b-survived">slipped through</span></td>
+  <td><span class="b b-killed">caught</span></td>
+  <td><code>clear_completed_keeps_active_test.md</code></td>
+  <td class="said">assertion_failed: @ step 6</td>
+  <td class="links"><code>4a62ecb1-f027-4cac-9b19-db4b1b2dc11e</code><br><code>90786b3b-12ff-4ee5-b0be-135b2107389c</code></td>
+</tr>
+<tr>
+  <td><b>M02</b></td>
+  <td>Counter says &quot;1 items left!&quot;<div class="sub">With exactly one active todo the counter reads &quot;1 items left!&quot; instead of &quot;1 item left!&quot;</div></td>
+  <td><span class="b b-killed">caught</span></td>
+  <td><span class="b b-killed">caught</span> <span class="sub">not re-run</span></td>
+  <td><code>add_todo_test.md</code></td>
+  <td class="said">assertion_failed: @ step 7</td>
+  <td class="links"><code>ac656731-7e4d-488f-a2b3-596523585884</code></td>
+</tr>
+<tr>
+  <td><b>M03</b></td>
+  <td>Active filter also shows completed todos<div class="sub">The Active view lists completed todos, so users cannot see only what is left</div></td>
+  <td><span class="b b-survived">slipped through</span></td>
+  <td><span class="b b-killed">caught</span></td>
+  <td><code>active_filter_hides_completed_test.md</code></td>
+  <td class="said">assertion_failed: @ step 7</td>
+  <td class="links"><code>6f9858b3-d191-46d8-916f-c78de7210baf</code><br><code>326c356a-215c-4564-b59e-f1a792c2fbd6</code></td>
+</tr>
+<tr>
+  <td><b>M04</b></td>
+  <td>Completed filter shows the active todos<div class="sub">The Completed view lists the wrong todos: active ones instead of completed ones</div></td>
+  <td><span class="b b-survived">slipped through</span></td>
+  <td><span class="b b-killed">caught</span></td>
+  <td><code>completed_filter_shows_only_completed_test.md</code></td>
+  <td class="said">assertion_failed: @ step 6</td>
+  <td class="links"><code>7138af1d-f2ff-400d-8b12-5401fc9a3103</code><br><code>fed91b62-7313-442c-8b9d-8b4af137c7f9</code></td>
+</tr>
+<tr>
+  <td><b>M05</b></td>
+  <td>&quot;Clear completed&quot; deletes the active todos<div class="sub">Clicking Clear completed throws away every unfinished todo and keeps the finished ones</div></td>
+  <td><span class="b b-survived">slipped through</span></td>
+  <td><span class="b b-killed">caught</span></td>
+  <td><code>clear_completed_keeps_active_test.md</code></td>
+  <td class="said">assertion_failed: @ step 7</td>
+  <td class="links"><code>553a1dc6-7fa4-4861-b94a-3b80326c13b4</code><br><code>399d962a-e3ca-4607-b24b-bfd565afb5af</code></td>
+</tr>
+<tr>
+  <td><b>M06</b></td>
+  <td>A todo of only spaces can be added<div class="sub">Pressing Enter in the new-todo box with only spaces adds an empty todo</div></td>
+  <td><span class="b b-survived">slipped through</span></td>
+  <td><span class="b b-killed">caught</span></td>
+  <td><code>spaces_only_todo_not_added_test.md</code></td>
+  <td class="said">assertion_failed: @ step 10</td>
+  <td class="links"><code>dacf355e-ecdc-400c-a88b-8fd3884801c1</code><br><code>e76e158a-6305-4b6d-94f6-dc406803ae29</code></td>
+</tr>
+<tr>
+  <td><b>M07</b></td>
+  <td>Clearing a todo's text no longer deletes it<div class="sub">Editing a todo to empty text and pressing Enter keeps the old todo instead of deleting it</div></td>
+  <td><span class="b b-survived">slipped through</span></td>
+  <td><span class="b b-killed">caught</span></td>
+  <td><code>clearing_todo_text_deletes_it_test.md</code></td>
+  <td class="said">assertion_failed: @ step 9</td>
+  <td class="links"><code>fadaa29a-09ca-4e76-9d22-b8ec3a95a5ab</code><br><code>4b810be2-6876-4ade-a2ae-7ac8596da4ea</code></td>
+</tr>
+<tr>
+  <td><b>M08</b></td>
+  <td>Delete button removes the first todo, not the one clicked<div class="sub">Deleting any todo removes the first todo in the list instead</div></td>
+  <td><span class="b b-survived">slipped through</span></td>
+  <td><span class="b b-killed">caught</span></td>
+  <td><code>clearing_todo_text_deletes_it_test.md</code></td>
+  <td class="said">assertion_failed: @ step 9</td>
+  <td class="links"><code>d1e7ca83-4a38-4903-8e4d-41a64e2898e5</code><br><code>a1079756-b4c5-41fc-b97d-bf8d9ce7bf84</code></td>
+</tr>
+<tr>
+  <td><b>M09</b></td>
+  <td>&quot;Mark all as complete&quot; cannot un-complete<div class="sub">The toggle-all arrow marks everything complete but never marks them active again</div></td>
+  <td><span class="b b-survived">slipped through</span></td>
+  <td><span class="b b-killed">caught</span> <span class="sub">new test</span></td>
+  <td><code>toggle_all_marks_all_active_again_test.md</code></td>
+  <td class="said">action_failed: click @ step 1</td>
+  <td class="links"><code>a0ace413-918b-4343-945d-8dc4bdc3e300</code><br><code>08615d84-6904-467b-85a7-80e27c25c238</code></td>
+</tr>
+<tr>
+  <td><b>M10</b></td>
+  <td>Edited todo text is not saved<div class="sub">After double-click editing a todo and pressing Enter, the old text comes back</div></td>
+  <td><span class="b b-killed">caught</span></td>
+  <td><span class="b b-killed">caught</span> <span class="sub">not re-run</span></td>
+  <td><code>edit_todo_test.md</code></td>
+  <td class="said">assertion_failed: @ step 8</td>
+  <td class="links"><code>d7289362-1cde-490a-96db-58e2b8937469</code></td>
+</tr>
+</tbody></table></div>
+<h2>Closing the gaps</h2>
+<section class="card"><h3>M09 &quot;Mark all as complete&quot; cannot un-complete</h3><p>accepted on attempt 1: <code>tests/generated/toggle_all_marks_all_active_again_test.md</code></p><ol><li>Attempt 1: <b>accepted</b>, clean exit 0, bugged exit 1</li></ol></section>
+<p class="sub">Every verdict above is a Kane CLI result. Generated from report.json, 2026-11-20T03:42:55.712Z.</p>
+</main>
+</body>
+</html>

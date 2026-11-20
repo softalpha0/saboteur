@@ -1,0 +1,107 @@
+[
+  {
+    "file": "counter_excludes_completed_test.md",
+    "mutant": "M01",
+    "runId": "2026-11-19T18-30-13Z",
+    "attempt": 1,
+    "model": "claude-opus-5-5",
+    "clean": {
+      "exitCode": 0,
+      "shareUrl": "https://test-manager.lambdatest.com/projects/01M7H2V70YP7A3ASWA4HQQ8TNH/test-cases/01M7TKTA2XNX1ZJY03NW4A9XX4/dashboard/share/US_UVQ7Z3FWW0J4ED7U8LNGIHSXWL0S12SITU6R4LO6YHMH15GABUQDX468WHQEWZI5?type=summary&agentView=true&fqdn=summary-page"
+    },
+    "bugged": {
+      "exitCode": 1
+    },
+    "acceptedAt": "2026-11-19T19:22:51.855Z"
+  },
+  {
+    "file": "active_filter_hides_completed_test.md",
+    "mutant": "M03",
+    "runId": "2026-11-19T18-30-13Z",
+    "attempt": 1,
+    "model": "claude-opus-5-5",
+    "clean": {
+      "exitCode": 0,
+      "shareUrl": "https://test-manager.lambdatest.com/projects/01M7H2V70YP7A3ASWA4HQQ8TNH/test-cases/01M7TM6JA4G9GDKEMYGKW5JNKM/dashboard/share/US_TS4XMES9NU0F541RGB1LTRBON3AEZLUTQ5OY63M4P17GD0MJ2EHBLZ6EYRAW91BR?type=summary&agentView=true&fqdn=summary-page"
+    },
+    "bugged": {
+      "exitCode": 1
+    },
+    "acceptedAt": "2026-11-19T19:29:29.633Z"
+  },
+  {
+    "file": "completed_filter_shows_only_completed_test.md",
+    "mutant": "M04",
+    "runId": "2026-11-19T18-30-13Z",
+    "attempt": 1,
+    "model": "claude-opus-5-5",
+    "clean": {
+      "exitCode": 0,
+      "shareUrl": "https://test-manager.lambdatest.com/projects/01M7H2V70YP7A3ASWA4HQQ8TNH/test-cases/01M7TMJQZDNVWT5VMKTMA80ZME/dashboard/share/US_4CM0P1MOTP70PPFE8BMWEX2B7T83QTLKR490FB54K520INYUGO42UNUEVEICH9X3?type=summary&agentView=true&fqdn=summary-page"
+    },
+    "bugged": {
+      "exitCode": 1
+    },
+    "acceptedAt": "2026-11-19T19:36:32.587Z"
+  },
+  {
+    "file": "clear_completed_keeps_active_test.md",
+    "mutant": "M05",
+    "runId": "2026-11-19T18-30-13Z",
+    "attempt": 1,
+    "model": "claude-opus-5-5",
+    "clean": {
+      "exitCode": 0,
+      "shareUrl": "https://test-manager.lambdatest.com/projects/01M7H2V70YP7A3ASWA4HQQ8TNH/test-cases/01M7TMZQXQQ85RWNEB9WTBNP8F/dashboard/share/US_JV1P59Q1DS5OPINJVFLFFE7JU11PTMKXCB8ZIQWGOM7O1OQO57PC8NQLWFQCPI29?type=summary&agentView=true&fqdn=summary-page"
+    },
+    "bugged": {
+      "exitCode": 1
+    },
+    "acceptedAt": "2026-11-19T19:44:44.046Z"
+  },
+  {
+    "file": "spaces_only_todo_not_added_test.md",
+    "mutant": "M06",
+    "runId": "2026-11-19T18-30-13Z",
+    "attempt": 1,
+    "model": "claude-opus-5-5",
+    "clean": {
+      "exitCode": 0,
+      "shareUrl": "https://test-manager.lambdatest.com/projects/01M7H2V70YP7A3ASWA4HQQ8TNH/test-cases/01M7TNERQ027PF58X7JF1XYMZS/dashboard/share/US_IV1W0U2SE76PXABKIYYVCJOZVYCI2SAZ6WUOYMDVFIL6T8SYWUXE5TFOB3MIF4JU?type=summary&agentView=true&fqdn=summary-page"
+    },
+    "bugged": {
+      "exitCode": 1
+    },
+    "acceptedAt": "2026-11-19T19:50:42.618Z"
+  },
+  {
+    "file": "clearing_todo_text_deletes_it_test.md",
+    "mutant": "M07",
+    "runId": "2026-11-19T18-30-13Z",
+    "attempt": 1,
+    "model": "claude-opus-5-5",
+    "clean": {
+      "exitCode": 0,
+      "shareUrl": "https://test-manager.lambdatest.com/projects/01M7H2V70YP7A3ASWA4HQQ8TNH/test-cases/01M7TNSRPCEYWW88J6T2E7RAHK/dashboard/share/US_3I1FIMESX0E4OS93TOJV31LMKKLMHFEOBWV4UMNW3U2R5O28SZ525N674FEV28B8?type=summary&agentView=true&fqdn=summary-page"
+    },
+    "bugged": {
+      "exitCode": 1
+    },
+    "acceptedAt": "2026-11-19T19:57:31.110Z"
+  },
+  {
+    "file": "toggle_all_marks_all_active_again_test.md",
+    "mutant": "M09",
+    "runId": "2026-11-20T02-11-09Z",
+    "attempt": 1,
+    "model": "claude-opus-5-5",
+    "clean": {
+      "exitCode": 0,
+      "shareUrl": "https://test-manager.lambdatest.com/projects/01M7H2V70YP7A3ASWA4HQQ8TNH/test-cases/01M7VG17HNCTFKPR0P225W5XV5/dashboard/share/US_VVEDSSS13RK7OK4OTOIW2ZRL7CD5LIUP6EJI4JPLDQZDANRDP7XLBOZIXUX5I2JS?type=summary&agentView=true&fqdn=summary-page"
+    },
+    "bugged": {
+      "exitCode": 1
+    },
+    "acceptedAt": "2026-11-20T03:34:46.358Z"
+  }
+]
