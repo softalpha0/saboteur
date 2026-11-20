@@ -16,6 +16,7 @@ import type { Resolved } from './config.ts';
 import { type Context, createContext, hookSignals, loadState, saveState } from './context.ts';
 import { doctor } from './doctor.ts';
 import { attack, baseline, buildClean, creditGuard, fillOne } from './pipeline.ts';
+import { attachRequirements, requirementsCandidates } from './requirements.ts';
 import { suites } from './suite.ts';
 import { ui } from './ui.ts';
 
@@ -65,7 +66,7 @@ function reportFrom(
     });
   const s = suites(ctx.cfg.abs.tests, ctx.cfg.abs.generated);
   const b = input.baselineRun;
-  return {
+  const report: Report = {
     runId: ctx.runId,
     startedAt: ctx.startedAt,
     finishedAt: new Date().toISOString(),
@@ -90,6 +91,7 @@ function reportFrom(
     credits: input.credits,
     evidenceDir: ctx.evidenceDir,
   };
+  return attachRequirements(report, [path.join(ctx.manifest.dir, 'requirements.json')]);
 }
 
 function printScores(report: Report, reportsDir: string) {
@@ -330,7 +332,10 @@ export async function cmdReport(cfg: Resolved, opts: { from?: string }) {
     ui.fail(`no report at ${file}`);
     return 1;
   }
-  const report = JSON.parse(fs.readFileSync(file, 'utf8')) as Report;
+  const report = attachRequirements(
+    JSON.parse(fs.readFileSync(file, 'utf8')) as Report,
+    requirementsCandidates(cfg.root, JSON.parse(fs.readFileSync(file, 'utf8')) as Report),
+  );
   writeReport(report, path.join(cfg.root, 'reports'));
   printScores(report, path.join(cfg.root, 'reports'));
   return 0;

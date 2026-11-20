@@ -1,3 +1,5 @@
+import type { RequirementRow } from './requirements.ts';
+
 export type Verdict = 'killed' | 'survived' | 'error' | 'invalid' | 'rejected';
 
 /** One Kane suite run against one build. Every field comes from Kane's output or exit code. */
@@ -88,6 +90,8 @@ export type Report = {
   generatedTests: string[];
   credits?: { before?: number; after?: number };
   evidenceDir: string;
+  /** Which spec rules would break silently (from mutations/requirements.json). */
+  requirements?: RequirementRow[];
 };
 
 export function score(verdicts: Verdict[]): Score {

@@ -1,7 +1,15 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { renderHtml } from './html.ts';
+import { type CoverageStatus, coverageSummary } from './requirements.ts';
 import { type AttackRecord, type MutantReport, type Report, scoreText } from './schema.ts';
+
+const REQ: Record<CoverageStatus, string> = {
+  silent: 'breaks silently',
+  guarded: 'guarded',
+  unknown: 'unknown (error)',
+  untested: 'no bug planted',
+};
 
 const cell = (s: string | undefined, max = 160): string => {
   if (!s) return '';
@@ -83,6 +91,31 @@ export function renderMarkdown(report: Report, reportDir: string): string {
     );
   }
   lines.push('');
+
+  if (report.requirements?.length) {
+    const s = coverageSummary(report.requirements);
+    const attackOnly = report.mode === 'attack-only';
+    lines.push('## Requirement coverage', '');
+    lines.push(
+      attackOnly
+        ? `**${s.silentBefore} of ${s.planted}** spec rules with a planted bug would break without any test noticing.`
+        : `With the starter suite, **${s.silentBefore} of ${s.planted}** spec rules with a planted bug would break without any test noticing. With the generated tests: **${s.silentAfter} of ${s.planted}**.`,
+      '',
+    );
+    lines.push(
+      attackOnly ? '| Rule | Bugs | Status |' : '| Rule | Bugs | Starter suite | With generated tests |',
+    );
+    lines.push(attackOnly ? '|---|---|---|' : '|---|---|---|---|');
+    for (const r of report.requirements) {
+      const bugs = r.mutants.join(', ') || '—';
+      lines.push(
+        attackOnly
+          ? `| ${cell(r.text, 120)} | ${bugs} | ${REQ[r.before]} |`
+          : `| ${cell(r.text, 120)} | ${bugs} | ${REQ[r.before]} | ${REQ[r.after]} |`,
+      );
+    }
+    lines.push('');
+  }
 
   const filled = report.mutants.filter((m) => m.fill);
   if (filled.length) {

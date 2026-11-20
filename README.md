@@ -109,6 +109,20 @@ TypeScript · Node 20 · pnpm workspaces · Vite + React (demo shop) · **Kane C
 
 Your own app: edit `saboteur.config.json` (build/serve commands, URL, tests dir, bug patches). See [`docs/05-MUTATIONS.md`](docs/05-MUTATIONS.md).
 
+### Use it from your coding agent
+
+Saboteur ships as an agent skill (`skills/saboteur/SKILL.md`), the same way TestMu AI ships its Kane CLI skill. In this repo, Claude Code picks it up automatically from `.claude/skills/`. To add it to your own project:
+
+```bash
+pnpm saboteur skill --install --dir <your project>
+```
+
+Then ask your agent: *"use saboteur to check how good my tests are"*. The skill tells the agent to run `doctor` first, state the credit cost and ask before spending, report only numbers from `report.json`, and never count a Kane or browser error as a caught bug. Other agents that read `SKILL.md` files can use the same file.
+
+### Requirement coverage
+
+A bug count says how many planted bugs slipped. Requirement coverage says **which rules of your spec would break without any test noticing**. `mutations/requirements.json` (next to the manifest) maps each rule in `ROUTES.md` to the bugs that break it; the report then shows each rule as *breaks silently*, *guarded*, or *no bug planted*. On TodoMVC the starter tests caught 2 of 10 bugs, yet every one of the 7 rules with a planted bug still had a bug that slipped, so all 7 would break silently.
+
 ### Commands
 
 | Command | What it does |

@@ -1,0 +1,84 @@
+{
+  "version": 1,
+  "about": "Rules from apps/shop/ROUTES.md and the planted bugs that break each one. Saboteur's report uses this to show which rules would break without any test noticing. M11 to M13 were found by the duel's red team.",
+  "requirements": [
+    {
+      "id": "R-total",
+      "text": "Total = subtotal - discount + shipping, and the subtotal counts every line in the cart",
+      "source": "ROUTES.md rule 3",
+      "mutants": ["M01"]
+    },
+    {
+      "id": "R-shipping",
+      "text": "Shipping is $5.00 when the subtotal after discount is under $50.00, otherwise free",
+      "source": "ROUTES.md rule 1",
+      "mutants": ["M04", "M12"]
+    },
+    {
+      "id": "R-discount",
+      "text": "Code SAVE10 takes 10% off the subtotal",
+      "source": "ROUTES.md rule 2",
+      "mutants": ["M03"]
+    },
+    {
+      "id": "R-email",
+      "text": "Checkout only accepts an email like name@domain.tld",
+      "source": "ROUTES.md rule 4",
+      "mutants": ["M05"]
+    },
+    {
+      "id": "R-persist",
+      "text": "The cart is saved and survives a page refresh",
+      "source": "ROUTES.md rule 5",
+      "mutants": ["M10"]
+    },
+    {
+      "id": "R-login",
+      "text": "After sign-in you land on /account",
+      "source": "ROUTES.md rule 6",
+      "mutants": ["M09"]
+    },
+    {
+      "id": "R-signout",
+      "text": "Sign out signs you out",
+      "source": "ROUTES.md /account page",
+      "mutants": ["M13"]
+    },
+    {
+      "id": "R-qty",
+      "text": "The quantity stepper changes the quantity (min 1, max 9)",
+      "source": "ROUTES.md rule 7",
+      "mutants": ["M02"]
+    },
+    {
+      "id": "R-remove",
+      "text": "\"Remove\" removes that line from the cart",
+      "source": "ROUTES.md /cart page",
+      "mutants": ["M06"]
+    },
+    {
+      "id": "R-stock",
+      "text": "Out-of-stock products cannot be added to the cart",
+      "source": "ROUTES.md products table",
+      "mutants": ["M07"]
+    },
+    {
+      "id": "R-order",
+      "text": "The confirmation page shows an order number like SAB-123456",
+      "source": "ROUTES.md /order/:id page",
+      "mutants": ["M08"]
+    },
+    {
+      "id": "R-badge",
+      "text": "The header cart badge shows the number of items in the cart",
+      "source": "ROUTES.md / page",
+      "mutants": ["M11"]
+    },
+    {
+      "id": "R-login-error",
+      "text": "Wrong sign-in details show \"Email or password is incorrect\"",
+      "source": "ROUTES.md /login page",
+      "mutants": []
+    }
+  ]
+}

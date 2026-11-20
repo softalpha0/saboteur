@@ -1,9 +1,17 @@
 import { execFileSync } from 'node:child_process';
 import fs from 'node:fs';
 import path from 'node:path';
-import { type MutantReport, type Report, renderHtml, score, scoreText } from '@saboteur/report';
+import {
+  type MutantReport,
+  type Report,
+  coverageSummary,
+  renderHtml,
+  score,
+  scoreText,
+} from '@saboteur/report';
 import type { Resolved } from './config.ts';
 import { type DuelReport, renderDuelHtml } from './duel.ts';
+import { attachRequirements, requirementsCandidates } from './requirements.ts';
 import { ui } from './ui.ts';
 
 /**
@@ -85,6 +93,10 @@ export function renderLanding(input: {
   const { report: r, duel: d } = input;
   const suiteAfter = d?.suiteAfter ?? r.suiteAfter.length;
   const filled = Object.keys(input.filledFrom);
+  const cov = r.requirements?.length ? coverageSummary(r.requirements) : undefined;
+  const covCard = cov
+    ? `<div class="stat"><div class="k">Spec rules that would break silently</div><div class="v"><span class="red">${cov.silentBefore}</span> → <span class="green">${cov.silentAfter}</span></div><div class="s">of ${cov.planted} rules with a planted bug, before and after Claude's tests</div></div>`
+    : '';
   const s2 = input.second;
   const runs = [r.runId, ...new Set(Object.values(input.filledFrom)), d?.runId, s2?.runId].filter(Boolean);
   const secondCard = s2
@@ -131,6 +143,7 @@ footer{margin-top:48px;font-size:14px;color:var(--muted)}
 ${video}
 <div class="stats">
 <div class="stat"><div class="k">Planted bugs caught</div><div class="v"><span class="red">${esc(scoreText(r.before).replace(' caught', ''))}</span> → <span class="green">${esc(scoreText(r.after).replace(' caught', ''))}</span></div><div class="s">${r.suiteBefore.length} starter tests, then with Claude's Kane-proven tests</div></div>
+${covCard}
 ${duelCard}
 ${secondCard}
 <div class="stat"><div class="k">Test suite</div><div class="v">${r.suiteBefore.length} → ${suiteAfter}</div><div class="s">every added test proven by Kane CLI</div></div>
@@ -165,7 +178,9 @@ export async function cmdSite(cfg: Resolved, opts: SiteOptions): Promise<number>
   }
   const base = readJson<Report>(reportPath);
   const extras = (opts.merge ?? []).map((p) => readJson<Report>(path.resolve(cfg.root, p)));
-  const { report, filledFrom } = mergeReports(base, extras);
+  const merged = mergeReports(base, extras);
+  const { filledFrom } = merged;
+  const report = attachRequirements(merged.report, requirementsCandidates(cfg.root, merged.report));
   const duelPath = path.resolve(cfg.root, opts.duel ?? 'reports/latest-duel/duel.json');
   const duel = fs.existsSync(duelPath) ? readJson<DuelReport>(duelPath) : undefined;
 
@@ -173,7 +188,10 @@ export async function cmdSite(cfg: Resolved, opts: SiteOptions): Promise<number>
   fs.mkdirSync(path.join(out, 'assets'), { recursive: true });
   fs.writeFileSync(path.join(out, 'report.html'), renderHtml(report, out, { public: true }));
   if (duel) fs.writeFileSync(path.join(out, 'duel.html'), renderDuelHtml(duel));
-  const second = opts.todomvc ? readJson<Report>(path.resolve(cfg.root, opts.todomvc)) : undefined;
+  const secondRaw = opts.todomvc ? readJson<Report>(path.resolve(cfg.root, opts.todomvc)) : undefined;
+  const second = secondRaw
+    ? attachRequirements(secondRaw, requirementsCandidates(cfg.root, secondRaw))
+    : undefined;
   if (second) {
     fs.mkdirSync(path.join(out, 'todomvc'), { recursive: true });
     fs.writeFileSync(
