@@ -19,3 +19,4 @@ examples/*/evidence/runs/
 # Demo builds are made by the Pages workflow
 site/demo/
 site/404.html
+.claude/settings.local.json

@@ -1,0 +1,15 @@
+{
+  "version": 1,
+  "about": "Rules from apps/todomvc/ROUTES.md and the planted bugs that break each one. Saboteur's report uses this to show which rules would break without any test noticing.",
+  "requirements": [
+    { "id": "R-add", "text": "Adding trims the title; an empty or spaces-only entry adds nothing", "source": "ROUTES.md rule 1", "mutants": ["M06"] },
+    { "id": "R-complete", "text": "A todo's checkbox toggles it between active and completed", "source": "ROUTES.md rule 2", "mutants": [] },
+    { "id": "R-toggle-all", "text": "Toggle all marks everything completed, or everything active if all are completed", "source": "ROUTES.md rule 3", "mutants": ["M09"] },
+    { "id": "R-edit", "text": "Editing saves the new text; saving an empty title deletes the todo", "source": "ROUTES.md rule 4", "mutants": ["M07", "M10"] },
+    { "id": "R-delete", "text": "The delete button deletes only that todo", "source": "ROUTES.md rule 5", "mutants": ["M08"] },
+    { "id": "R-clear", "text": "Clear completed deletes completed todos and keeps active ones", "source": "ROUTES.md rule 6", "mutants": ["M05"] },
+    { "id": "R-counter", "text": "The counter shows active todos: \"1 item left!\" or \"N items left!\"", "source": "ROUTES.md rule 7", "mutants": ["M01", "M02"] },
+    { "id": "R-filters", "text": "Active and Completed views show only matching todos", "source": "ROUTES.md pages", "mutants": ["M03", "M04"] },
+    { "id": "R-memory", "text": "Todos are kept in memory only; reloading empties the list", "source": "ROUTES.md rule 8", "mutants": [] }
+  ]
+}

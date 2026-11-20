@@ -1,4 +1,5 @@
 import path from 'node:path';
+import { type CoverageStatus, coverageSummary } from './requirements.ts';
 import { type AttackRecord, type MutantReport, type Report, scoreText } from './schema.ts';
 
 /** C1: one static, self-contained HTML page (no scripts, no external assets) from report.json. */
@@ -33,6 +34,37 @@ function links(r: AttackRecord | undefined, dir: string, opts: HtmlOptions = {})
   const log = opts.public ? undefined : rel(dir, r.rawLog);
   if (log) out.push(`<a href="${esc(log)}">log</a>`);
   return out.join(' · ');
+}
+
+const REQ: Record<CoverageStatus, [string, string]> = {
+  silent: ['breaks silently', 'survived'],
+  guarded: ['guarded', 'killed'],
+  unknown: ['unknown', 'error'],
+  untested: ['no bug planted', 'none'],
+};
+const reqBadge = (s: CoverageStatus) => `<span class="b b-${REQ[s][1]}">${REQ[s][0]}</span>`;
+
+function requirementsSection(report: Report): string {
+  const rows = report.requirements;
+  if (!rows?.length) return '';
+  const s = coverageSummary(rows);
+  const attackOnly = report.mode === 'attack-only';
+  const lead = attackOnly
+    ? `<b>${s.silentBefore} of ${s.planted}</b> spec rules with a planted bug would break without any test noticing.`
+    : `With the starter suite, <b>${s.silentBefore} of ${s.planted}</b> spec rules with a planted bug would break without any test noticing. With the generated tests: <b>${s.silentAfter} of ${s.planted}</b>.`;
+  const body = rows
+    .map(
+      (r) =>
+        `<tr><td>${esc(r.text)}${r.source ? `<div class="sub">${esc(r.source)}</div>` : ''}</td><td>${esc(r.mutants.join(', ') || '—')}</td><td>${reqBadge(r.before)}</td>${attackOnly ? '' : `<td>${reqBadge(r.after)}</td>`}</tr>`,
+    )
+    .join('\n');
+  return `<h2>Requirement coverage</h2>
+<p>${lead}</p>
+<div class="table"><table>
+<thead><tr><th>Rule in the spec</th><th>Bugs that break it</th><th>${attackOnly ? 'Status' : 'Starter suite'}</th>${attackOnly ? '' : '<th>With generated tests</th>'}</tr></thead>
+<tbody>
+${body}
+</tbody></table></div>`;
 }
 
 function caught(m: MutantReport) {
@@ -121,6 +153,7 @@ th { font-size: 12px; text-transform: uppercase; letter-spacing: .04em; color: v
 .b-killed { color: var(--ok); background: var(--okbg); }
 .b-survived { color: var(--bad); background: var(--badbg); }
 .b-error, .b-invalid, .b-rejected { color: var(--warn); background: var(--warnbg); }
+.b-none { color: var(--muted); background: var(--line); }
 .kane { color: var(--muted); font-size: 13px; margin-top: 2px; }
 .err { color: var(--bad); }
 a { color: var(--accent); }
@@ -141,6 +174,7 @@ ${scoreCards}
 <tbody>
 ${rows}
 </tbody></table></div>
+${requirementsSection(report)}
 ${fills ? `<h2>Closing the gaps</h2>\n${fills}` : ''}
 <p class="sub">Every verdict above is a Kane CLI result. Generated from report.json, ${esc(report.finishedAt)}.</p>
 </main>

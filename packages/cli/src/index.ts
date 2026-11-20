@@ -9,6 +9,7 @@ import { cmdDuel } from './duel.ts';
 import { cmdMutate } from './mutate.ts';
 import { CreditGuardError, InvalidRunError } from './pipeline.ts';
 import { cmdSite } from './site.ts';
+import { cmdSkill } from './skill.ts';
 import { ui } from './ui.ts';
 
 const program = new Command();
@@ -153,6 +154,15 @@ program
   .option('--name <name>', 'folder name under demo/ (default: the app folder name)')
   .option('--base-path <path>', 'URL path of the demo folder (default: /<repo>/demo)')
   .action((o: { site?: string; name?: string; basePath?: string }) => main(() => cmdDemos(cfg(), o)));
+
+program
+  .command('skill')
+  .description(
+    'the Saboteur skill for coding agents; --install copies it into <dir>/.claude/skills/saboteur/',
+  )
+  .option('--install', 'install the skill into a project')
+  .option('--dir <dir>', 'project folder (default: current folder)')
+  .action((o: { install?: boolean; dir?: string }) => main(() => cmdSkill(o)));
 
 program
   .command('report')
