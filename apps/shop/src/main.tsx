@@ -18,7 +18,8 @@ if (!root) throw new Error('missing #root');
 
 createRoot(root).render(
   <StrictMode>
-    <BrowserRouter>
+    {/* BASE_URL is "/" locally; the live demo on GitHub Pages serves each build from a sub-path. */}
+    <BrowserRouter basename={import.meta.env.BASE_URL.replace(/\/$/, '') || '/'}>
       <AuthProvider>
         <CartProvider>
           <Header />

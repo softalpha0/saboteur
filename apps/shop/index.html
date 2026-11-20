@@ -4,6 +4,13 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Saboteur Shop</title>
+    <script>
+      // Live demo on GitHub Pages: 404.html sends deep links here as ?p=/cart; restore the real path.
+      (function () {
+        var p = new URLSearchParams(location.search).get('p');
+        if (p) history.replaceState(null, '', location.pathname.replace(/\/$/, '') + p + location.hash);
+      })();
+    </script>
   </head>
   <body>
     <div id="root"></div>

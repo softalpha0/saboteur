@@ -26,3 +26,4 @@ One dated line per block. Real results only: exit codes, credits used, what brok
 | | Posts live | | | |
 | | Submitted | | | |
 - 2026-11-19: Added TodoMVC (React, MIT, tastejs/todomvc ff43b02) as a second target: apps/todomvc (Vite build, src unchanged), 10 bug patches, 4 starter tests, examples/todomvc/saboteur.config.json, `pnpm todomvc`. Each bug checked visible in a browser by a one-off local script outside the repo; patches apply and build in CI. No Kane runs yet (0 credits).
+- 2026-11-20: Live demo: `saboteur demos` builds the clean app and every bugged version into site/demo/<app>/ with a bug switcher page and a 404 fallback for deep links; the Pages workflow builds them for the shop and TodoMVC. Shop router now honours Vite's base path (no change to behaviour or patches). Checked in a browser against a Pages-like server. 0 credits.

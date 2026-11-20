@@ -1,11 +1,12 @@
 name: Pages
 
-# Publishes site/ (built locally with `pnpm saboteur site` from real reports) to GitHub Pages.
+# Publishes site/ (built locally with `pnpm saboteur site` from real reports) to GitHub Pages,
+# plus live demo builds of each app: the clean app and every bugged version (`saboteur demos`, no Kane).
 # One-time setup: repo Settings → Pages → Source: "GitHub Actions".
 on:
   push:
     branches: [main]
-    paths: ['site/**']
+    paths: ['site/**', 'apps/**', 'packages/**', 'pnpm-lock.yaml', '.github/workflows/pages.yml']
   workflow_dispatch:
 
 permissions:
@@ -25,6 +26,14 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm saboteur demos
+      - run: pnpm todomvc demos
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:
