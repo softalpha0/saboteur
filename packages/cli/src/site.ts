@@ -23,6 +23,8 @@ export type SiteOptions = {
   out?: string;
   video?: string;
   repo?: string;
+  /** A second app's report.json (e.g. React TodoMVC); published as todomvc/report.html with its own card. */
+  todomvc?: string;
 };
 
 const esc = (s: string | undefined) =>
@@ -78,11 +80,16 @@ export function renderLanding(input: {
   repo?: string;
   video?: string;
   hasExplainer: boolean;
+  second?: Report;
 }): string {
   const { report: r, duel: d } = input;
   const suiteAfter = d?.suiteAfter ?? r.suiteAfter.length;
   const filled = Object.keys(input.filledFrom);
-  const runs = [r.runId, ...new Set(Object.values(input.filledFrom)), d?.runId].filter(Boolean);
+  const s2 = input.second;
+  const runs = [r.runId, ...new Set(Object.values(input.filledFrom)), d?.runId, s2?.runId].filter(Boolean);
+  const secondCard = s2
+    ? `<div class="stat"><div class="k">React TodoMVC, an app we didn't write</div><div class="v"><span class="red">${esc(scoreText(s2.before).replace(' caught', ''))}</span> → <span class="green">${esc(scoreText(s2.after).replace(' caught', ''))}</span></div><div class="s">${s2.suiteBefore.length} starter tests, then ${s2.suiteAfter.length} with Claude's Kane-proven tests</div></div>`
+    : '';
   const video = input.video
     ? `<p class="cta"><a class="btn" href="${esc(input.video)}">Watch the demo video</a></p>`
     : '';
@@ -125,10 +132,11 @@ ${video}
 <div class="stats">
 <div class="stat"><div class="k">Planted bugs caught</div><div class="v"><span class="red">${esc(scoreText(r.before).replace(' caught', ''))}</span> → <span class="green">${esc(scoreText(r.after).replace(' caught', ''))}</span></div><div class="s">${r.suiteBefore.length} starter tests, then with Claude's Kane-proven tests</div></div>
 ${duelCard}
+${secondCard}
 <div class="stat"><div class="k">Test suite</div><div class="v">${r.suiteBefore.length} → ${suiteAfter}</div><div class="s">every added test proven by Kane CLI</div></div>
 </div>
 ${explainer}
-<div class="links"><a class="btn primary" href="report.html">Full report</a><a class="btn" href="demo/shop/">Try the shop's bugs live</a><a class="btn" href="demo/todomvc/">Try TodoMVC's bugs live</a>${d ? '<a class="btn" href="duel.html">Duel scoreboard</a>' : ''}${input.repo ? `<a class="btn" href="${esc(input.repo)}">Source on GitHub</a>` : ''}</div>
+<div class="links"><a class="btn primary" href="report.html">Full report</a><a class="btn" href="demo/shop/">Try the shop's bugs live</a><a class="btn" href="demo/todomvc/">Try TodoMVC's bugs live</a>${d ? '<a class="btn" href="duel.html">Duel scoreboard</a>' : ''}${s2 ? '<a class="btn" href="todomvc/report.html">TodoMVC report</a>' : ''}${input.repo ? `<a class="btn" href="${esc(input.repo)}">Source on GitHub</a>` : ''}</div>
 <h2>How it works</h2>
 <div class="steps">
 <div class="step"><b>1 · Plant</b><p>A small, realistic bug as a code patch: a wrong total, a dead button, a bad redirect. One at a time, on a fresh build.</p></div>
@@ -165,6 +173,14 @@ export async function cmdSite(cfg: Resolved, opts: SiteOptions): Promise<number>
   fs.mkdirSync(path.join(out, 'assets'), { recursive: true });
   fs.writeFileSync(path.join(out, 'report.html'), renderHtml(report, out, { public: true }));
   if (duel) fs.writeFileSync(path.join(out, 'duel.html'), renderDuelHtml(duel));
+  const second = opts.todomvc ? readJson<Report>(path.resolve(cfg.root, opts.todomvc)) : undefined;
+  if (second) {
+    fs.mkdirSync(path.join(out, 'todomvc'), { recursive: true });
+    fs.writeFileSync(
+      path.join(out, 'todomvc', 'report.html'),
+      renderHtml(second, path.join(out, 'todomvc'), { public: true }),
+    );
+  }
   fs.writeFileSync(
     path.join(out, 'index.html'),
     renderLanding({
@@ -174,6 +190,7 @@ export async function cmdSite(cfg: Resolved, opts: SiteOptions): Promise<number>
       repo: opts.repo ?? repoUrl(cfg.root),
       video: opts.video,
       hasExplainer: fs.existsSync(path.join(out, 'assets', 'explainer.mp4')),
+      second,
     }),
   );
   fs.writeFileSync(path.join(out, '.nojekyll'), '');

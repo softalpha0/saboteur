@@ -132,8 +132,16 @@ program
   .option('--duel <file>', 'duel.json (default: reports/latest-duel/duel.json)')
   .option('--video <url>', 'link to your demo video')
   .option('--repo <url>', 'source repo link (default: from git remote origin)')
-  .action((o: { report?: string; merge?: string[]; duel?: string; video?: string; repo?: string }) =>
-    main(() => cmdSite(cfg(), o)),
+  .option('--todomvc <file>', "a second app's report.json, published as todomvc/report.html")
+  .action(
+    (o: {
+      report?: string;
+      merge?: string[];
+      duel?: string;
+      video?: string;
+      repo?: string;
+      todomvc?: string;
+    }) => main(() => cmdSite(cfg(), o)),
   );
 
 program
