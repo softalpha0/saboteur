@@ -86,4 +86,23 @@ describe('saboteur site', () => {
     expect(rep).not.toContain('>log<');
     expect(fs.existsSync(path.join(tmp, 'site/.nojekyll'))).toBe(true);
   });
+
+  it('publishes a second app with its own card and report page', async () => {
+    const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'saboteur-site2-'));
+    fs.writeFileSync(path.join(tmp, 'saboteur.config.json'), '{}');
+    fs.mkdirSync(path.join(tmp, 'reports'), { recursive: true });
+    fs.writeFileSync(path.join(tmp, 'reports/main.json'), JSON.stringify(main));
+    const todo = report('todo-run', [mut('M01', rec('survived'), rec('killed', 'counter_test.md'))], 'live');
+    fs.writeFileSync(path.join(tmp, 'reports/todo.json'), JSON.stringify(todo));
+    await cmdSite(loadConfig(path.join(tmp, 'saboteur.config.json')), {
+      report: 'reports/main.json',
+      todomvc: 'reports/todo.json',
+    });
+    const index = fs.readFileSync(path.join(tmp, 'site/index.html'), 'utf8');
+    expect(index).toContain("React TodoMVC, an app we didn't write");
+    expect(index).toContain('todomvc/report.html');
+    expect(index).toContain('todo-run');
+    const rep = fs.readFileSync(path.join(tmp, 'site/todomvc/report.html'), 'utf8');
+    expect(rep).not.toContain('/home/someone/secret');
+  });
 });

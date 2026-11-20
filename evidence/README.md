@@ -44,6 +44,32 @@ Run on 19 Nov, 3 rounds, model `claude-opus-5-5` for both sides. Every red bug w
 
 **Red 3 : Blue 3.** Suite 18 → 21 tests. Scoreboard: `reports/latest-duel/duel.html`.
 
+## 3b. Second app: React TodoMVC (an app we didn't write)
+
+The official React TodoMVC from tastejs/todomvc (MIT), `src/` unchanged, 10 hand-written bugs, 4 starter tests (add, complete, delete, edit a todo). Model `claude-opus-5-5`.
+
+Final run `2026-11-20T02-11-09Z` (baseline exec `5ddfbe24-46d1-4bc9-be69-6bdc9872a725`, all 10 tests passed on the clean build). The tests for M01 and M03 to M07 were written and proven in run `2026-11-19T18-30-13Z`; the M09 test in the final run. Every catch below was confirmed by re-running the test on its own.
+
+| Bug | Starter suite (4 tests) | With Claude's Kane-proven tests | Caught by |
+|---|---|---|---|
+| M01 counter counts completed todos | slipped | caught | `clear_completed_keeps_active_test.md` (step 6) |
+| M02 "1 items left!" | **caught** | caught | `add_todo_test.md` (starter, step 7) |
+| M03 Active filter shows completed todos | slipped | caught | `active_filter_hides_completed_test.md` (step 7) |
+| M04 Completed filter shows active todos | slipped | caught | `completed_filter_shows_only_completed_test.md` (step 6) |
+| M05 Clear completed deletes active todos | slipped | caught | `clear_completed_keeps_active_test.md` (step 7) |
+| M06 todo of only spaces is added | slipped | caught | `spaces_only_todo_not_added_test.md` (step 10) |
+| M07 emptied todo is not deleted | slipped | caught | `clearing_todo_text_deletes_it_test.md` (step 9) |
+| M08 delete removes the first todo | slipped | caught | `clearing_todo_text_deletes_it_test.md` (step 9), written for M07 |
+| M09 toggle all cannot un-complete | slipped | caught | `toggle_all_marks_all_active_again_test.md` (`action_failed: click @ step 1`) |
+| M10 edit not saved | **caught** | caught | `edit_todo_test.md` (starter, step 8) |
+
+**Before 2/10, after 10/10.** Suite 4 → 11 tests. 7 new tests, all proven on attempt 1; M08 needed no new test because the M07 test already caught it.
+
+Notes:
+- In run `2026-11-19T18-30-13Z`, two starter tests failed with `analyzer_failed` (a Kane-side error) on M03 and M08. The confirm runs passed, the suite was re-run, and both bugs were correctly scored as slipped. `analyzer_failed` is now treated as an error, never a catch.
+- The same run stopped at M08 when Kane lost its sign-in (`TMS did not return an org_id`); the final run picked up from the committed tests.
+- The M09 test fails on the bugged build at its first step rather than its final check. It passed on the correct app and failed twice on the bug, which is Saboteur's accept rule.
+
 ## 4. Credits
 
 | Step | Credits |
@@ -54,6 +80,7 @@ Run on 19 Nov, 3 rounds, model `claude-opus-5-5` for both sides. Every red bug w
 | Fill, 10 survivors (recording new tests is the expensive part) | ~1,080 |
 | Full `run --replay` (18 tests, before and after) | ~400 |
 | Duel, 3 rounds | ~450 |
+| TodoMVC, 3 runs (one stopped by a serve bug, one by a Kane sign-out, one final) | ~750 |
 
 ## 5. What went wrong, and what we fixed
 

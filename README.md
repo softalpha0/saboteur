@@ -141,7 +141,7 @@ pnpm todomvc fill
 pnpm todomvc duel
 ```
 
-Reports go to `examples/todomvc/reports/`. Results: [`evidence/README.md`](evidence/README.md) once the real runs are in.
+**Real result:** the 4 starter tests caught **2 of 10** bugs. With Claude's Kane-proven tests: **10 of 10** (suite 4 → 11). Per-bug table: [`evidence/README.md`](evidence/README.md#3b-second-app-react-todomvc-an-app-we-didnt-write). Reports go to `examples/todomvc/reports/`.
 
 ## Testing
 
