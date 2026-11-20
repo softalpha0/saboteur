@@ -28,6 +28,7 @@ th { font-size: 12px; text-transform: uppercase; letter-spacing: .04em; color: v
 .b-killed { color: var(--ok); background: var(--okbg); }
 .b-survived { color: var(--bad); background: var(--badbg); }
 .b-error, .b-invalid, .b-rejected { color: var(--warn); background: var(--warnbg); }
+.b-none { color: var(--muted); background: var(--line); }
 .kane { color: var(--muted); font-size: 13px; margin-top: 2px; }
 .err { color: var(--bad); }
 a { color: var(--accent); }
@@ -137,6 +138,25 @@ code { font-size: 12px; }
   <td class="said">assertion_failed: @ step 6</td>
   <td class="links"><code>c0a53fa6-250e-42c8-93e2-48299c6cfc2c</code><br><code>dd518a67-e3fa-452a-85f4-c0fc8e70bc9a</code></td>
 </tr>
+</tbody></table></div>
+<h2>Requirement coverage</h2>
+<p>With the starter suite, <b>10 of 10</b> spec rules with a planted bug would break without any test noticing. With the generated tests: <b>0 of 10</b>.</p>
+<div class="table"><table>
+<thead><tr><th>Rule in the spec</th><th>Bugs that break it</th><th>Starter suite</th><th>With generated tests</th></tr></thead>
+<tbody>
+<tr><td>Total = subtotal - discount + shipping, and the subtotal counts every line in the cart<div class="sub">ROUTES.md rule 3</div></td><td>M01</td><td><span class="b b-survived">breaks silently</span></td><td><span class="b b-killed">guarded</span></td></tr>
+<tr><td>Shipping is $5.00 when the subtotal after discount is under $50.00, otherwise free<div class="sub">ROUTES.md rule 1</div></td><td>M04</td><td><span class="b b-survived">breaks silently</span></td><td><span class="b b-killed">guarded</span></td></tr>
+<tr><td>Code SAVE10 takes 10% off the subtotal<div class="sub">ROUTES.md rule 2</div></td><td>M03</td><td><span class="b b-survived">breaks silently</span></td><td><span class="b b-killed">guarded</span></td></tr>
+<tr><td>Checkout only accepts an email like name@domain.tld<div class="sub">ROUTES.md rule 4</div></td><td>M05</td><td><span class="b b-survived">breaks silently</span></td><td><span class="b b-killed">guarded</span></td></tr>
+<tr><td>The cart is saved and survives a page refresh<div class="sub">ROUTES.md rule 5</div></td><td>M10</td><td><span class="b b-survived">breaks silently</span></td><td><span class="b b-killed">guarded</span></td></tr>
+<tr><td>After sign-in you land on /account<div class="sub">ROUTES.md rule 6</div></td><td>M09</td><td><span class="b b-survived">breaks silently</span></td><td><span class="b b-killed">guarded</span></td></tr>
+<tr><td>Sign out signs you out<div class="sub">ROUTES.md /account page</div></td><td>—</td><td><span class="b b-none">no bug planted</span></td><td><span class="b b-none">no bug planted</span></td></tr>
+<tr><td>The quantity stepper changes the quantity (min 1, max 9)<div class="sub">ROUTES.md rule 7</div></td><td>M02</td><td><span class="b b-survived">breaks silently</span></td><td><span class="b b-killed">guarded</span></td></tr>
+<tr><td>&quot;Remove&quot; removes that line from the cart<div class="sub">ROUTES.md /cart page</div></td><td>M06</td><td><span class="b b-survived">breaks silently</span></td><td><span class="b b-killed">guarded</span></td></tr>
+<tr><td>Out-of-stock products cannot be added to the cart<div class="sub">ROUTES.md products table</div></td><td>M07</td><td><span class="b b-survived">breaks silently</span></td><td><span class="b b-killed">guarded</span></td></tr>
+<tr><td>The confirmation page shows an order number like SAB-123456<div class="sub">ROUTES.md /order/:id page</div></td><td>M08</td><td><span class="b b-survived">breaks silently</span></td><td><span class="b b-killed">guarded</span></td></tr>
+<tr><td>The header cart badge shows the number of items in the cart<div class="sub">ROUTES.md / page</div></td><td>—</td><td><span class="b b-none">no bug planted</span></td><td><span class="b b-none">no bug planted</span></td></tr>
+<tr><td>Wrong sign-in details show &quot;Email or password is incorrect&quot;<div class="sub">ROUTES.md /login page</div></td><td>—</td><td><span class="b b-none">no bug planted</span></td><td><span class="b b-none">no bug planted</span></td></tr>
 </tbody></table></div>
 
 <p class="sub">Every verdict above is a Kane CLI result. Generated from report.json, 2026-11-18T20:52:53.230Z.</p>

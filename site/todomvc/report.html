@@ -28,6 +28,7 @@ th { font-size: 12px; text-transform: uppercase; letter-spacing: .04em; color: v
 .b-killed { color: var(--ok); background: var(--okbg); }
 .b-survived { color: var(--bad); background: var(--badbg); }
 .b-error, .b-invalid, .b-rejected { color: var(--warn); background: var(--warnbg); }
+.b-none { color: var(--muted); background: var(--line); }
 .kane { color: var(--muted); font-size: 13px; margin-top: 2px; }
 .err { color: var(--bad); }
 a { color: var(--accent); }
@@ -137,6 +138,21 @@ code { font-size: 12px; }
   <td class="said">assertion_failed: @ step 8</td>
   <td class="links"><code>d7289362-1cde-490a-96db-58e2b8937469</code></td>
 </tr>
+</tbody></table></div>
+<h2>Requirement coverage</h2>
+<p>With the starter suite, <b>7 of 7</b> spec rules with a planted bug would break without any test noticing. With the generated tests: <b>0 of 7</b>.</p>
+<div class="table"><table>
+<thead><tr><th>Rule in the spec</th><th>Bugs that break it</th><th>Starter suite</th><th>With generated tests</th></tr></thead>
+<tbody>
+<tr><td>Adding trims the title; an empty or spaces-only entry adds nothing<div class="sub">ROUTES.md rule 1</div></td><td>M06</td><td><span class="b b-survived">breaks silently</span></td><td><span class="b b-killed">guarded</span></td></tr>
+<tr><td>A todo's checkbox toggles it between active and completed<div class="sub">ROUTES.md rule 2</div></td><td>—</td><td><span class="b b-none">no bug planted</span></td><td><span class="b b-none">no bug planted</span></td></tr>
+<tr><td>Toggle all marks everything completed, or everything active if all are completed<div class="sub">ROUTES.md rule 3</div></td><td>M09</td><td><span class="b b-survived">breaks silently</span></td><td><span class="b b-killed">guarded</span></td></tr>
+<tr><td>Editing saves the new text; saving an empty title deletes the todo<div class="sub">ROUTES.md rule 4</div></td><td>M07, M10</td><td><span class="b b-survived">breaks silently</span></td><td><span class="b b-killed">guarded</span></td></tr>
+<tr><td>The delete button deletes only that todo<div class="sub">ROUTES.md rule 5</div></td><td>M08</td><td><span class="b b-survived">breaks silently</span></td><td><span class="b b-killed">guarded</span></td></tr>
+<tr><td>Clear completed deletes completed todos and keeps active ones<div class="sub">ROUTES.md rule 6</div></td><td>M05</td><td><span class="b b-survived">breaks silently</span></td><td><span class="b b-killed">guarded</span></td></tr>
+<tr><td>The counter shows active todos: &quot;1 item left!&quot; or &quot;N items left!&quot;<div class="sub">ROUTES.md rule 7</div></td><td>M01, M02</td><td><span class="b b-survived">breaks silently</span></td><td><span class="b b-killed">guarded</span></td></tr>
+<tr><td>Active and Completed views show only matching todos<div class="sub">ROUTES.md pages</div></td><td>M03, M04</td><td><span class="b b-survived">breaks silently</span></td><td><span class="b b-killed">guarded</span></td></tr>
+<tr><td>Todos are kept in memory only; reloading empties the list<div class="sub">ROUTES.md rule 8</div></td><td>—</td><td><span class="b b-none">no bug planted</span></td><td><span class="b b-none">no bug planted</span></td></tr>
 </tbody></table></div>
 <h2>Closing the gaps</h2>
 <section class="card"><h3>M09 &quot;Mark all as complete&quot; cannot un-complete</h3><p>accepted on attempt 1: <code>tests/generated/toggle_all_marks_all_active_again_test.md</code></p><ol><li>Attempt 1: <b>accepted</b>, clean exit 0, bugged exit 1</li></ol></section>
