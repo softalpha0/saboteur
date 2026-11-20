@@ -58,7 +58,7 @@ export function mergeReports(
   };
 }
 
-function repoUrl(root: string): string | undefined {
+export function repoUrl(root: string): string | undefined {
   try {
     const url = execFileSync('git', ['config', '--get', 'remote.origin.url'], {
       cwd: root,
@@ -128,7 +128,7 @@ ${duelCard}
 <div class="stat"><div class="k">Test suite</div><div class="v">${r.suiteBefore.length} → ${suiteAfter}</div><div class="s">every added test proven by Kane CLI</div></div>
 </div>
 ${explainer}
-<div class="links"><a class="btn primary" href="report.html">Full report</a>${d ? '<a class="btn" href="duel.html">Duel scoreboard</a>' : ''}${input.repo ? `<a class="btn" href="${esc(input.repo)}">Source on GitHub</a>` : ''}</div>
+<div class="links"><a class="btn primary" href="report.html">Full report</a><a class="btn" href="demo/shop/">Try the shop's bugs live</a><a class="btn" href="demo/todomvc/">Try TodoMVC's bugs live</a>${d ? '<a class="btn" href="duel.html">Duel scoreboard</a>' : ''}${input.repo ? `<a class="btn" href="${esc(input.repo)}">Source on GitHub</a>` : ''}</div>
 <h2>How it works</h2>
 <div class="steps">
 <div class="step"><b>1 · Plant</b><p>A small, realistic bug as a code patch: a wrong total, a dead button, a bad redirect. One at a time, on a fresh build.</p></div>

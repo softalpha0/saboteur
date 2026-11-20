@@ -4,6 +4,7 @@ import { redactSecrets } from '@saboteur/agent';
 import { Command } from 'commander';
 import { cmdAttack, cmdBaseline, cmdDoctor, cmdFill, cmdReport, cmdRun } from './commands.ts';
 import { type Resolved, loadConfig, loadDotEnv } from './config.ts';
+import { cmdDemos } from './demos.ts';
 import { cmdDuel } from './duel.ts';
 import { cmdMutate } from './mutate.ts';
 import { CreditGuardError, InvalidRunError } from './pipeline.ts';
@@ -134,6 +135,16 @@ program
   .action((o: { report?: string; merge?: string[]; duel?: string; video?: string; repo?: string }) =>
     main(() => cmdSite(cfg(), o)),
   );
+
+program
+  .command('demos')
+  .description(
+    'build the clean app and every bugged version into site/demo/<app>/ for the live demo (no Kane)',
+  )
+  .option('--site <dir>', 'site folder (default: ./site)')
+  .option('--name <name>', 'folder name under demo/ (default: the app folder name)')
+  .option('--base-path <path>', 'URL path of the demo folder (default: /<repo>/demo)')
+  .action((o: { site?: string; name?: string; basePath?: string }) => main(() => cmdDemos(cfg(), o)));
 
 program
   .command('report')

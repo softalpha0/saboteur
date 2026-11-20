@@ -16,3 +16,6 @@ examples/*/reports/*
 # Per-run logs; copy a showcase run to evidence/showcase/ to commit it
 evidence/runs/
 examples/*/evidence/runs/
+# Demo builds are made by the Pages workflow
+site/demo/
+site/404.html
