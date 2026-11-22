@@ -5,11 +5,13 @@
 [![CI](https://github.com/softalpha0/saboteur/actions/workflows/ci.yml/badge.svg)](https://github.com/softalpha0/saboteur/actions/workflows/ci.yml)
 ![Verified with Kane CLI](https://img.shields.io/badge/verified%20with-Kane%20CLI-6b4fbb)
 
-🌐 **Live results:** [softalpha0.github.io/saboteur](https://softalpha0.github.io/saboteur/) · ▶️ **Demo video:** _TODO (YouTube link)_ · 📊 **Evidence:** [`evidence/README.md`](evidence/README.md) · 🏁 Built for the [KaneCLI Online Hackathon](https://www.kaneclihack.sh/) (TestMu AI, Nov 2026)
+🌐 **Live results:** [softalpha0.github.io/saboteur](https://softalpha0.github.io/saboteur/) · ▶️ **Demo video:** [youtu.be/_3oNNZhODN0](https://youtu.be/_3oNNZhODN0) · 🐞 **Try the bugs:** [live broken builds](https://softalpha0.github.io/saboteur/demo/shop/) · 📊 **Evidence:** [`evidence/README.md`](evidence/README.md) · 🏁 Built for the [KaneCLI Online Hackathon](https://www.kaneclihack.sh/) (TestMu AI, Nov 2026)
 
 > **Before: 0/10** planted bugs caught by the 4 starter tests → **After: 10/10** with 14 Claude-written tests, each proven by Kane.
 > **Duel:** a red Claude then found 3 more bugs the 18-test suite missed; a blue Claude closed all 3 with Kane-proven tests. **Red 3 : Blue 3**, suite 18 → 21.
-> Real Kane CLI runs on Windows, 18 to 19 Nov 2026. Details: [`evidence/README.md`](evidence/README.md).
+> **An app we didn't write:** on the official React TodoMVC, the 4 starter tests caught **2/10**; with Claude's Kane-proven tests, **10/10** (suite 4 → 11). By spec rule: **7 of 7** rules with a planted bug would have broken silently before, **0 of 7** after.
+> Real Kane CLI runs on Windows, 18 to 20 Nov 2026. Details: [`evidence/README.md`](evidence/README.md).
+> **Use it from your coding agent:** `pnpm saboteur skill --install`, then ask *"use saboteur to check my tests"*.
 
 ---
 
@@ -57,6 +59,8 @@ kane-cli login                 # then: kane-cli config project
 pnpm saboteur doctor --replay  # Kane signed in, credits, Chrome, patches apply, app builds
 pnpm saboteur run --replay     # uses the Claude-written tests we committed; Kane still proves them
 ```
+
+No setup at all: open the [live broken builds](https://softalpha0.github.io/saboteur/demo/shop/) and try each bug in your browser.
 
 Live loop (Claude writes new tests): copy `.env.example` to `.env`, set `ANTHROPIC_API_KEY` and `ANTHROPIC_MODEL`, then `pnpm saboteur run`.
 

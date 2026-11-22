@@ -18,7 +18,7 @@ On a fresh clone, `pnpm saboteur run` on the demo shop prints a before score and
 
 ## 3. Hard rules (hackathon)
 
-1. Deadline Thu 19 Nov 2026, 11:59 PM IST (7:29 PM Lagos). Feature freeze Thu 10:00 AM Lagos.
+1. Deadline (extended) Wed 26 Nov 2026, 11:59 PM IST (7:29 PM Lagos). Submitted; keep `main` working until judging.
 2. Everything in this repo is new work from 18 Nov onward. Don't paste in code from other projects.
 3. All browser work goes through **Kane CLI**. No Playwright/Puppeteer/Selenium of our own. No fake Kane results, ever.
 4. Judges must be able to run it: keep `--replay` mode working (no Anthropic key needed).
