@@ -93,5 +93,7 @@ Notes:
 
 | Platform | Link | Date |
 |---|---|---|
-| | | |
-| | | |
+| dev.to | [My tests were green. They caught 0 of 10 real bugs.](https://dev.to/softalpha_0/my-tests-were-green-they-caught-0-of-10-real-bugs-g9h) | 20 Nov 2026 |
+| YouTube | [Demo video](https://youtu.be/_3oNNZhODN0) | 20 Nov 2026 |
+| X | Launch post (TestMu AI replied) | 19 Nov 2026 |
+| LinkedIn | Launch post | 19 Nov 2026 |
