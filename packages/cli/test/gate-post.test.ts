@@ -101,6 +101,20 @@ describe('post', () => {
     expect(facts).toContain('4 starter tests caught 0/2');
     expect(posts).toContain('Now: 2/2.');
     expect(posts).not.toContain('—');
+    expect(posts).toMatch(/## X \(\d+ of 280 characters\)/);
+  });
+
+  it('--merge fills bugs the main report has no verdict for, like saboteur site', async () => {
+    const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'saboteur-post-merge-'));
+    fs.writeFileSync(path.join(tmp, 'saboteur.config.json'), '{}');
+    fs.mkdirSync(path.join(tmp, 'reports'), { recursive: true });
+    const main = make([mut('M01', 'survived', 'killed'), mut('M02', 'survived', 'error')]);
+    const later = make([mut('M02', 'killed', 'killed')], 'attack-only');
+    fs.writeFileSync(path.join(tmp, 'reports/main.json'), JSON.stringify(main));
+    fs.writeFileSync(path.join(tmp, 'reports/later.json'), JSON.stringify(later));
+    const cfg = loadConfig(path.join(tmp, 'saboteur.config.json'));
+    await cmdPost(cfg, { report: 'reports/main.json', merge: ['reports/later.json'], out: 'posts.md' });
+    expect(fs.readFileSync(path.join(tmp, 'posts.md'), 'utf8')).toContain('Now: 2/2.');
   });
 
   it('a Claude post with a made-up number is rejected and the template is kept', async () => {

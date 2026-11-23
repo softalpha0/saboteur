@@ -5,7 +5,7 @@ import { type Report, coverageSummary, scoreText } from '@saboteur/report';
 import type { Resolved } from './config.ts';
 import type { DuelReport } from './duel.ts';
 import { attachRequirements, requirementsCandidates } from './requirements.ts';
-import { repoUrl } from './site.ts';
+import { mergeReports, repoUrl } from './site.ts';
 import { ui } from './ui.ts';
 
 /**
@@ -18,6 +18,8 @@ export type PostOptions = {
   report?: string;
   duel?: string;
   todomvc?: string;
+  /** Attack reports that fill in bugs the main report has no verdict for (as in `saboteur site`). */
+  merge?: string[];
   url?: string;
   out?: string;
   ai?: boolean;
@@ -80,6 +82,9 @@ export function postFacts(i: Inputs): string {
   return f.map((x) => `- ${x}`).join('\n');
 }
 
+/** X counts every link as 23 characters. */
+export const xLength = (text: string) => text.replace(/https?:\/\/\S+/g, 'x'.repeat(23)).length;
+
 export function templatePosts(i: Inputs): string {
   const r = i.report;
   const d = i.duel;
@@ -88,9 +93,9 @@ export function templatePosts(i: Inputs): string {
   const x = [
     `My ${r.suiteBefore.length} green tests caught ${short(r.before)} planted bugs.`,
     '',
-    'Saboteur breaks the app on purpose, Kane CLI runs the tests on each broken build, and Claude writes a test for every miss. Kane keeps it only if it fails on the bug.',
+    'Saboteur breaks the app, Kane CLI runs the tests on each broken build, and Claude writes a test for every miss. Kane keeps it only if it fails on the bug.',
     '',
-    `Now: ${short(r.after)}.${s ? ` On React TodoMVC: ${short(s.before)} → ${short(s.after)}.` : ''}`,
+    `Now: ${short(r.after)}.${s ? ` React TodoMVC: ${short(s.before)} → ${short(s.after)}.` : ''}`,
     '',
     link,
   ].join('\n');
@@ -114,7 +119,7 @@ export function templatePosts(i: Inputs): string {
     '',
     'Every number below comes from the reports. Edit the wording, not the numbers.',
     '',
-    `## X (${x.length} characters)`,
+    `## X (${xLength(x)} of 280 characters${xLength(x) > 280 ? ', too long: shorten it' : ''})`,
     '',
     '```text',
     x,
@@ -142,7 +147,12 @@ export async function cmdPost(cfg: Resolved, opts: PostOptions, writer?: PostWri
   const withReq = (r: Report) => attachRequirements(r, requirementsCandidates(cfg.root, r));
   const duelPath = path.resolve(cfg.root, opts.duel ?? 'reports/latest-duel/duel.json');
   const inputs: Inputs = {
-    report: withReq(readJson<Report>(reportPath)),
+    report: withReq(
+      mergeReports(
+        readJson<Report>(reportPath),
+        (opts.merge ?? []).map((m) => readJson<Report>(path.resolve(cfg.root, m))),
+      ).report,
+    ),
     duel: fs.existsSync(duelPath) ? readJson<DuelReport>(duelPath) : undefined,
     second: opts.todomvc ? withReq(readJson<Report>(path.resolve(cfg.root, opts.todomvc))) : undefined,
     site: opts.url,

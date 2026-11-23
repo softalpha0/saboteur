@@ -176,6 +176,10 @@ program
   .option('--report <file>', 'main report.json (default: reports/latest/report.json)')
   .option('--duel <file>', 'duel.json (default: reports/latest-duel/duel.json)')
   .option('--todomvc <file>', "a second app's report.json")
+  .option(
+    '--merge <files...>',
+    'attack report.json files that fill in bugs the main report has no verdict for',
+  )
   .option('--url <url>', 'live site link to put in the posts')
   .option('--out <file>', 'where to write (default: reports/latest/posts.md)')
   .option('--ai', 'also have Claude write a blog post; rejected if it has a number not in the facts')
