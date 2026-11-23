@@ -103,5 +103,20 @@
       "exitCode": 1
     },
     "acceptedAt": "2026-11-20T03:34:46.358Z"
+  },
+  {
+    "file": "toggle_all_uncompletes_individually_completed_test.md",
+    "mutant": "M09",
+    "runId": "2026-11-23T08-21-33Z",
+    "attempt": 1,
+    "model": "claude-haiku-5-5",
+    "clean": {
+      "exitCode": 0,
+      "shareUrl": "https://test-manager.lambdatest.com/projects/01M7H2V70YP7A3ASWA4HQQ8TNH/test-cases/01M83R0CJN1AHK7ZNYZYT1T3X1/dashboard/share/US_GQIU6US6S8XICGCY9VGQ3TIZ2VTB2E8HVVVE6HGUGHOZ9BPXBZV9X6UH1ISCLL6D?type=summary&agentView=true&fqdn=summary-page"
+    },
+    "bugged": {
+      "exitCode": 1
+    },
+    "acceptedAt": "2026-11-23T08:34:08.508Z"
   }
 ]
