@@ -20,3 +20,4 @@ examples/*/evidence/runs/
 site/demo/
 site/404.html
 .claude/settings.local.json
+pr-comment.md
