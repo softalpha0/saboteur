@@ -68,6 +68,7 @@ Final run `2026-11-20T02-11-09Z` (baseline exec `5ddfbe24-46d1-4bc9-be69-6bdc987
 Notes:
 - In run `2026-11-19T18-30-13Z`, two starter tests failed with `analyzer_failed` (a Kane-side error) on M03 and M08. The confirm runs passed, the suite was re-run, and both bugs were correctly scored as slipped. `analyzer_failed` is now treated as an error, never a catch.
 - The same run stopped at M08 when Kane lost its sign-in (`TMS did not return an org_id`); the final run picked up from the committed tests.
+- Closed-loop check (23 Nov): to see Kane's failure text drive a retry, M09 was attacked again with only the 4 starter tests (slipped, as before) and filled with a smaller model (`claude-haiku-5-5`). It wrote `toggle_all_uncompletes_individually_completed_test.md`, proven on attempt 1 (passed on the clean build, failed on the bug). So across every real fill, with two models, the retry was never needed; the retry path is covered by the automated tests (`packages/cli/test/fill.test.ts`, a scripted Kane run where attempt 1 fails on the clean build and attempt 2 is proven).
 - The M09 test fails on the bugged build at its first step rather than its final check. It passed on the correct app and failed twice on the bug, which is Saboteur's accept rule.
 
 ## 4. Credits
