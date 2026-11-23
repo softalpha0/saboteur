@@ -26,3 +26,6 @@ jobs:
       - run: pnpm biome check .
       - run: pnpm -r typecheck
       - run: pnpm test
+      # Recompute every headline number from the committed real reports and check their sha256.
+      - if: hashFiles('evidence/data/*.json') != ''
+        run: pnpm saboteur verify
