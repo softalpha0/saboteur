@@ -113,6 +113,14 @@ TypeScript · Node 20 · pnpm workspaces · Vite + React (demo shop) · **Kane C
 
 Your own app: edit `saboteur.config.json` (build/serve commands, URL, tests dir, bug patches). See [`docs/05-MUTATIONS.md`](docs/05-MUTATIONS.md).
 
+### Merge gate and PR bot
+
+`pnpm saboteur gate --min-score 100` reads the latest report and exits 1 unless the suite caught enough of the planted bugs; a bug with no Kane verdict blocks too and never counts as caught. With `--comment pr-comment.md` it also writes a pull-request comment: the verdict, each bug that would ship unnoticed (with what breaks for a customer), and a link to the Kane run behind every catch. `.github/workflows/saboteur.yml` runs attack, then gate, on a PR labelled `saboteur`, so a required check refuses the merge until Kane signs off.
+
+### Saboteur writes its own launch post
+
+`pnpm saboteur post --url <your site>` writes an X post and a long post from `report.json` (and the duel), using only numbers from the reports. `--ai` also has Claude write a blog post from the same facts; it is rejected if it contains any number that is not in the facts, an em dash, or hype words.
+
 ### Use it from your coding agent
 
 Saboteur ships as an agent skill (`skills/saboteur/SKILL.md`), the same way TestMu AI ships its Kane CLI skill. In this repo, Claude Code picks it up automatically from `.claude/skills/`. To add it to your own project:
