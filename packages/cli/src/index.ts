@@ -6,8 +6,10 @@ import { cmdAttack, cmdBaseline, cmdDoctor, cmdFill, cmdReport, cmdRun } from '.
 import { type Resolved, loadConfig, loadDotEnv } from './config.ts';
 import { cmdDemos } from './demos.ts';
 import { cmdDuel } from './duel.ts';
+import { type GateCmdOptions, cmdGate } from './gate.ts';
 import { cmdMutate } from './mutate.ts';
 import { CreditGuardError, InvalidRunError } from './pipeline.ts';
+import { type PostOptions, cmdPost } from './post.ts';
 import { cmdSite } from './site.ts';
 import { cmdSkill } from './skill.ts';
 import { ui } from './ui.ts';
@@ -154,6 +156,30 @@ program
   .option('--name <name>', 'folder name under demo/ (default: the app folder name)')
   .option('--base-path <path>', 'URL path of the demo folder (default: /<repo>/demo)')
   .action((o: { site?: string; name?: string; basePath?: string }) => main(() => cmdDemos(cfg(), o)));
+
+program
+  .command('gate')
+  .description('refuse to merge or deploy until Kane signs off: exit 1 if too few planted bugs were caught')
+  .option('--report <file>', 'report.json (default: reports/latest/report.json)')
+  .option('--min-score <pct>', 'percent of planted bugs that must be caught', '100')
+  .option(
+    '--allow-errors',
+    'do not block on bugs that got no Kane verdict (they still never count as caught)',
+  )
+  .option('--comment <file>', 'also write a pull-request comment (markdown) to this file')
+  .option('--report-url <url>', 'link to the full report, shown in the comment')
+  .action((o: GateCmdOptions) => main(() => cmdGate(cfg(), o)));
+
+program
+  .command('post')
+  .description('Saboteur writes the launch posts about its own run, using only numbers from the reports')
+  .option('--report <file>', 'main report.json (default: reports/latest/report.json)')
+  .option('--duel <file>', 'duel.json (default: reports/latest-duel/duel.json)')
+  .option('--todomvc <file>', "a second app's report.json")
+  .option('--url <url>', 'live site link to put in the posts')
+  .option('--out <file>', 'where to write (default: reports/latest/posts.md)')
+  .option('--ai', 'also have Claude write a blog post; rejected if it has a number not in the facts')
+  .action((o: PostOptions) => main(() => cmdPost(cfg(), o)));
 
 program
   .command('skill')

@@ -1,6 +1,9 @@
 name: Saboteur
 
-# Runs `saboteur attack` with real Kane CLI and posts the score on the PR.
+# Runs `saboteur attack` with real Kane CLI, then `saboteur gate`: the job fails (and a required
+# check blocks the merge) until Kane signs off, i.e. the suite catches enough of the planted bugs.
+# The PR gets a comment with the verdict, the bugs that would ship unnoticed, and the Kane run behind
+# every catch.
 # Opt-in, because every run spends Kane credits:
 #   - run it by hand (Actions tab → Saboteur → Run workflow), or
 #   - add the label "saboteur" to a pull request.
@@ -14,6 +17,10 @@ on:
         description: 'Mutant ids, comma-separated (empty = all)'
         required: false
         default: ''
+      min_score:
+        description: 'Percent of planted bugs the suite must catch'
+        required: false
+        default: '100'
   pull_request:
     types: [labeled, synchronize]
 
@@ -69,15 +76,26 @@ jobs:
             pnpm saboteur attack --with-generated
           fi
 
+      # Kane signs off or the job fails. Bugs with no Kane verdict block too (never counted as caught).
+      - name: Gate
+        if: always() && hashFiles('reports/latest/report.json') != ''
+        run: >
+          pnpm saboteur gate
+          --min-score "${{ github.event.inputs.min_score || '100' }}"
+          --comment reports/latest/pr-comment.md
+          --report-url "${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+
       - name: Job summary
         if: always() && hashFiles('reports/latest/report.md') != ''
-        run: cat reports/latest/report.md >> "$GITHUB_STEP_SUMMARY"
+        run: |
+          if [ -f reports/latest/pr-comment.md ]; then cat reports/latest/pr-comment.md >> "$GITHUB_STEP_SUMMARY"; fi
+          cat reports/latest/report.md >> "$GITHUB_STEP_SUMMARY"
 
       - name: Comment on the PR
-        if: always() && github.event_name == 'pull_request' && hashFiles('reports/latest/report.md') != ''
+        if: always() && github.event_name == 'pull_request' && hashFiles('reports/latest/pr-comment.md') != ''
         env:
           GH_TOKEN: ${{ github.token }}
-        run: gh pr comment "${{ github.event.pull_request.number }}" --repo "${{ github.repository }}" --body-file reports/latest/report.md --edit-last || gh pr comment "${{ github.event.pull_request.number }}" --repo "${{ github.repository }}" --body-file reports/latest/report.md
+        run: gh pr comment "${{ github.event.pull_request.number }}" --repo "${{ github.repository }}" --body-file reports/latest/pr-comment.md --edit-last || gh pr comment "${{ github.event.pull_request.number }}" --repo "${{ github.repository }}" --body-file reports/latest/pr-comment.md
 
       - name: Upload report, Kane logs and evidence packs
         if: always()

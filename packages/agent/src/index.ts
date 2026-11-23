@@ -25,3 +25,4 @@ export {
   parseProposals,
   proposePrompt,
 } from './propose.ts';
+export { PostWriter, postProblems } from './post.ts';
