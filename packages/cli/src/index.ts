@@ -6,6 +6,7 @@ import { cmdAttack, cmdBaseline, cmdDoctor, cmdFill, cmdReport, cmdRun } from '.
 import { type Resolved, loadConfig, loadDotEnv } from './config.ts';
 import { cmdDemos } from './demos.ts';
 import { cmdDuel } from './duel.ts';
+import { cmdVerify, evidenceAdd } from './evidence.ts';
 import { type GateCmdOptions, cmdGate } from './gate.ts';
 import { cmdMutate } from './mutate.ts';
 import { CreditGuardError, InvalidRunError } from './pipeline.ts';
@@ -184,6 +185,28 @@ program
   .option('--out <file>', 'where to write (default: reports/latest/posts.md)')
   .option('--ai', 'also have Claude write a blog post; rejected if it has a number not in the facts')
   .action((o: PostOptions) => main(() => cmdPost(cfg(), o)));
+
+program
+  .command('verify')
+  .description(
+    'check the committed evidence (sha256) and recompute every headline number from it; no login, no credits',
+  )
+  .action(() => main(() => cmdVerify(cfg())));
+
+program
+  .command('evidence')
+  .description(
+    'add a real report.json or duel.json to evidence/data (local paths removed) and record its sha256',
+  )
+  .argument('<file>', 'report.json or duel.json')
+  .requiredOption('--as <key>', 'name in the manifest, e.g. shop-run')
+  .action((file: string, o: { as: string }) =>
+    main(async () => {
+      const dest = evidenceAdd(cfg(), file, o.as);
+      ui.ok(`added ${path.relative(process.cwd(), dest)}`);
+      return 0;
+    }),
+  );
 
 program
   .command('skill')

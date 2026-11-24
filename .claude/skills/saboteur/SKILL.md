@@ -37,6 +37,7 @@ Run from the repo root. For another config, add `-c <path>/saboteur.config.json`
 | Claude invents new bugs for this app | `pnpm saboteur mutate --ai --count 5` | medium |
 | Red team vs blue team | `pnpm saboteur duel --rounds 3` | high |
 | Rebuild the report from report.json | `pnpm saboteur report` | none |
+| Recompute the committed headline numbers and check their sha256 | `pnpm saboteur verify` | none |
 | Block a merge/deploy until Kane signs off | `pnpm saboteur gate --min-score 100` (exit 1 if not) | none |
 | Write the launch posts from the real numbers | `pnpm saboteur post --url <site>` (add `--ai` for a Claude blog post, number-checked) | none |
 

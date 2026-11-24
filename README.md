@@ -47,6 +47,16 @@ Coding agents write our apps and our end-to-end tests now. A green suite tells y
 - **Agent used:** Claude (Anthropic API) writes and revises tests. Built with Claude Code.
 - **What Kane does:** every pass/fail verdict in Saboteur is a Kane verdict (`testrun run`, `testmd run`, `--no-adaptive-heal`).
 
+## Check every number in 60 seconds (no Kane login, no credits)
+
+```bash
+git clone https://github.com/softalpha0/saboteur && cd saboteur
+pnpm i
+pnpm saboteur verify
+```
+
+`verify` checks the sha256 of every real report committed in [`evidence/data/`](evidence/data/) (local paths removed) and recomputes each headline number from them: the shop's 0/10 → 10/10, TodoMVC's 2/10 → 10/10, the spec rules that would break silently, and the duel score. CI runs it on every push.
+
 ## Try it
 
 Judges: you already have Kane CLI access. This path needs **no Anthropic key**.

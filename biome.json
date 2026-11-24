@@ -11,7 +11,9 @@
       ".testmuai",
       "**/*.patch",
       "apps/todomvc",
-      "examples/*/reports"
+      "examples/*/reports",
+      "evidence/data",
+      "evidence/manifest.json"
     ]
   },
   "formatter": {

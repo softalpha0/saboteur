@@ -2,3 +2,5 @@
 tests/kane/**/output-*/** -text
 *.ndjson -text
 examples/*/tests/**/output-*/** -text
+evidence/data/** -text
+evidence/manifest.json -text
