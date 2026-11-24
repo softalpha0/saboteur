@@ -1,0 +1,254 @@
+{
+  "runId": "2026-11-19T04-28-01Z",
+  "startedAt": "2026-11-19T04:28:01.987Z",
+  "finishedAt": "2026-11-19T05:40:59.549Z",
+  "app": "apps/shop",
+  "appUrl": "http://localhost:4173",
+  "model": "claude-opus-5-5",
+  "rounds": [
+    {
+      "n": 1,
+      "suiteSize": 18,
+      "dropped": [],
+      "outcome": "closed",
+      "score": {
+        "red": 1,
+        "blue": 1
+      },
+      "bug": {
+        "id": "M11",
+        "title": "Cart badge counts distinct products instead of total quantity",
+        "userImpact": "The header cart badge shows how many different products are in the cart, not how many items. Adding the same product twice still shows 1, so shoppers lose track of how many items they have.",
+        "file": "src/lib/cart.ts",
+        "kaneCheck": "Open the home page at http://localhost:4173 and click the 'Add to cart' button for Canvas Tote once. Then click the 'Add to cart' button for Canvas Tote a second time. Open the cart page at /cart and confirm Canvas Tote is listed with quantity 2. Verify the cart badge in the header shows 1 (instead of 2)."
+      },
+      "attack": {
+        "verdict": "survived",
+        "reason": "every test passed on the bugged build",
+        "exitCode": 0,
+        "executionId": "db2670cb-0eb0-4828-9219-83823beecfa4",
+        "caughtBy": [],
+        "links": [],
+        "rawLog": "…/evidence/runs/2026-11-19T04-28-01Z/kane-duel-r1-M11.ndjson",
+        "evidencePacks": [
+          "…/evidence/db2670cb-0eb0-4828-9219-83823beecfa4.evidence"
+        ],
+        "durationS": 632,
+        "retried": false,
+        "suite": [
+          "tests/kane/starter/browse_add_to_cart_test.md",
+          "tests/kane/starter/cart_shows_item_test.md",
+          "tests/kane/starter/checkout_happy_path_test.md",
+          "tests/kane/starter/login_test.md",
+          "tests/kane/generated/cart_quantity_increase_button_test.md",
+          "tests/kane/generated/cart_remove_deletes_clicked_item_test.md",
+          "tests/kane/generated/cart_remove_middle_item_deletes_clicked_item_test.md",
+          "tests/kane/generated/cart_survives_page_refresh_test.md",
+          "tests/kane/generated/cart_total_includes_every_item_test.md",
+          "tests/kane/generated/ceramic_mug_small_order_charges_shipping_test.md",
+          "tests/kane/generated/checkout_rejects_email_without_domain_test.md",
+          "tests/kane/generated/checkout_rejects_email_without_tld_test.md",
+          "tests/kane/generated/login_redirects_to_account_test.md",
+          "tests/kane/generated/order_confirmation_shows_order_number_test.md",
+          "tests/kane/generated/out_of_stock_beanie_cannot_be_added_test.md",
+          "tests/kane/generated/product_page_plus_button_increases_quantity_test.md",
+          "tests/kane/generated/save10_discount_ten_percent_test.md",
+          "tests/kane/generated/small_order_total_paid_includes_shipping_test.md"
+        ]
+      },
+      "fill": {
+        "attempts": 1,
+        "accepted": true,
+        "transcript": "…/evidence/runs/2026-11-19T04-28-01Z/fill-M11.md",
+        "history": [
+          {
+            "n": 1,
+            "fileName": "cart_badge_counts_total_quantity_test.md",
+            "decision": "accepted",
+            "clean": {
+              "exitCode": 0,
+              "overallStatus": "passed",
+              "summaryText": "Opened the home page as requested.\nAdded the Canvas Tote to the cart.\nConfirmed the cart badge shows 1 item.\nAdded the Canvas Tote to the cart again from the home page.\nThe cart header now shows 2 items, confirming the second tote was added successfully.\nOpened the cart page as requested.\nConfirmed that the cart contains Canvas Tote with a quantity of 2.\nConfirmed the order summary shows a subtotal of $49.98 and a total of $54.98.\nOpened the home page as requested.\nConfirmed that the header cart badge showed 2 items.\nThe requested page check completed successfully.",
+              "shareUrl": "https://test-manager.lambdatest.com/projects/01M7H2V70YP7A3ASWA4HQQ8TNH/test-cases/01M7S1XXHV12PM5J5GKJHPRAQW/dashboard/share/US_LU6ZWLLJU2HUEMWML717XXVQUGUR60GQEMDG065GO7VA3TR7Y3065DB7FYUHZOBQ?type=summary&agentView=true&fqdn=summary-page",
+              "rawLog": "…/evidence/runs/2026-11-19T04-28-01Z/kane-fill-M11-a1-clean.ndjson"
+            },
+            "mutant": {
+              "exitCode": 1,
+              "overallStatus": "failed",
+              "failureText": "assertion_failed: @ step 3",
+              "rawLog": "…/evidence/runs/2026-11-19T04-28-01Z/kane-fill-M11-a1-mutant.ndjson"
+            }
+          }
+        ],
+        "model": "claude-opus-5-5",
+        "testFile": "tests/kane/generated/cart_badge_counts_total_quantity_test.md"
+      }
+    },
+    {
+      "n": 2,
+      "suiteSize": 19,
+      "dropped": [],
+      "outcome": "closed",
+      "score": {
+        "red": 2,
+        "blue": 2
+      },
+      "bug": {
+        "id": "M12",
+        "title": "Free-shipping threshold checks the subtotal before the discount",
+        "userImpact": "An order whose subtotal is $50 or more but drops below $50 after SAVE10 wrongly gets free shipping, so the customer is undercharged by $5.00.",
+        "file": "src/lib/cart.ts",
+        "kaneCheck": "Open http://localhost:4173. On the home page, add the Canvas Tote to the cart, then add the Desk Plant to the cart. Open the cart page at /cart and verify the Subtotal shows $54.98. Enter the discount code SAVE10 and click Apply. Verify the Discount shows −$5.50, Shipping shows Free and the Total shows $49.48."
+      },
+      "attack": {
+        "verdict": "survived",
+        "reason": "every test passed on the bugged build",
+        "exitCode": 0,
+        "executionId": "e5341b32-deb9-444c-9223-359cb0d22db5",
+        "caughtBy": [],
+        "links": [],
+        "rawLog": "…/evidence/runs/2026-11-19T04-28-01Z/kane-duel-r2-M12.ndjson",
+        "evidencePacks": [
+          "…/evidence/e5341b32-deb9-444c-9223-359cb0d22db5.evidence"
+        ],
+        "durationS": 765,
+        "retried": false,
+        "suite": [
+          "tests/kane/starter/browse_add_to_cart_test.md",
+          "tests/kane/starter/cart_shows_item_test.md",
+          "tests/kane/starter/checkout_happy_path_test.md",
+          "tests/kane/starter/login_test.md",
+          "tests/kane/generated/cart_badge_counts_total_quantity_test.md",
+          "tests/kane/generated/cart_quantity_increase_button_test.md",
+          "tests/kane/generated/cart_remove_deletes_clicked_item_test.md",
+          "tests/kane/generated/cart_remove_middle_item_deletes_clicked_item_test.md",
+          "tests/kane/generated/cart_survives_page_refresh_test.md",
+          "tests/kane/generated/cart_total_includes_every_item_test.md",
+          "tests/kane/generated/ceramic_mug_small_order_charges_shipping_test.md",
+          "tests/kane/generated/checkout_rejects_email_without_domain_test.md",
+          "tests/kane/generated/checkout_rejects_email_without_tld_test.md",
+          "tests/kane/generated/login_redirects_to_account_test.md",
+          "tests/kane/generated/order_confirmation_shows_order_number_test.md",
+          "tests/kane/generated/out_of_stock_beanie_cannot_be_added_test.md",
+          "tests/kane/generated/product_page_plus_button_increases_quantity_test.md",
+          "tests/kane/generated/save10_discount_ten_percent_test.md",
+          "tests/kane/generated/small_order_total_paid_includes_shipping_test.md"
+        ]
+      },
+      "fill": {
+        "attempts": 1,
+        "accepted": true,
+        "transcript": "…/evidence/runs/2026-11-19T04-28-01Z/fill-M12.md",
+        "history": [
+          {
+            "n": 1,
+            "fileName": "save10_drops_below_free_shipping_threshold_test.md",
+            "decision": "accepted",
+            "clean": {
+              "exitCode": 0,
+              "overallStatus": "passed",
+              "summaryText": "Opened the store home page as requested.\nAdded the Canvas Tote to the cart.\nConfirmed that the header cart badge shows 1 item.\nAdded the Desk Plant to the cart from the home page.\nConfirmed that the cart badge in the header shows 2 items.\nThe requested item was added successfully.\nOpened the cart page as requested.\nConfirmed that the cart contains Canvas Tote and Desk Plant.\nConfirmed the order summary shows a subtotal of $54.98, free shipping, and a total of $54.98.\nApplied the SAVE10 discount code to the cart.\nConfirmed the order summary shows a −$5.50 discount, $5.00 shipping, and a total of $54.48.\nThe discount was applied successfully on the cart page.",
+              "shareUrl": "https://test-manager.lambdatest.com/projects/01M7H2V70YP7A3ASWA4HQQ8TNH/test-cases/01M7S3A7YQC2DTCE79H5CESGN7/dashboard/share/US_672PEHZBK1KQAIHURLDOJXZHZTK6DGODE0ZGOL2T7YC4V5YYHDA2DJ6C8JXHSTXZ?type=summary&agentView=true&fqdn=summary-page",
+              "rawLog": "…/evidence/runs/2026-11-19T04-28-01Z/kane-fill-M12-a1-clean.ndjson"
+            },
+            "mutant": {
+              "exitCode": 1,
+              "overallStatus": "failed",
+              "failureText": "assertion_failed: @ step 7",
+              "rawLog": "…/evidence/runs/2026-11-19T04-28-01Z/kane-fill-M12-a1-mutant.ndjson"
+            }
+          }
+        ],
+        "model": "claude-opus-5-5",
+        "testFile": "tests/kane/generated/save10_drops_below_free_shipping_threshold_test.md"
+      }
+    },
+    {
+      "n": 3,
+      "suiteSize": 20,
+      "dropped": [],
+      "outcome": "closed",
+      "score": {
+        "red": 3,
+        "blue": 3
+      },
+      "bug": {
+        "id": "M13",
+        "title": "Sign out leaves the customer signed in",
+        "userImpact": "After pressing \"Sign out\" on the account page, the header still shows \"Signed in as demo@saboteur.shop\", so the customer appears to still be logged in until they refresh the page.",
+        "file": "src/state/auth.tsx",
+        "kaneCheck": "Open http://localhost:4173/login and sign in with email \"demo@saboteur.shop\" and password \"sabotage123\". On the My account page, press the \"Sign out\" button. Do not reload the page. You should land on the home page product grid. Verify the header still shows \"Signed in as demo@saboteur.shop\" and does not show a \"Sign in\" link."
+      },
+      "attack": {
+        "verdict": "survived",
+        "reason": "every test passed on the bugged build",
+        "exitCode": 0,
+        "executionId": "130b301c-662f-4c3c-a7cb-77f61adcfbb7",
+        "caughtBy": [],
+        "links": [],
+        "rawLog": "…/evidence/runs/2026-11-19T04-28-01Z/kane-duel-r3-M13.ndjson",
+        "evidencePacks": [
+          "…/evidence/130b301c-662f-4c3c-a7cb-77f61adcfbb7.evidence"
+        ],
+        "durationS": 897,
+        "retried": false,
+        "suite": [
+          "tests/kane/starter/browse_add_to_cart_test.md",
+          "tests/kane/starter/cart_shows_item_test.md",
+          "tests/kane/starter/checkout_happy_path_test.md",
+          "tests/kane/starter/login_test.md",
+          "tests/kane/generated/cart_badge_counts_total_quantity_test.md",
+          "tests/kane/generated/cart_quantity_increase_button_test.md",
+          "tests/kane/generated/cart_remove_deletes_clicked_item_test.md",
+          "tests/kane/generated/cart_remove_middle_item_deletes_clicked_item_test.md",
+          "tests/kane/generated/cart_survives_page_refresh_test.md",
+          "tests/kane/generated/cart_total_includes_every_item_test.md",
+          "tests/kane/generated/ceramic_mug_small_order_charges_shipping_test.md",
+          "tests/kane/generated/checkout_rejects_email_without_domain_test.md",
+          "tests/kane/generated/checkout_rejects_email_without_tld_test.md",
+          "tests/kane/generated/login_redirects_to_account_test.md",
+          "tests/kane/generated/order_confirmation_shows_order_number_test.md",
+          "tests/kane/generated/out_of_stock_beanie_cannot_be_added_test.md",
+          "tests/kane/generated/product_page_plus_button_increases_quantity_test.md",
+          "tests/kane/generated/save10_discount_ten_percent_test.md",
+          "tests/kane/generated/save10_drops_below_free_shipping_threshold_test.md",
+          "tests/kane/generated/small_order_total_paid_includes_shipping_test.md"
+        ]
+      },
+      "fill": {
+        "attempts": 1,
+        "accepted": true,
+        "transcript": "…/evidence/runs/2026-11-19T04-28-01Z/fill-M13.md",
+        "history": [
+          {
+            "n": 1,
+            "fileName": "sign_out_clears_signed_in_header_test.md",
+            "decision": "accepted",
+            "clean": {
+              "exitCode": 0,
+              "overallStatus": "passed",
+              "summaryText": "Opened the sign-in page and signed in with the provided demo account.\nSign-in completed successfully: the account page displays “My account” and confirms “Signed in as demo@saboteur.shop” in the header.\nYou asked to sign out from the My account page.\nPressed Sign out once without refreshing the page.\nYou were signed out successfully: the header now shows a Sign in link and no longer identifies you as demo@saboteur.shop.\nOpened the shop’s home page using the shop name link in the header, without reloading the browser.\nThe home page loaded at http://localhost:4173/.\nThe header shows a “Sign in” link, and the page does not show “Signed in as demo@saboteur.shop”.",
+              "shareUrl": "https://test-manager.lambdatest.com/projects/01M7H2V70YP7A3ASWA4HQQ8TNH/test-cases/01M7S4SV1NKP1FGY542QHM7QJT/dashboard/share/US_VP56VCYNUBHRMU9KSB9ZIP5L9JF3HA8BCWZ08Q3NG3UBBUKKLEANM83S8T3BIRAS?type=summary&agentView=true&fqdn=summary-page",
+              "rawLog": "…/evidence/runs/2026-11-19T04-28-01Z/kane-fill-M13-a1-clean.ndjson"
+            },
+            "mutant": {
+              "exitCode": 1,
+              "overallStatus": "failed",
+              "failureText": "assertion_failed: @ step 4",
+              "rawLog": "…/evidence/runs/2026-11-19T04-28-01Z/kane-fill-M13-a1-mutant.ndjson"
+            }
+          }
+        ],
+        "model": "claude-opus-5-5",
+        "testFile": "tests/kane/generated/sign_out_clears_signed_in_header_test.md"
+      }
+    }
+  ],
+  "score": {
+    "red": 3,
+    "blue": 3
+  },
+  "suiteBefore": 18,
+  "suiteAfter": 21,
+  "evidenceDir": "…/evidence/runs/2026-11-19T04-28-01Z"
+}

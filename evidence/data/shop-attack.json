@@ -1,0 +1,236 @@
+{
+  "runId": "2026-11-18T21-08-14Z",
+  "startedAt": "2026-11-18T21:08:14.747Z",
+  "finishedAt": "2026-11-18T21:43:34.772Z",
+  "mode": "attack-only",
+  "kaneCliVersion": "0.10.5",
+  "app": "apps/shop",
+  "appUrl": "http://localhost:4173",
+  "suiteBefore": [
+    "tests/kane/starter/browse_add_to_cart_test.md",
+    "tests/kane/starter/cart_shows_item_test.md",
+    "tests/kane/starter/checkout_happy_path_test.md",
+    "tests/kane/starter/login_test.md",
+    "tests/kane/generated/cart_quantity_increase_button_test.md",
+    "tests/kane/generated/cart_remove_deletes_clicked_item_test.md",
+    "tests/kane/generated/cart_remove_middle_item_deletes_clicked_item_test.md",
+    "tests/kane/generated/cart_survives_page_refresh_test.md",
+    "tests/kane/generated/cart_total_includes_every_item_test.md",
+    "tests/kane/generated/ceramic_mug_small_order_charges_shipping_test.md",
+    "tests/kane/generated/checkout_rejects_email_without_domain_test.md",
+    "tests/kane/generated/checkout_rejects_email_without_tld_test.md",
+    "tests/kane/generated/login_redirects_to_account_test.md",
+    "tests/kane/generated/order_confirmation_shows_order_number_test.md",
+    "tests/kane/generated/out_of_stock_beanie_cannot_be_added_test.md",
+    "tests/kane/generated/product_page_plus_button_increases_quantity_test.md",
+    "tests/kane/generated/save10_discount_ten_percent_test.md",
+    "tests/kane/generated/small_order_total_paid_includes_shipping_test.md"
+  ],
+  "suiteAfter": [
+    "tests/kane/starter/browse_add_to_cart_test.md",
+    "tests/kane/starter/cart_shows_item_test.md",
+    "tests/kane/starter/checkout_happy_path_test.md",
+    "tests/kane/starter/login_test.md",
+    "tests/kane/generated/cart_quantity_increase_button_test.md",
+    "tests/kane/generated/cart_remove_deletes_clicked_item_test.md",
+    "tests/kane/generated/cart_remove_middle_item_deletes_clicked_item_test.md",
+    "tests/kane/generated/cart_survives_page_refresh_test.md",
+    "tests/kane/generated/cart_total_includes_every_item_test.md",
+    "tests/kane/generated/ceramic_mug_small_order_charges_shipping_test.md",
+    "tests/kane/generated/checkout_rejects_email_without_domain_test.md",
+    "tests/kane/generated/checkout_rejects_email_without_tld_test.md",
+    "tests/kane/generated/login_redirects_to_account_test.md",
+    "tests/kane/generated/order_confirmation_shows_order_number_test.md",
+    "tests/kane/generated/out_of_stock_beanie_cannot_be_added_test.md",
+    "tests/kane/generated/product_page_plus_button_increases_quantity_test.md",
+    "tests/kane/generated/save10_discount_ten_percent_test.md",
+    "tests/kane/generated/small_order_total_paid_includes_shipping_test.md"
+  ],
+  "baseline": {
+    "exitCode": -1,
+    "links": [],
+    "rawLog": "",
+    "authored": 0,
+    "durationS": 0
+  },
+  "before": {
+    "killed": 3,
+    "survived": 0,
+    "errors": 0,
+    "invalid": 0,
+    "rejected": 0
+  },
+  "after": {
+    "killed": 3,
+    "survived": 0,
+    "errors": 0,
+    "invalid": 0,
+    "rejected": 0
+  },
+  "mutants": [
+    {
+      "id": "M07",
+      "title": "Out-of-stock product can still be added to cart",
+      "category": "state",
+      "userImpact": "Customer can order the Wool Beanie, which is out of stock",
+      "verdictBefore": "killed",
+      "verdictAfter": "killed",
+      "before": {
+        "verdict": "killed",
+        "reason": "1 test(s) failed on the bugged build; confirmed: out_of_stock_beanie_cannot_be_added_test.md failed again on its own",
+        "exitCode": 1,
+        "executionId": "99fe151a-eb47-4d85-894e-b75978999683",
+        "caughtBy": [
+          {
+            "file": "out_of_stock_beanie_cannot_be_added_test.md",
+            "message": "assertion_failed: @ step 3",
+            "stepIndex": 2
+          }
+        ],
+        "links": [],
+        "rawLog": "…/evidence/runs/2026-11-18T21-08-14Z/kane-after-M07.ndjson",
+        "evidencePacks": [
+          "…/evidence/99fe151a-eb47-4d85-894e-b75978999683.evidence"
+        ],
+        "durationS": 530,
+        "retried": false,
+        "suite": [
+          "tests/kane/starter/browse_add_to_cart_test.md",
+          "tests/kane/starter/cart_shows_item_test.md",
+          "tests/kane/starter/checkout_happy_path_test.md",
+          "tests/kane/starter/login_test.md",
+          "tests/kane/generated/cart_quantity_increase_button_test.md",
+          "tests/kane/generated/cart_remove_deletes_clicked_item_test.md",
+          "tests/kane/generated/cart_remove_middle_item_deletes_clicked_item_test.md",
+          "tests/kane/generated/cart_survives_page_refresh_test.md",
+          "tests/kane/generated/cart_total_includes_every_item_test.md",
+          "tests/kane/generated/ceramic_mug_small_order_charges_shipping_test.md",
+          "tests/kane/generated/checkout_rejects_email_without_domain_test.md",
+          "tests/kane/generated/checkout_rejects_email_without_tld_test.md",
+          "tests/kane/generated/login_redirects_to_account_test.md",
+          "tests/kane/generated/order_confirmation_shows_order_number_test.md",
+          "tests/kane/generated/out_of_stock_beanie_cannot_be_added_test.md",
+          "tests/kane/generated/product_page_plus_button_increases_quantity_test.md",
+          "tests/kane/generated/save10_discount_ten_percent_test.md",
+          "tests/kane/generated/small_order_total_paid_includes_shipping_test.md"
+        ]
+      }
+    },
+    {
+      "id": "M08",
+      "title": "Order confirmation shows a blank order number",
+      "category": "display",
+      "userImpact": "Customer has no order number to quote to support",
+      "verdictBefore": "killed",
+      "verdictAfter": "killed",
+      "before": {
+        "verdict": "killed",
+        "reason": "1 test(s) failed on the bugged build; confirmed: order_confirmation_shows_order_number_test.md failed again on its own",
+        "exitCode": 1,
+        "executionId": "78ec5386-ddfa-4c60-a44b-5d65774b5b4d",
+        "caughtBy": [
+          {
+            "file": "order_confirmation_shows_order_number_test.md",
+            "message": "assertion_failed: @ step 4",
+            "stepIndex": 4
+          }
+        ],
+        "links": [],
+        "rawLog": "…/evidence/runs/2026-11-18T21-08-14Z/kane-after-M08.ndjson",
+        "evidencePacks": [
+          "…/evidence/78ec5386-ddfa-4c60-a44b-5d65774b5b4d.evidence"
+        ],
+        "durationS": 625,
+        "retried": false,
+        "suite": [
+          "tests/kane/starter/browse_add_to_cart_test.md",
+          "tests/kane/starter/cart_shows_item_test.md",
+          "tests/kane/starter/checkout_happy_path_test.md",
+          "tests/kane/starter/login_test.md",
+          "tests/kane/generated/cart_quantity_increase_button_test.md",
+          "tests/kane/generated/cart_remove_deletes_clicked_item_test.md",
+          "tests/kane/generated/cart_remove_middle_item_deletes_clicked_item_test.md",
+          "tests/kane/generated/cart_survives_page_refresh_test.md",
+          "tests/kane/generated/cart_total_includes_every_item_test.md",
+          "tests/kane/generated/ceramic_mug_small_order_charges_shipping_test.md",
+          "tests/kane/generated/checkout_rejects_email_without_domain_test.md",
+          "tests/kane/generated/checkout_rejects_email_without_tld_test.md",
+          "tests/kane/generated/login_redirects_to_account_test.md",
+          "tests/kane/generated/order_confirmation_shows_order_number_test.md",
+          "tests/kane/generated/out_of_stock_beanie_cannot_be_added_test.md",
+          "tests/kane/generated/product_page_plus_button_increases_quantity_test.md",
+          "tests/kane/generated/save10_discount_ten_percent_test.md",
+          "tests/kane/generated/small_order_total_paid_includes_shipping_test.md"
+        ]
+      }
+    },
+    {
+      "id": "M09",
+      "title": "Login redirects to Home instead of Account",
+      "category": "navigation",
+      "userImpact": "After signing in the customer lands on the home page, not My account",
+      "verdictBefore": "killed",
+      "verdictAfter": "killed",
+      "before": {
+        "verdict": "killed",
+        "reason": "1 test(s) failed on the bugged build; confirmed: login_redirects_to_account_test.md failed again on its own",
+        "exitCode": 1,
+        "executionId": "9a983ce7-557c-4b6d-ae45-bb0c3d245f22",
+        "caughtBy": [
+          {
+            "file": "login_redirects_to_account_test.md",
+            "message": "assertion_failed: @ step 11",
+            "stepIndex": 2
+          }
+        ],
+        "links": [],
+        "rawLog": "…/evidence/runs/2026-11-18T21-08-14Z/kane-after-M09.ndjson",
+        "evidencePacks": [
+          "…/evidence/9a983ce7-557c-4b6d-ae45-bb0c3d245f22.evidence"
+        ],
+        "durationS": 475,
+        "retried": false,
+        "suite": [
+          "tests/kane/starter/browse_add_to_cart_test.md",
+          "tests/kane/starter/cart_shows_item_test.md",
+          "tests/kane/starter/checkout_happy_path_test.md",
+          "tests/kane/starter/login_test.md",
+          "tests/kane/generated/cart_quantity_increase_button_test.md",
+          "tests/kane/generated/cart_remove_deletes_clicked_item_test.md",
+          "tests/kane/generated/cart_remove_middle_item_deletes_clicked_item_test.md",
+          "tests/kane/generated/cart_survives_page_refresh_test.md",
+          "tests/kane/generated/cart_total_includes_every_item_test.md",
+          "tests/kane/generated/ceramic_mug_small_order_charges_shipping_test.md",
+          "tests/kane/generated/checkout_rejects_email_without_domain_test.md",
+          "tests/kane/generated/checkout_rejects_email_without_tld_test.md",
+          "tests/kane/generated/login_redirects_to_account_test.md",
+          "tests/kane/generated/order_confirmation_shows_order_number_test.md",
+          "tests/kane/generated/out_of_stock_beanie_cannot_be_added_test.md",
+          "tests/kane/generated/product_page_plus_button_increases_quantity_test.md",
+          "tests/kane/generated/save10_discount_ten_percent_test.md",
+          "tests/kane/generated/small_order_total_paid_includes_shipping_test.md"
+        ]
+      }
+    }
+  ],
+  "generatedTests": [
+    "tests/kane/generated/cart_quantity_increase_button_test.md",
+    "tests/kane/generated/cart_remove_deletes_clicked_item_test.md",
+    "tests/kane/generated/cart_remove_middle_item_deletes_clicked_item_test.md",
+    "tests/kane/generated/cart_survives_page_refresh_test.md",
+    "tests/kane/generated/cart_total_includes_every_item_test.md",
+    "tests/kane/generated/ceramic_mug_small_order_charges_shipping_test.md",
+    "tests/kane/generated/checkout_rejects_email_without_domain_test.md",
+    "tests/kane/generated/checkout_rejects_email_without_tld_test.md",
+    "tests/kane/generated/login_redirects_to_account_test.md",
+    "tests/kane/generated/order_confirmation_shows_order_number_test.md",
+    "tests/kane/generated/out_of_stock_beanie_cannot_be_added_test.md",
+    "tests/kane/generated/product_page_plus_button_increases_quantity_test.md",
+    "tests/kane/generated/save10_discount_ten_percent_test.md",
+    "tests/kane/generated/small_order_total_paid_includes_shipping_test.md"
+  ],
+  "credits": {
+    "before": 8774.693
+  },
+  "evidenceDir": "…/evidence/runs/2026-11-18T21-08-14Z"
+}

@@ -1,14 +1,89 @@
 {
   "version": 1,
   "about": "Real Saboteur reports from real Kane CLI runs, local paths removed. `pnpm saboteur verify` checks each file's sha256 and recomputes every claim from the files. No Kane login, no credits.",
-  "files": {},
+  "files": {
+    "shop-run": {
+      "path": "data/shop-run.json",
+      "sha256": "b368b479885e9f56e1b22a27576f556f26b3110daf3476b2164076857de581e6",
+      "source": "2026-11-18T16-26-23Z"
+    },
+    "shop-attack": {
+      "path": "data/shop-attack.json",
+      "sha256": "efc2e385d4b402608845bcbdd11297c92760f45aed5e00c16289bb6951da8eaf",
+      "source": "2026-11-18T21-08-14Z"
+    },
+    "todomvc-run": {
+      "path": "data/todomvc-run.json",
+      "sha256": "34766ec2dfa547d39eefb2323628bebb17ea83873d132adcd9856be2fe6c1f01",
+      "source": "2026-11-20T02-11-09Z"
+    },
+    "duel": {
+      "path": "data/duel.json",
+      "sha256": "f278cfa90299cfa2d892fb3104bb5649c95eebaeda880151cba7154ea5cdde2d",
+      "source": "latest-duel"
+    }
+  },
   "claims": [
-    { "id": "shop-before", "text": "Demo shop, 4 starter tests", "kind": "score", "file": "shop-run", "side": "before", "expect": "0/10" },
-    { "id": "shop-after", "text": "Demo shop, with Claude's Kane-proven tests", "kind": "score", "file": "shop-run", "merge": ["shop-attack"], "side": "after", "expect": "10/10" },
-    { "id": "shop-rules", "text": "Demo shop, spec rules that would break silently", "kind": "rules", "file": "shop-run", "merge": ["shop-attack"], "requirements": "apps/shop/mutations/requirements.json", "expect": "10 of 10 -> 0 of 10" },
-    { "id": "duel", "text": "Duel, red Claude vs blue Claude, Kane referees", "kind": "duel", "file": "duel", "expect": "Red 3 : Blue 3, suite 18 -> 21" },
-    { "id": "todomvc-before", "text": "React TodoMVC, 4 starter tests", "kind": "score", "file": "todomvc-run", "side": "before", "expect": "2/10" },
-    { "id": "todomvc-after", "text": "React TodoMVC, with Claude's Kane-proven tests", "kind": "score", "file": "todomvc-run", "side": "after", "expect": "10/10" },
-    { "id": "todomvc-rules", "text": "React TodoMVC, spec rules that would break silently", "kind": "rules", "file": "todomvc-run", "requirements": "apps/todomvc/mutations/requirements.json", "expect": "7 of 7 -> 0 of 7" }
+    {
+      "id": "shop-before",
+      "text": "Demo shop, 4 starter tests",
+      "kind": "score",
+      "file": "shop-run",
+      "side": "before",
+      "expect": "0/10"
+    },
+    {
+      "id": "shop-after",
+      "text": "Demo shop, with Claude's Kane-proven tests",
+      "kind": "score",
+      "file": "shop-run",
+      "merge": [
+        "shop-attack"
+      ],
+      "side": "after",
+      "expect": "10/10"
+    },
+    {
+      "id": "shop-rules",
+      "text": "Demo shop, spec rules that would break silently",
+      "kind": "rules",
+      "file": "shop-run",
+      "merge": [
+        "shop-attack"
+      ],
+      "requirements": "apps/shop/mutations/requirements.json",
+      "expect": "10 of 10 -> 0 of 10"
+    },
+    {
+      "id": "duel",
+      "text": "Duel, red Claude vs blue Claude, Kane referees",
+      "kind": "duel",
+      "file": "duel",
+      "expect": "Red 3 : Blue 3, suite 18 -> 21"
+    },
+    {
+      "id": "todomvc-before",
+      "text": "React TodoMVC, 4 starter tests",
+      "kind": "score",
+      "file": "todomvc-run",
+      "side": "before",
+      "expect": "2/10"
+    },
+    {
+      "id": "todomvc-after",
+      "text": "React TodoMVC, with Claude's Kane-proven tests",
+      "kind": "score",
+      "file": "todomvc-run",
+      "side": "after",
+      "expect": "10/10"
+    },
+    {
+      "id": "todomvc-rules",
+      "text": "React TodoMVC, spec rules that would break silently",
+      "kind": "rules",
+      "file": "todomvc-run",
+      "requirements": "apps/todomvc/mutations/requirements.json",
+      "expect": "7 of 7 -> 0 of 7"
+    }
   ]
 }

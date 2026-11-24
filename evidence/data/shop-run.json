@@ -1,0 +1,916 @@
+{
+  "runId": "2026-11-18T16-26-23Z",
+  "startedAt": "2026-11-18T16:26:23.315Z",
+  "finishedAt": "2026-11-18T20:52:53.230Z",
+  "mode": "replay",
+  "kaneCliVersion": "0.10.5",
+  "app": "apps/shop",
+  "appUrl": "http://localhost:4173",
+  "suiteBefore": [
+    "tests/kane/starter/browse_add_to_cart_test.md",
+    "tests/kane/starter/cart_shows_item_test.md",
+    "tests/kane/starter/checkout_happy_path_test.md",
+    "tests/kane/starter/login_test.md"
+  ],
+  "suiteAfter": [
+    "tests/kane/starter/browse_add_to_cart_test.md",
+    "tests/kane/starter/cart_shows_item_test.md",
+    "tests/kane/starter/checkout_happy_path_test.md",
+    "tests/kane/starter/login_test.md",
+    "tests/kane/generated/cart_quantity_increase_button_test.md",
+    "tests/kane/generated/cart_remove_deletes_clicked_item_test.md",
+    "tests/kane/generated/cart_remove_middle_item_deletes_clicked_item_test.md",
+    "tests/kane/generated/cart_survives_page_refresh_test.md",
+    "tests/kane/generated/cart_total_includes_every_item_test.md",
+    "tests/kane/generated/ceramic_mug_small_order_charges_shipping_test.md",
+    "tests/kane/generated/checkout_rejects_email_without_domain_test.md",
+    "tests/kane/generated/checkout_rejects_email_without_tld_test.md",
+    "tests/kane/generated/login_redirects_to_account_test.md",
+    "tests/kane/generated/order_confirmation_shows_order_number_test.md",
+    "tests/kane/generated/out_of_stock_beanie_cannot_be_added_test.md",
+    "tests/kane/generated/product_page_plus_button_increases_quantity_test.md",
+    "tests/kane/generated/save10_discount_ten_percent_test.md",
+    "tests/kane/generated/small_order_total_paid_includes_shipping_test.md"
+  ],
+  "baseline": {
+    "exitCode": 0,
+    "executionId": "262da6b6-09ef-465f-afc6-3316bdbe18ab",
+    "links": [],
+    "rawLog": "…/evidence/runs/2026-11-18T16-26-23Z/kane-baseline.ndjson",
+    "authored": 0,
+    "durationS": 732
+  },
+  "before": {
+    "killed": 0,
+    "survived": 10,
+    "errors": 0,
+    "invalid": 0,
+    "rejected": 0
+  },
+  "after": {
+    "killed": 7,
+    "survived": 0,
+    "errors": 3,
+    "invalid": 0,
+    "rejected": 0
+  },
+  "mutants": [
+    {
+      "id": "M01",
+      "title": "Cart total skips the last item",
+      "category": "maths",
+      "userImpact": "Customer is charged less than the items in the cart: the last line item is left out of the subtotal and total",
+      "verdictBefore": "survived",
+      "verdictAfter": "killed",
+      "before": {
+        "verdict": "survived",
+        "reason": "every test passed on the bugged build",
+        "exitCode": 0,
+        "executionId": "87d7db84-5b3d-4c96-994d-cf5e71b6a88f",
+        "caughtBy": [],
+        "links": [],
+        "rawLog": "…/evidence/runs/2026-11-18T16-26-23Z/kane-before-M01.ndjson",
+        "evidencePacks": [
+          "…/evidence/87d7db84-5b3d-4c96-994d-cf5e71b6a88f.evidence"
+        ],
+        "durationS": 155,
+        "retried": false,
+        "suite": [
+          "tests/kane/starter/browse_add_to_cart_test.md",
+          "tests/kane/starter/cart_shows_item_test.md",
+          "tests/kane/starter/checkout_happy_path_test.md",
+          "tests/kane/starter/login_test.md"
+        ]
+      },
+      "after": {
+        "verdict": "killed",
+        "reason": "10 test(s) failed on the bugged build",
+        "exitCode": 1,
+        "executionId": "a6f6d83b-81cb-4a6b-a69c-c12bb6781ac5",
+        "caughtBy": [
+          {
+            "file": "cart_remove_deletes_clicked_item_test.md",
+            "message": "assertion_failed: @ step 6",
+            "stepIndex": 3
+          },
+          {
+            "file": "cart_quantity_increase_button_test.md",
+            "message": "assertion_failed: @ step 7",
+            "stepIndex": 2
+          },
+          {
+            "file": "cart_remove_middle_item_deletes_clicked_item_test.md",
+            "message": "assertion_failed: @ step 7",
+            "stepIndex": 4
+          },
+          {
+            "file": "cart_survives_page_refresh_test.md",
+            "message": "assertion_failed: @ step 6",
+            "stepIndex": 2
+          },
+          {
+            "file": "cart_total_includes_every_item_test.md",
+            "message": "assertion_failed: @ step 10",
+            "stepIndex": 3
+          },
+          {
+            "file": "ceramic_mug_small_order_charges_shipping_test.md",
+            "message": "assertion_failed: @ step 6",
+            "stepIndex": 2
+          },
+          {
+            "file": "checkout_rejects_email_without_tld_test.md",
+            "message": "assertion_failed: @ step 8",
+            "stepIndex": 2
+          },
+          {
+            "file": "product_page_plus_button_increases_quantity_test.md",
+            "message": "assertion_failed: @ step 9",
+            "stepIndex": 3
+          },
+          {
+            "file": "save10_discount_ten_percent_test.md",
+            "message": "assertion_failed: @ step 7",
+            "stepIndex": 3
+          },
+          {
+            "file": "small_order_total_paid_includes_shipping_test.md",
+            "message": "assertion_failed: @ step 9",
+            "stepIndex": 2
+          }
+        ],
+        "links": [],
+        "rawLog": "…/evidence/runs/2026-11-18T16-26-23Z/kane-after-M01.ndjson",
+        "evidencePacks": [
+          "…/evidence/a6f6d83b-81cb-4a6b-a69c-c12bb6781ac5.evidence"
+        ],
+        "durationS": 743,
+        "retried": false,
+        "suite": [
+          "tests/kane/starter/browse_add_to_cart_test.md",
+          "tests/kane/starter/cart_shows_item_test.md",
+          "tests/kane/starter/checkout_happy_path_test.md",
+          "tests/kane/starter/login_test.md",
+          "tests/kane/generated/cart_quantity_increase_button_test.md",
+          "tests/kane/generated/cart_remove_deletes_clicked_item_test.md",
+          "tests/kane/generated/cart_remove_middle_item_deletes_clicked_item_test.md",
+          "tests/kane/generated/cart_survives_page_refresh_test.md",
+          "tests/kane/generated/cart_total_includes_every_item_test.md",
+          "tests/kane/generated/ceramic_mug_small_order_charges_shipping_test.md",
+          "tests/kane/generated/checkout_rejects_email_without_domain_test.md",
+          "tests/kane/generated/checkout_rejects_email_without_tld_test.md",
+          "tests/kane/generated/login_redirects_to_account_test.md",
+          "tests/kane/generated/order_confirmation_shows_order_number_test.md",
+          "tests/kane/generated/out_of_stock_beanie_cannot_be_added_test.md",
+          "tests/kane/generated/product_page_plus_button_increases_quantity_test.md",
+          "tests/kane/generated/save10_discount_ten_percent_test.md",
+          "tests/kane/generated/small_order_total_paid_includes_shipping_test.md"
+        ]
+      },
+      "closedBy": "existing-generated-test"
+    },
+    {
+      "id": "M02",
+      "title": "\"+\" quantity button does nothing",
+      "category": "interaction",
+      "userImpact": "Customer cannot increase the quantity of an item with the + button",
+      "verdictBefore": "survived",
+      "verdictAfter": "killed",
+      "before": {
+        "verdict": "survived",
+        "reason": "every test passed on the bugged build",
+        "exitCode": 0,
+        "executionId": "5dd0e1a3-c26e-42ac-8bea-db8b110149e5",
+        "caughtBy": [],
+        "links": [],
+        "rawLog": "…/evidence/runs/2026-11-18T16-26-23Z/kane-before-M02.ndjson",
+        "evidencePacks": [
+          "…/evidence/5dd0e1a3-c26e-42ac-8bea-db8b110149e5.evidence"
+        ],
+        "durationS": 126,
+        "retried": false,
+        "suite": [
+          "tests/kane/starter/browse_add_to_cart_test.md",
+          "tests/kane/starter/cart_shows_item_test.md",
+          "tests/kane/starter/checkout_happy_path_test.md",
+          "tests/kane/starter/login_test.md"
+        ]
+      },
+      "after": {
+        "verdict": "killed",
+        "reason": "2 test(s) failed on the bugged build",
+        "exitCode": 1,
+        "executionId": "1e20be18-c7d4-40fd-b595-fbf4ca75644e",
+        "caughtBy": [
+          {
+            "file": "cart_quantity_increase_button_test.md",
+            "message": "assertion_failed: @ step 6",
+            "stepIndex": 3
+          },
+          {
+            "file": "product_page_plus_button_increases_quantity_test.md",
+            "message": "assertion_failed: @ step 3",
+            "stepIndex": 2
+          }
+        ],
+        "links": [],
+        "rawLog": "…/evidence/runs/2026-11-18T16-26-23Z/kane-after-M02.ndjson",
+        "evidencePacks": [
+          "…/evidence/1e20be18-c7d4-40fd-b595-fbf4ca75644e.evidence"
+        ],
+        "durationS": 536,
+        "retried": false,
+        "suite": [
+          "tests/kane/starter/browse_add_to_cart_test.md",
+          "tests/kane/starter/cart_shows_item_test.md",
+          "tests/kane/starter/checkout_happy_path_test.md",
+          "tests/kane/starter/login_test.md",
+          "tests/kane/generated/cart_quantity_increase_button_test.md",
+          "tests/kane/generated/cart_remove_deletes_clicked_item_test.md",
+          "tests/kane/generated/cart_remove_middle_item_deletes_clicked_item_test.md",
+          "tests/kane/generated/cart_survives_page_refresh_test.md",
+          "tests/kane/generated/cart_total_includes_every_item_test.md",
+          "tests/kane/generated/ceramic_mug_small_order_charges_shipping_test.md",
+          "tests/kane/generated/checkout_rejects_email_without_domain_test.md",
+          "tests/kane/generated/checkout_rejects_email_without_tld_test.md",
+          "tests/kane/generated/login_redirects_to_account_test.md",
+          "tests/kane/generated/order_confirmation_shows_order_number_test.md",
+          "tests/kane/generated/out_of_stock_beanie_cannot_be_added_test.md",
+          "tests/kane/generated/product_page_plus_button_increases_quantity_test.md",
+          "tests/kane/generated/save10_discount_ten_percent_test.md",
+          "tests/kane/generated/small_order_total_paid_includes_shipping_test.md"
+        ]
+      },
+      "closedBy": "existing-generated-test"
+    },
+    {
+      "id": "M03",
+      "title": "Code SAVE10 takes 1% off instead of 10%",
+      "category": "maths",
+      "userImpact": "Customer gets a much smaller discount than SAVE10 promises",
+      "verdictBefore": "survived",
+      "verdictAfter": "killed",
+      "before": {
+        "verdict": "survived",
+        "reason": "every test passed on the bugged build",
+        "exitCode": 0,
+        "executionId": "2fe3a05c-5bb4-46db-ae3f-5818b0c6d4e0",
+        "caughtBy": [],
+        "links": [],
+        "rawLog": "…/evidence/runs/2026-11-18T16-26-23Z/kane-before-M03.ndjson",
+        "evidencePacks": [
+          "…/evidence/2fe3a05c-5bb4-46db-ae3f-5818b0c6d4e0.evidence"
+        ],
+        "durationS": 114,
+        "retried": false,
+        "suite": [
+          "tests/kane/starter/browse_add_to_cart_test.md",
+          "tests/kane/starter/cart_shows_item_test.md",
+          "tests/kane/starter/checkout_happy_path_test.md",
+          "tests/kane/starter/login_test.md"
+        ]
+      },
+      "after": {
+        "verdict": "killed",
+        "reason": "1 test(s) failed on the bugged build",
+        "exitCode": 1,
+        "executionId": "85306619-798b-4f16-a132-302cfa844347",
+        "caughtBy": [
+          {
+            "file": "save10_discount_ten_percent_test.md",
+            "message": "assertion_failed: @ step 7",
+            "stepIndex": 4
+          }
+        ],
+        "links": [],
+        "rawLog": "…/evidence/runs/2026-11-18T16-26-23Z/kane-after-M03.ndjson",
+        "evidencePacks": [
+          "…/evidence/85306619-798b-4f16-a132-302cfa844347.evidence"
+        ],
+        "durationS": 513,
+        "retried": false,
+        "suite": [
+          "tests/kane/starter/browse_add_to_cart_test.md",
+          "tests/kane/starter/cart_shows_item_test.md",
+          "tests/kane/starter/checkout_happy_path_test.md",
+          "tests/kane/starter/login_test.md",
+          "tests/kane/generated/cart_quantity_increase_button_test.md",
+          "tests/kane/generated/cart_remove_deletes_clicked_item_test.md",
+          "tests/kane/generated/cart_remove_middle_item_deletes_clicked_item_test.md",
+          "tests/kane/generated/cart_survives_page_refresh_test.md",
+          "tests/kane/generated/cart_total_includes_every_item_test.md",
+          "tests/kane/generated/ceramic_mug_small_order_charges_shipping_test.md",
+          "tests/kane/generated/checkout_rejects_email_without_domain_test.md",
+          "tests/kane/generated/checkout_rejects_email_without_tld_test.md",
+          "tests/kane/generated/login_redirects_to_account_test.md",
+          "tests/kane/generated/order_confirmation_shows_order_number_test.md",
+          "tests/kane/generated/out_of_stock_beanie_cannot_be_added_test.md",
+          "tests/kane/generated/product_page_plus_button_increases_quantity_test.md",
+          "tests/kane/generated/save10_discount_ten_percent_test.md",
+          "tests/kane/generated/small_order_total_paid_includes_shipping_test.md"
+        ]
+      },
+      "closedBy": "existing-generated-test"
+    },
+    {
+      "id": "M04",
+      "title": "Shipping fee not added on orders under $50",
+      "category": "maths",
+      "userImpact": "Shop loses the $5.00 shipping fee on small orders; total is $5.00 too low",
+      "verdictBefore": "survived",
+      "verdictAfter": "killed",
+      "before": {
+        "verdict": "survived",
+        "reason": "every test passed on the bugged build",
+        "exitCode": 0,
+        "executionId": "93bf49c1-21eb-49c9-a813-c883a1b1873b",
+        "caughtBy": [],
+        "links": [],
+        "rawLog": "…/evidence/runs/2026-11-18T16-26-23Z/kane-before-M04.ndjson",
+        "evidencePacks": [
+          "…/evidence/93bf49c1-21eb-49c9-a813-c883a1b1873b.evidence"
+        ],
+        "durationS": 125,
+        "retried": false,
+        "suite": [
+          "tests/kane/starter/browse_add_to_cart_test.md",
+          "tests/kane/starter/cart_shows_item_test.md",
+          "tests/kane/starter/checkout_happy_path_test.md",
+          "tests/kane/starter/login_test.md"
+        ]
+      },
+      "after": {
+        "verdict": "killed",
+        "reason": "8 test(s) failed on the bugged build",
+        "exitCode": 1,
+        "executionId": "4d06963d-a2c8-4753-bd0c-8757382c29e9",
+        "caughtBy": [
+          {
+            "file": "cart_quantity_increase_button_test.md",
+            "message": "assertion_failed: @ step 7",
+            "stepIndex": 2
+          },
+          {
+            "file": "cart_remove_deletes_clicked_item_test.md",
+            "message": "assertion_failed: @ step 6",
+            "stepIndex": 4
+          },
+          {
+            "file": "cart_survives_page_refresh_test.md",
+            "message": "assertion_failed: @ step 6",
+            "stepIndex": 2
+          },
+          {
+            "file": "cart_total_includes_every_item_test.md",
+            "message": "assertion_failed: @ step 10",
+            "stepIndex": 3
+          },
+          {
+            "file": "ceramic_mug_small_order_charges_shipping_test.md",
+            "message": "assertion_failed: @ step 4",
+            "stepIndex": 3
+          },
+          {
+            "file": "checkout_rejects_email_without_tld_test.md",
+            "message": "assertion_failed: @ step 8",
+            "stepIndex": 2
+          },
+          {
+            "file": "product_page_plus_button_increases_quantity_test.md",
+            "message": "assertion_failed: @ step 9",
+            "stepIndex": 3
+          },
+          {
+            "file": "small_order_total_paid_includes_shipping_test.md",
+            "message": "assertion_failed: @ step 9",
+            "stepIndex": 2
+          }
+        ],
+        "links": [],
+        "rawLog": "…/evidence/runs/2026-11-18T16-26-23Z/kane-after-M04.ndjson",
+        "evidencePacks": [
+          "…/evidence/4d06963d-a2c8-4753-bd0c-8757382c29e9.evidence"
+        ],
+        "durationS": 643,
+        "retried": false,
+        "suite": [
+          "tests/kane/starter/browse_add_to_cart_test.md",
+          "tests/kane/starter/cart_shows_item_test.md",
+          "tests/kane/starter/checkout_happy_path_test.md",
+          "tests/kane/starter/login_test.md",
+          "tests/kane/generated/cart_quantity_increase_button_test.md",
+          "tests/kane/generated/cart_remove_deletes_clicked_item_test.md",
+          "tests/kane/generated/cart_remove_middle_item_deletes_clicked_item_test.md",
+          "tests/kane/generated/cart_survives_page_refresh_test.md",
+          "tests/kane/generated/cart_total_includes_every_item_test.md",
+          "tests/kane/generated/ceramic_mug_small_order_charges_shipping_test.md",
+          "tests/kane/generated/checkout_rejects_email_without_domain_test.md",
+          "tests/kane/generated/checkout_rejects_email_without_tld_test.md",
+          "tests/kane/generated/login_redirects_to_account_test.md",
+          "tests/kane/generated/order_confirmation_shows_order_number_test.md",
+          "tests/kane/generated/out_of_stock_beanie_cannot_be_added_test.md",
+          "tests/kane/generated/product_page_plus_button_increases_quantity_test.md",
+          "tests/kane/generated/save10_discount_ten_percent_test.md",
+          "tests/kane/generated/small_order_total_paid_includes_shipping_test.md"
+        ]
+      },
+      "closedBy": "existing-generated-test"
+    },
+    {
+      "id": "M05",
+      "title": "Checkout accepts an email without a domain (a@)",
+      "category": "validation",
+      "userImpact": "Orders are placed with an email address nobody can reply to",
+      "verdictBefore": "survived",
+      "verdictAfter": "killed",
+      "before": {
+        "verdict": "survived",
+        "reason": "every test passed on the bugged build",
+        "exitCode": 0,
+        "executionId": "b9bf3371-d275-4d17-9a4a-6ed3244b13ae",
+        "caughtBy": [],
+        "links": [],
+        "rawLog": "…/evidence/runs/2026-11-18T16-26-23Z/kane-before-M05.ndjson",
+        "evidencePacks": [
+          "…/evidence/b9bf3371-d275-4d17-9a4a-6ed3244b13ae.evidence"
+        ],
+        "durationS": 125,
+        "retried": false,
+        "suite": [
+          "tests/kane/starter/browse_add_to_cart_test.md",
+          "tests/kane/starter/cart_shows_item_test.md",
+          "tests/kane/starter/checkout_happy_path_test.md",
+          "tests/kane/starter/login_test.md"
+        ]
+      },
+      "after": {
+        "verdict": "killed",
+        "reason": "2 test(s) failed on the bugged build",
+        "exitCode": 1,
+        "executionId": "555fc65a-a2ff-4518-a550-6c875090df0e",
+        "caughtBy": [
+          {
+            "file": "checkout_rejects_email_without_tld_test.md",
+            "message": "assertion_failed: @ step 8",
+            "stepIndex": 3
+          },
+          {
+            "file": "checkout_rejects_email_without_domain_test.md",
+            "message": "assertion_failed: @ step 9",
+            "stepIndex": 3
+          }
+        ],
+        "links": [],
+        "rawLog": "…/evidence/runs/2026-11-18T16-26-23Z/kane-after-M05.ndjson",
+        "evidencePacks": [
+          "…/evidence/555fc65a-a2ff-4518-a550-6c875090df0e.evidence"
+        ],
+        "durationS": 528,
+        "retried": false,
+        "suite": [
+          "tests/kane/starter/browse_add_to_cart_test.md",
+          "tests/kane/starter/cart_shows_item_test.md",
+          "tests/kane/starter/checkout_happy_path_test.md",
+          "tests/kane/starter/login_test.md",
+          "tests/kane/generated/cart_quantity_increase_button_test.md",
+          "tests/kane/generated/cart_remove_deletes_clicked_item_test.md",
+          "tests/kane/generated/cart_remove_middle_item_deletes_clicked_item_test.md",
+          "tests/kane/generated/cart_survives_page_refresh_test.md",
+          "tests/kane/generated/cart_total_includes_every_item_test.md",
+          "tests/kane/generated/ceramic_mug_small_order_charges_shipping_test.md",
+          "tests/kane/generated/checkout_rejects_email_without_domain_test.md",
+          "tests/kane/generated/checkout_rejects_email_without_tld_test.md",
+          "tests/kane/generated/login_redirects_to_account_test.md",
+          "tests/kane/generated/order_confirmation_shows_order_number_test.md",
+          "tests/kane/generated/out_of_stock_beanie_cannot_be_added_test.md",
+          "tests/kane/generated/product_page_plus_button_increases_quantity_test.md",
+          "tests/kane/generated/save10_discount_ten_percent_test.md",
+          "tests/kane/generated/small_order_total_paid_includes_shipping_test.md"
+        ]
+      },
+      "closedBy": "existing-generated-test"
+    },
+    {
+      "id": "M06",
+      "title": "\"Remove\" deletes the first item, not the clicked one",
+      "category": "state",
+      "userImpact": "Customer clicks Remove on one item and a different item disappears",
+      "verdictBefore": "survived",
+      "verdictAfter": "killed",
+      "before": {
+        "verdict": "survived",
+        "reason": "every test passed on the bugged build",
+        "exitCode": 0,
+        "executionId": "0951a945-5b99-4d6d-a051-0c31414b9c7f",
+        "caughtBy": [],
+        "links": [],
+        "rawLog": "…/evidence/runs/2026-11-18T16-26-23Z/kane-before-M06.ndjson",
+        "evidencePacks": [
+          "…/evidence/0951a945-5b99-4d6d-a051-0c31414b9c7f.evidence"
+        ],
+        "durationS": 180,
+        "retried": false,
+        "suite": [
+          "tests/kane/starter/browse_add_to_cart_test.md",
+          "tests/kane/starter/cart_shows_item_test.md",
+          "tests/kane/starter/checkout_happy_path_test.md",
+          "tests/kane/starter/login_test.md"
+        ]
+      },
+      "after": {
+        "verdict": "killed",
+        "reason": "2 test(s) failed on the bugged build",
+        "exitCode": 1,
+        "executionId": "4d971cd5-850c-4e39-a3cc-8d026caac042",
+        "caughtBy": [
+          {
+            "file": "cart_remove_deletes_clicked_item_test.md",
+            "message": "assertion_failed: @ step 6",
+            "stepIndex": 4
+          },
+          {
+            "file": "cart_remove_middle_item_deletes_clicked_item_test.md",
+            "message": "assertion_failed: @ step 8",
+            "stepIndex": 5
+          }
+        ],
+        "links": [],
+        "rawLog": "…/evidence/runs/2026-11-18T16-26-23Z/kane-after-M06.ndjson",
+        "evidencePacks": [
+          "…/evidence/4d971cd5-850c-4e39-a3cc-8d026caac042.evidence"
+        ],
+        "durationS": 599,
+        "retried": false,
+        "suite": [
+          "tests/kane/starter/browse_add_to_cart_test.md",
+          "tests/kane/starter/cart_shows_item_test.md",
+          "tests/kane/starter/checkout_happy_path_test.md",
+          "tests/kane/starter/login_test.md",
+          "tests/kane/generated/cart_quantity_increase_button_test.md",
+          "tests/kane/generated/cart_remove_deletes_clicked_item_test.md",
+          "tests/kane/generated/cart_remove_middle_item_deletes_clicked_item_test.md",
+          "tests/kane/generated/cart_survives_page_refresh_test.md",
+          "tests/kane/generated/cart_total_includes_every_item_test.md",
+          "tests/kane/generated/ceramic_mug_small_order_charges_shipping_test.md",
+          "tests/kane/generated/checkout_rejects_email_without_domain_test.md",
+          "tests/kane/generated/checkout_rejects_email_without_tld_test.md",
+          "tests/kane/generated/login_redirects_to_account_test.md",
+          "tests/kane/generated/order_confirmation_shows_order_number_test.md",
+          "tests/kane/generated/out_of_stock_beanie_cannot_be_added_test.md",
+          "tests/kane/generated/product_page_plus_button_increases_quantity_test.md",
+          "tests/kane/generated/save10_discount_ten_percent_test.md",
+          "tests/kane/generated/small_order_total_paid_includes_shipping_test.md"
+        ]
+      },
+      "closedBy": "existing-generated-test"
+    },
+    {
+      "id": "M07",
+      "title": "Out-of-stock product can still be added to cart",
+      "category": "state",
+      "userImpact": "Customer can order the Wool Beanie, which is out of stock",
+      "verdictBefore": "survived",
+      "verdictAfter": "error",
+      "before": {
+        "verdict": "survived",
+        "reason": "every test passed on the bugged build",
+        "exitCode": 0,
+        "executionId": "c1bfc58c-fa23-4280-98b7-8d7056a95f02",
+        "caughtBy": [],
+        "links": [],
+        "rawLog": "…/evidence/runs/2026-11-18T16-26-23Z/kane-before-M07.ndjson",
+        "evidencePacks": [
+          "…/evidence/c1bfc58c-fa23-4280-98b7-8d7056a95f02.evidence"
+        ],
+        "durationS": 145,
+        "retried": false,
+        "suite": [
+          "tests/kane/starter/browse_add_to_cart_test.md",
+          "tests/kane/starter/cart_shows_item_test.md",
+          "tests/kane/starter/checkout_happy_path_test.md",
+          "tests/kane/starter/login_test.md"
+        ]
+      },
+      "after": {
+        "verdict": "error",
+        "reason": "Saboteur hard timeout hit; Kane was stopped",
+        "exitCode": 3,
+        "executionId": "094e5dbc-8dcd-406c-8540-bc693e6d6bfb",
+        "caughtBy": [
+          {
+            "file": "order_confirmation_shows_order_number_test.md",
+            "message": "action_failed: wait @ step 2",
+            "stepIndex": 1
+          },
+          {
+            "file": "out_of_stock_beanie_cannot_be_added_test.md",
+            "message": "assertion_failed: @ step 3",
+            "stepIndex": 2
+          }
+        ],
+        "links": [],
+        "rawLog": "…/evidence/runs/2026-11-18T16-26-23Z/kane-after-M07.ndjson",
+        "evidencePacks": [
+          "…/evidence/094e5dbc-8dcd-406c-8540-bc693e6d6bfb.evidence"
+        ],
+        "durationS": 7920,
+        "retried": false,
+        "suite": [
+          "tests/kane/starter/browse_add_to_cart_test.md",
+          "tests/kane/starter/cart_shows_item_test.md",
+          "tests/kane/starter/checkout_happy_path_test.md",
+          "tests/kane/starter/login_test.md",
+          "tests/kane/generated/cart_quantity_increase_button_test.md",
+          "tests/kane/generated/cart_remove_deletes_clicked_item_test.md",
+          "tests/kane/generated/cart_remove_middle_item_deletes_clicked_item_test.md",
+          "tests/kane/generated/cart_survives_page_refresh_test.md",
+          "tests/kane/generated/cart_total_includes_every_item_test.md",
+          "tests/kane/generated/ceramic_mug_small_order_charges_shipping_test.md",
+          "tests/kane/generated/checkout_rejects_email_without_domain_test.md",
+          "tests/kane/generated/checkout_rejects_email_without_tld_test.md",
+          "tests/kane/generated/login_redirects_to_account_test.md",
+          "tests/kane/generated/order_confirmation_shows_order_number_test.md",
+          "tests/kane/generated/out_of_stock_beanie_cannot_be_added_test.md",
+          "tests/kane/generated/product_page_plus_button_increases_quantity_test.md",
+          "tests/kane/generated/save10_discount_ten_percent_test.md",
+          "tests/kane/generated/small_order_total_paid_includes_shipping_test.md"
+        ]
+      }
+    },
+    {
+      "id": "M08",
+      "title": "Order confirmation shows a blank order number",
+      "category": "display",
+      "userImpact": "Customer has no order number to quote to support",
+      "verdictBefore": "survived",
+      "verdictAfter": "error",
+      "before": {
+        "verdict": "survived",
+        "reason": "every test passed on the bugged build",
+        "exitCode": 0,
+        "executionId": "dad50b74-7040-4c8f-9fb3-378dde7c7888",
+        "caughtBy": [],
+        "links": [],
+        "rawLog": "…/evidence/runs/2026-11-18T16-26-23Z/kane-before-M08.ndjson",
+        "evidencePacks": [
+          "…/evidence/dad50b74-7040-4c8f-9fb3-378dde7c7888.evidence"
+        ],
+        "durationS": 140,
+        "retried": false,
+        "suite": [
+          "tests/kane/starter/browse_add_to_cart_test.md",
+          "tests/kane/starter/cart_shows_item_test.md",
+          "tests/kane/starter/checkout_happy_path_test.md",
+          "tests/kane/starter/login_test.md"
+        ]
+      },
+      "after": {
+        "verdict": "error",
+        "reason": "unexpected Kane exit code 4294967295",
+        "exitCode": 4294967295,
+        "executionId": "70914fa9-d0e7-411d-b5f6-050d2223743f",
+        "caughtBy": [],
+        "links": [],
+        "rawLog": "…/evidence/runs/2026-11-18T16-26-23Z/kane-after-M08.ndjson",
+        "evidencePacks": [
+          "…/evidence/70914fa9-d0e7-411d-b5f6-050d2223743f.evidence"
+        ],
+        "durationS": 345,
+        "retried": false,
+        "suite": [
+          "tests/kane/starter/browse_add_to_cart_test.md",
+          "tests/kane/starter/cart_shows_item_test.md",
+          "tests/kane/starter/checkout_happy_path_test.md",
+          "tests/kane/starter/login_test.md",
+          "tests/kane/generated/cart_quantity_increase_button_test.md",
+          "tests/kane/generated/cart_remove_deletes_clicked_item_test.md",
+          "tests/kane/generated/cart_remove_middle_item_deletes_clicked_item_test.md",
+          "tests/kane/generated/cart_survives_page_refresh_test.md",
+          "tests/kane/generated/cart_total_includes_every_item_test.md",
+          "tests/kane/generated/ceramic_mug_small_order_charges_shipping_test.md",
+          "tests/kane/generated/checkout_rejects_email_without_domain_test.md",
+          "tests/kane/generated/checkout_rejects_email_without_tld_test.md",
+          "tests/kane/generated/login_redirects_to_account_test.md",
+          "tests/kane/generated/order_confirmation_shows_order_number_test.md",
+          "tests/kane/generated/out_of_stock_beanie_cannot_be_added_test.md",
+          "tests/kane/generated/product_page_plus_button_increases_quantity_test.md",
+          "tests/kane/generated/save10_discount_ten_percent_test.md",
+          "tests/kane/generated/small_order_total_paid_includes_shipping_test.md"
+        ]
+      }
+    },
+    {
+      "id": "M09",
+      "title": "Login redirects to Home instead of Account",
+      "category": "navigation",
+      "userImpact": "After signing in the customer lands on the home page, not My account",
+      "verdictBefore": "survived",
+      "verdictAfter": "error",
+      "before": {
+        "verdict": "survived",
+        "reason": "every test passed on the bugged build",
+        "exitCode": 0,
+        "executionId": "cd640e44-bd6b-47e5-8db8-6b935c1956c2",
+        "caughtBy": [],
+        "links": [],
+        "rawLog": "…/evidence/runs/2026-11-18T16-26-23Z/kane-before-M09.ndjson",
+        "evidencePacks": [
+          "…/evidence/cd640e44-bd6b-47e5-8db8-6b935c1956c2.evidence"
+        ],
+        "durationS": 211,
+        "retried": false,
+        "suite": [
+          "tests/kane/starter/browse_add_to_cart_test.md",
+          "tests/kane/starter/cart_shows_item_test.md",
+          "tests/kane/starter/checkout_happy_path_test.md",
+          "tests/kane/starter/login_test.md"
+        ]
+      },
+      "after": {
+        "verdict": "error",
+        "reason": "Saboteur hard timeout hit; Kane was stopped",
+        "exitCode": 3,
+        "executionId": "d83d7576-f14e-4afe-865c-fafea39444f8",
+        "caughtBy": [
+          {
+            "file": "login_redirects_to_account_test.md",
+            "message": "assertion_failed: @ step 11",
+            "stepIndex": 2
+          },
+          {
+            "file": "product_page_plus_button_increases_quantity_test.md",
+            "message": "action_failed: wait @ step 3",
+            "stepIndex": 1
+          },
+          {
+            "file": "save10_discount_ten_percent_test.md",
+            "message": "action_failed: wait @ step 2",
+            "stepIndex": 3
+          },
+          {
+            "file": "small_order_total_paid_includes_shipping_test.md",
+            "message": "action_failed: wait @ step 2",
+            "stepIndex": 2
+          }
+        ],
+        "links": [],
+        "rawLog": "…/evidence/runs/2026-11-18T16-26-23Z/kane-after-M09.ndjson",
+        "evidencePacks": [
+          "…/evidence/d83d7576-f14e-4afe-865c-fafea39444f8.evidence"
+        ],
+        "durationS": 927,
+        "retried": false,
+        "suite": [
+          "tests/kane/starter/browse_add_to_cart_test.md",
+          "tests/kane/starter/cart_shows_item_test.md",
+          "tests/kane/starter/checkout_happy_path_test.md",
+          "tests/kane/starter/login_test.md",
+          "tests/kane/generated/cart_quantity_increase_button_test.md",
+          "tests/kane/generated/cart_remove_deletes_clicked_item_test.md",
+          "tests/kane/generated/cart_remove_middle_item_deletes_clicked_item_test.md",
+          "tests/kane/generated/cart_survives_page_refresh_test.md",
+          "tests/kane/generated/cart_total_includes_every_item_test.md",
+          "tests/kane/generated/ceramic_mug_small_order_charges_shipping_test.md",
+          "tests/kane/generated/checkout_rejects_email_without_domain_test.md",
+          "tests/kane/generated/checkout_rejects_email_without_tld_test.md",
+          "tests/kane/generated/login_redirects_to_account_test.md",
+          "tests/kane/generated/order_confirmation_shows_order_number_test.md",
+          "tests/kane/generated/out_of_stock_beanie_cannot_be_added_test.md",
+          "tests/kane/generated/product_page_plus_button_increases_quantity_test.md",
+          "tests/kane/generated/save10_discount_ten_percent_test.md",
+          "tests/kane/generated/small_order_total_paid_includes_shipping_test.md"
+        ]
+      }
+    },
+    {
+      "id": "M10",
+      "title": "Cart empties on page refresh (state not saved)",
+      "category": "persistence",
+      "userImpact": "Customer loses everything in the cart when the page reloads",
+      "verdictBefore": "survived",
+      "verdictAfter": "killed",
+      "before": {
+        "verdict": "survived",
+        "reason": "every test passed on the bugged build",
+        "exitCode": 0,
+        "executionId": "c0a53fa6-250e-42c8-93e2-48299c6cfc2c",
+        "caughtBy": [],
+        "links": [],
+        "rawLog": "…/evidence/runs/2026-11-18T16-26-23Z/kane-before-M10.ndjson",
+        "evidencePacks": [
+          "…/evidence/c0a53fa6-250e-42c8-93e2-48299c6cfc2c.evidence"
+        ],
+        "durationS": 144,
+        "retried": false,
+        "suite": [
+          "tests/kane/starter/browse_add_to_cart_test.md",
+          "tests/kane/starter/cart_shows_item_test.md",
+          "tests/kane/starter/checkout_happy_path_test.md",
+          "tests/kane/starter/login_test.md"
+        ]
+      },
+      "after": {
+        "verdict": "killed",
+        "reason": "9 test(s) failed on the bugged build",
+        "exitCode": 1,
+        "executionId": "dd518a67-e3fa-452a-85f4-c0fc8e70bc9a",
+        "caughtBy": [
+          {
+            "file": "cart_remove_deletes_clicked_item_test.md",
+            "message": "assertion_failed: @ step 6",
+            "stepIndex": 3
+          },
+          {
+            "file": "cart_quantity_increase_button_test.md",
+            "message": "assertion_failed: @ step 7",
+            "stepIndex": 2
+          },
+          {
+            "file": "cart_remove_middle_item_deletes_clicked_item_test.md",
+            "message": "action_failed: wait @ step 2",
+            "stepIndex": 4
+          },
+          {
+            "file": "cart_survives_page_refresh_test.md",
+            "message": "assertion_failed: @ step 6",
+            "stepIndex": 2
+          },
+          {
+            "file": "cart_total_includes_every_item_test.md",
+            "message": "assertion_failed: @ step 8",
+            "stepIndex": 3
+          },
+          {
+            "file": "ceramic_mug_small_order_charges_shipping_test.md",
+            "message": "assertion_failed: @ step 6",
+            "stepIndex": 2
+          },
+          {
+            "file": "checkout_rejects_email_without_domain_test.md",
+            "message": "action_failed: click @ step 2",
+            "stepIndex": 2
+          },
+          {
+            "file": "checkout_rejects_email_without_tld_test.md",
+            "message": "action_failed: click @ step 2",
+            "stepIndex": 2
+          },
+          {
+            "file": "small_order_total_paid_includes_shipping_test.md",
+            "message": "assertion_failed: @ step 9",
+            "stepIndex": 2
+          }
+        ],
+        "links": [],
+        "rawLog": "…/evidence/runs/2026-11-18T16-26-23Z/kane-after-M10.ndjson",
+        "evidencePacks": [
+          "…/evidence/dd518a67-e3fa-452a-85f4-c0fc8e70bc9a.evidence"
+        ],
+        "durationS": 861,
+        "retried": false,
+        "suite": [
+          "tests/kane/starter/browse_add_to_cart_test.md",
+          "tests/kane/starter/cart_shows_item_test.md",
+          "tests/kane/starter/checkout_happy_path_test.md",
+          "tests/kane/starter/login_test.md",
+          "tests/kane/generated/cart_quantity_increase_button_test.md",
+          "tests/kane/generated/cart_remove_deletes_clicked_item_test.md",
+          "tests/kane/generated/cart_remove_middle_item_deletes_clicked_item_test.md",
+          "tests/kane/generated/cart_survives_page_refresh_test.md",
+          "tests/kane/generated/cart_total_includes_every_item_test.md",
+          "tests/kane/generated/ceramic_mug_small_order_charges_shipping_test.md",
+          "tests/kane/generated/checkout_rejects_email_without_domain_test.md",
+          "tests/kane/generated/checkout_rejects_email_without_tld_test.md",
+          "tests/kane/generated/login_redirects_to_account_test.md",
+          "tests/kane/generated/order_confirmation_shows_order_number_test.md",
+          "tests/kane/generated/out_of_stock_beanie_cannot_be_added_test.md",
+          "tests/kane/generated/product_page_plus_button_increases_quantity_test.md",
+          "tests/kane/generated/save10_discount_ten_percent_test.md",
+          "tests/kane/generated/small_order_total_paid_includes_shipping_test.md"
+        ]
+      },
+      "closedBy": "existing-generated-test"
+    }
+  ],
+  "generatedTests": [
+    "tests/kane/generated/cart_quantity_increase_button_test.md",
+    "tests/kane/generated/cart_remove_deletes_clicked_item_test.md",
+    "tests/kane/generated/cart_remove_middle_item_deletes_clicked_item_test.md",
+    "tests/kane/generated/cart_survives_page_refresh_test.md",
+    "tests/kane/generated/cart_total_includes_every_item_test.md",
+    "tests/kane/generated/ceramic_mug_small_order_charges_shipping_test.md",
+    "tests/kane/generated/checkout_rejects_email_without_domain_test.md",
+    "tests/kane/generated/checkout_rejects_email_without_tld_test.md",
+    "tests/kane/generated/login_redirects_to_account_test.md",
+    "tests/kane/generated/order_confirmation_shows_order_number_test.md",
+    "tests/kane/generated/out_of_stock_beanie_cannot_be_added_test.md",
+    "tests/kane/generated/product_page_plus_button_increases_quantity_test.md",
+    "tests/kane/generated/save10_discount_ten_percent_test.md",
+    "tests/kane/generated/small_order_total_paid_includes_shipping_test.md"
+  ],
+  "credits": {
+    "before": 9172.2779,
+    "after": 8774.693
+  },
+  "evidenceDir": "…/evidence/runs/2026-11-18T16-26-23Z"
+}
